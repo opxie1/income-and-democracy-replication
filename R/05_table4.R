@@ -43,15 +43,18 @@ gmm_col <- function(col, m, terms) {
   push(col, "Countries", mod_nc(m), type = "count")
 }
 
-# C1-C2: balanced panel 1970-2000
+# C1-C2: balanced panel 1970-2000. For the GMM column the authors run
+# `drop if year<1960` before xtabond2 (workbook T4.C2), so its instrument lags
+# are drawn only from 1960 on; every other GMM column uses the full panel.
 ols_col(1, fit_ols(filter(d5, samplebalancefe == 1), "fhpolrigaug", c("Ldep", "Linc"), TRUE),
         c("Ldep", "Linc"))
 est2 <- complete_on(filter(d5, samplebalancegmm == 1), c("y", "dLdep", "dLinc", "L2inc"))
 gmm_col(2, fit_abgmm(filter(d5, year >= 1960), est2, "fhpolrigaug",
                      c("dLdep", "dLinc"), inst_extra = "L2inc"), c("dLdep", "dLinc"))
 
-# C3-C4: exclude former socialist countries
-nonsoc <- filter(d5, sample == 1, socialist != 1)
+# C3-C4: exclude former socialist countries. Stata's `if socialist~=1` keeps
+# missings; socialist is never missing here, but mirror that to stay faithful.
+nonsoc <- filter(d5, sample == 1, socialist != 1 | is.na(socialist))
 ols_col(3, fit_ols(nonsoc, "fhpolrigaug", c("Ldep", "Linc"), TRUE), c("Ldep", "Linc"))
 est4 <- complete_on(nonsoc, c("y", "dLdep", "dLinc", "L2inc"))
 gmm_col(4, fit_abgmm(d5, est4, "fhpolrigaug", c("dLdep", "dLinc"), inst_extra = "L2inc"),

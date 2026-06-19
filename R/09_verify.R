@@ -25,8 +25,14 @@ pub <- read_csv(file.path(PATH_DOCS, "published_values.csv"), show_col_types = F
          pub = value, pub_se = se) |>
   select(table, panel, column, row, type, pub, pub_se, note)
 
-cmp <- inner_join(mine, pub, by = c("table", "panel", "column", "row", "type"))
-stopifnot(nrow(cmp) == nrow(pub))   # every published cell must be reproduced
+keys <- c("table", "panel", "column", "row", "type")
+stopifnot(
+  !anyDuplicated(mine[keys]),                  # no doubled output cell
+  !anyDuplicated(pub[keys]),                   # no doubled published cell
+  all(!is.na(pub$pub_se[pub$type == "coef"]))  # every coefficient carries a transcribed SE
+)
+cmp <- inner_join(mine, pub, by = keys)
+stopifnot(nrow(cmp) == nrow(pub), nrow(cmp) == nrow(mine))   # exact 1:1 coverage both ways
 
 # round mine to the published precision for that row's type, then require an
 # exact match. A cell counts as "documented" only when note is genuinely filled.

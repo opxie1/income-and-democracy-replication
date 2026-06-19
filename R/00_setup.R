@@ -97,13 +97,11 @@ apply_labels <- function(df) {
 # a row at time t receives the value from time t-k of the same country.
 # New columns are named <var>_l<k>.
 add_lags <- function(df, vars, ks, id = "code", time = "period") {
+  stopifnot(!anyDuplicated(df[c(id, time)]))      # L. is undefined on duplicate keys
+  key <- paste(df[[id]], df[[time]], sep = "\r")  # \r cannot appear in a country code
   for (v in vars) for (k in ks) {
-    src <- df %>%
-      transmute(.id = .data[[id]], .t = .data[[time]] + k, .val = .data[[v]])
-    newname <- paste0(v, "_l", k)
-    df[[newname]] <- src$.val[match(
-      paste(df[[id]], df[[time]]), paste(src$.id, src$.t)
-    )]
+    src_key <- paste(df[[id]], df[[time]] + k, sep = "\r")
+    df[[paste0(v, "_l", k)]] <- df[[v]][match(key, src_key)]
   }
   df
 }
@@ -230,6 +228,8 @@ fit_abgmm <- function(df_full, est, dep_level, endog, exog = character(),
     for (j in seq_len(Ti)) for (k in seq_len(Ti)) if (abs(pp[j] - pp[k]) == 1) H[j, k] <- -1
     Zi <- Z[idx, , drop = FALSE]; A <- A + crossprod(Zi, H %*% Zi)
   }
+  # qr() above already dropped collinear instruments, so A is full rank but can
+  # be ill-conditioned; a generalized inverse matches xtabond2's handling.
   W <- MASS::ginv(A)
   ZtX <- crossprod(Z, X); Zty <- crossprod(Z, est$y)
   bread <- solve(t(ZtX) %*% W %*% ZtX)
