@@ -1,10 +1,3 @@
-# ---------------------------------------------------------------------------
-# 07_table6.R  -- Table 6: Two-stage least squares, Freedom House democracy,
-# instrumenting log GDP per capita t-1 with trade-weighted world income.
-# Same layout as Table 5. Columns 8-9 use deeper lags of the instrument; column
-# 7 adds trade-weighted world democracy as a regressor.
-# ---------------------------------------------------------------------------
-
 source(here::here("R", "00_setup.R"))
 
 d5 <- read_panel(FILE_P5)
@@ -33,7 +26,6 @@ sls <- function(col, dat, inst, exog = character(), second = c(), fs = c()) {
   counts(col, m, f); invisible(NULL)
 }
 
-# C1-C3: OLS comparisons on the 2SLS sample
 estIV  <- complete_on(s5, c("fhpolrigaug", "Linc", "z1"))
 estIV3 <- complete_on(s5, c("fhpolrigaug", "Ldep", "Linc", "z1"))
 m1 <- fit_ols(estIV, "fhpolrigaug", "Linc", FALSE)
@@ -44,7 +36,6 @@ m3 <- fit_ols(estIV3, "fhpolrigaug", c("Ldep", "Linc"), TRUE)
 push(3, "Democracy_t-1", ce(m3, "Ldep")["est"], ce(m3, "Ldep")["se"])
 push(3, "Log GDP per capita_t-1", ce(m3, "Linc")["est"], ce(m3, "Linc")["se"]); counts(3, m3)
 
-# C4-C5: base 2SLS and with lagged democracy
 sls(4, estIV, inst = "z1",
     second = c("Log GDP per capita_t-1" = "Linc"),
     fs = c("First stage: Trade-weighted log GDP_t-1" = "z1"))
@@ -53,26 +44,22 @@ sls(5, estIV3, inst = "z1", exog = "Ldep",
     fs = c("First stage: Democracy_t-1" = "Ldep",
            "First stage: Trade-weighted log GDP_t-1" = "z1"))
 
-# C6: Arellano-Bond GMM (income instrumented by differenced world income)
 est6 <- complete_on(s5, c("y", "dLdep", "dLinc", "dz_wi"))
 m6 <- fit_abgmm(d5, est6, "fhpolrigaug", endog = c("dLdep", "dLinc"), inst_extra = "dz_wi")
 push(6, "Democracy_t-1", ce(m6, "dLdep")["est"], ce(m6, "dLdep")["se"])
 push(6, "Log GDP per capita_t-1", ce(m6, "dLinc")["est"], ce(m6, "dLinc")["se"]); counts(6, m6)
 
-# C7: add trade-weighted world democracy
 estW <- complete_on(s5, c("fhpolrigaug", "wdem", "Linc", "z1"))
 sls(7, estW, inst = "z1", exog = "wdem",
     second = c("Log GDP per capita_t-1" = "Linc", "Trade-weighted democracy_t" = "wdem"),
     fs = c("First stage: Trade-weighted democracy" = "wdem",
            "First stage: Trade-weighted log GDP_t-1" = "z1"))
 
-# C8: instrument with world income t-2
 estIV8 <- complete_on(s5, c("fhpolrigaug", "Linc", "z2wi"))
 sls(8, estIV8, inst = "z2wi",
     second = c("Log GDP per capita_t-1" = "Linc"),
     fs = c("First stage: Trade-weighted log GDP_t-2" = "z2wi"))
 
-# C9: world income t-1 and t-2 as instruments
 estIV9 <- complete_on(s5, c("fhpolrigaug", "Linc", "z1", "z2wi"))
 sls(9, estIV9, inst = c("z1", "z2wi"),
     second = c("Log GDP per capita_t-1" = "Linc"),

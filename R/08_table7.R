@@ -1,12 +1,3 @@
-# ---------------------------------------------------------------------------
-# 08_table7.R  -- Table 7: Polity democracy in the long run (Maddison data).
-# Panel A is the 25-year sample (1875-2000); Panel B the 50-year sample
-# (1900-2000). Columns: pooled OLS, fixed effects, Arellano-Bond GMM, fixed
-# effects without lagged democracy, and fixed effects on non-extrapolated data.
-# OLS/IV SEs cluster by Maddison aggregation id; the GMM column clusters by
-# country, matching the authors' Stata.
-# ---------------------------------------------------------------------------
-
 source(here::here("R", "00_setup.R"))
 
 build_t7_panel <- function(file, panel) {

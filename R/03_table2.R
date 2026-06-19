@@ -1,10 +1,3 @@
-# ---------------------------------------------------------------------------
-# 03_table2.R  -- Table 2: Fixed-effects results, Freedom House democracy.
-# Pooled OLS, fixed effects, Anderson-Hsiao IV, Arellano-Bond GMM, and the
-# annual / ten-year / twenty-year columns. (Columns 3, 4, 8 are the IV/GMM
-# estimates; the rest are OLS comparisons.)
-# ---------------------------------------------------------------------------
-
 source(here::here("R", "00_setup.R"))
 
 ROW_ORDER <- c("Democracy_t-1", "Log GDP per capita_t-1",

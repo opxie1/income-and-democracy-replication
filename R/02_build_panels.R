@@ -1,11 +1,3 @@
-# ---------------------------------------------------------------------------
-# 02_build_panels.R
-# Trim each raw panel to the variables the IV tables use, coerce types, attach
-# a label to every column, and write one compressed parquet per panel.
-# No lags are stored here: they are deterministic transforms that the table
-# scripts build with add_lags(), so the parquet holds only source variables.
-# ---------------------------------------------------------------------------
-
 source(here::here("R", "00_setup.R"))
 
 panels_raw <- readRDS(FILE_RAW)
@@ -30,7 +22,6 @@ panels <- list(
 )
 
 for (p in panels) {
-  # every kept column must carry a label
   miss <- names(p$df)[vapply(p$df, function(x) is.null(attr(x, "label")), logical(1))]
   if (length(miss)) stop("Missing labels in ", p$name, ": ", paste(miss, collapse = ", "))
   write_parquet(p$df, p$file, compression = "zstd", compression_level = 9)

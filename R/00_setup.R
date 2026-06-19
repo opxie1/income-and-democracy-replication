@@ -1,18 +1,10 @@
-# ---------------------------------------------------------------------------
-# 00_setup.R
-# Paths, constants, variable labels, and shared helpers for the
-# Acemoglu, Johnson, Robinson, and Yared (2008) "Income and Democracy"
-# replication. Sourced at the top of every other script.
-# ---------------------------------------------------------------------------
-
 suppressPackageStartupMessages({
   library(tidyverse)
   library(arrow)
   library(readxl)
-  library(estimatr)   # lm_robust / iv_robust with se_type = "stata"
+  library(estimatr)
   library(here)
 })
-# MASS::ginv (used in fit_abgmm) is called fully qualified; MASS ships with R.
 
 here::i_am("R/00_setup.R")
 
@@ -24,10 +16,8 @@ PATH_OUTPUT <- here("output")
 PATH_DOCS   <- here("docs")
 for (p in c(PATH_DATA, PATH_OUTPUT, PATH_DOCS)) dir.create(p, showWarnings = FALSE)
 
-# Raw sheets cached here by 01_load_data.R
 FILE_RAW <- file.path(PATH_DATA, "panels_raw.rds")
 
-# One labelled parquet per panel (written by 02_build_panels.R)
 FILE_P5  <- file.path(PATH_DATA, "panel_5yr.parquet")
 FILE_PA  <- file.path(PATH_DATA, "panel_annual.parquet")
 FILE_P10 <- file.path(PATH_DATA, "panel_10yr.parquet")
@@ -40,18 +30,16 @@ if (!file.exists(FILE_XLS)) {
        "into a folder called 'replication-kit' in the project root (see README).")
 }
 
-# Which raw columns each panel keeps (only what the tables need) ------------
 COLS_5YR <- c("code", "country", "code_numeric", "year", "year_numeric",
               "sample", "samplebalancefe", "samplebalancegmm", "socialist",
               "fhpolrigaug", "polity4", "lrgdpch", "nsave", "worldincome",
               "worlddemocracy", "laborshare", "lpop", "medage", "education",
               "age_veryyoung", "age_young", "age_midage", "age_old")
 COLS_FREQ <- c("code", "country", "code_numeric", "year", "year_numeric",
-               "sample", "fhpolrigaug", "polity4", "lrgdpch")          # annual/10/20
+               "sample", "fhpolrigaug", "polity4", "lrgdpch")
 COLS_MAD  <- c("code", "country", "code_numeric", "year", "year_numeric",
-               "sample", "noextrapolation", "madid", "polity4", "lrgdpmad")  # 25/50
+               "sample", "noextrapolation", "madid", "polity4", "lrgdpmad")
 
-# Variable labels (from the workbook's "Variable Key", lightly cleaned) -----
 VAR_LABELS <- c(
   code             = "Country code (3-letter)",
   country          = "Country name",
@@ -88,17 +76,9 @@ apply_labels <- function(df) {
   df
 }
 
-# ---------------------------------------------------------------------------
-# Panel helpers
-# ---------------------------------------------------------------------------
-
-# Add within-country lags by the integer time index `period`, reproducing
-# Stata's `L.` operator on `tsset code_numeric year_numeric`. Robust to gaps:
-# a row at time t receives the value from time t-k of the same country.
-# New columns are named <var>_l<k>.
 add_lags <- function(df, vars, ks, id = "code", time = "period") {
-  stopifnot(!anyDuplicated(df[c(id, time)]))      # L. is undefined on duplicate keys
-  key <- paste(df[[id]], df[[time]], sep = "\r")  # \r cannot appear in a country code
+  stopifnot(!anyDuplicated(df[c(id, time)]))
+  key <- paste(df[[id]], df[[time]], sep = "\r")
   for (v in vars) for (k in ks) {
     src_key <- paste(df[[id]], df[[time]] + k, sep = "\r")
     df[[paste0(v, "_l", k)]] <- df[[v]][match(key, src_key)]
@@ -106,20 +86,12 @@ add_lags <- function(df, vars, ks, id = "code", time = "period") {
   df
 }
 
-# Read a panel parquet and attach the integer panel-time index used for lags.
 read_panel <- function(file) {
   read_parquet(file) |> arrange(code, year_numeric) |> mutate(period = year_numeric)
 }
 
-# ---------------------------------------------------------------------------
-# Estimation helpers (all SEs clustered, Stata small-sample correction)
-# ---------------------------------------------------------------------------
-
-# Keep rows with non-missing values in `vars` (mirrors Stata's e(sample)).
 complete_on <- function(df, vars) df[stats::complete.cases(df[, vars, drop = FALSE]), ]
 
-# Pull one coefficient and its SE from a fit (estimatr lm_robust/iv_robust or
-# the fit_abgmm list).
 ce <- function(m, term) {
   if (!is.null(m$coefficients)) {
     c(est = unname(m$coefficients[term]), se = unname(m$std.error[term]))
@@ -128,14 +100,10 @@ ce <- function(m, term) {
   }
 }
 
-# Uniform accessors across estimatr fits and fit_abgmm lists.
 mod_nobs <- function(m) m$nobs
 mod_nc   <- function(m) { a <- attr(m, "n_country"); if (!is.null(a)) a else m$n_country }
 mod_r2   <- function(m) if (!is.null(m$r.squared)) unname(m$r.squared) else NA_real_
 
-# Clustered Wald test that a set of coefficients are jointly zero, with Stata's
-# F(q, G-1) reference distribution. Used for the annual columns of Tables 2-3,
-# where each variable enters with five lags and the paper reports an F-test p.
 wald_p <- function(m, terms, n_clusters) {
   b <- m$coefficients[terms]
   V <- m$vcov[terms, terms, drop = FALSE]
@@ -144,9 +112,6 @@ wald_p <- function(m, terms, n_clusters) {
   pf(Fstat, q, n_clusters - 1, lower.tail = FALSE)
 }
 
-# OLS / fixed-effects OLS with country-clustered SEs.
-#   rhs        : character vector of regressor column names
-#   country_fe : include country dummies (cd*) in addition to year dummies (yr*)
 fit_ols <- function(df, lhs, rhs, country_fe, cluster = "code") {
   terms <- c(rhs, "factor(year)", if (country_fe) "factor(code)")
   f <- reformulate(terms, response = lhs)
@@ -156,10 +121,6 @@ fit_ols <- function(df, lhs, rhs, country_fe, cluster = "code") {
   m
 }
 
-# Two-stage least squares with country-clustered SEs.
-#   endog : endogenous regressor column name(s)
-#   inst  : excluded instrument column name(s)
-#   exog  : exogenous regressor column names (besides dummies)
 fit_iv <- function(df, lhs, endog, inst, exog = character(), country_fe = TRUE,
                    cluster = "code") {
   dummies <- c("factor(year)", if (country_fe) "factor(code)")
@@ -172,26 +133,11 @@ fit_iv <- function(df, lhs, endog, inst, exog = character(), country_fe = TRUE,
   m
 }
 
-# First stage of an IV spec, run as an explicit clustered OLS (this is what the
-# paper's "Panel B" reports), returning coefficients, SEs, and the R-squared.
 fit_first_stage <- function(df, endog, inst, exog = character(), country_fe = TRUE,
                             cluster = "code") {
   fit_ols(df, lhs = endog, rhs = c(inst, exog), country_fe = country_fe, cluster = cluster)
 }
 
-# One-step difference GMM (Arellano and Bond 1991), built to match the authors'
-# Stata `xtabond2 ... noleveleq robust`. Reproduces the uncollapsed GMM-style
-# instrument block, the "passthru" level instrument, differenced IV instruments,
-# the H = first-difference weighting matrix, and one-step robust SEs.
-#   df_full   : the full panel (all rows) holding `dep_level` for the instruments
-#   est       : estimation rows; must already contain a differenced dependent
-#               column `y`, the differenced regressors, any prebuilt instrument
-#               columns, the group id, `period`, `year`, and `year_l1`
-#   dep_level : name of the dependent *level* variable (GMM-style instrument source)
-#   endog     : differenced regressors that are instrumented (e.g. c("dLdem","dLinc"))
-#   exog      : differenced regressors that instrument themselves (covariates)
-#   inst_extra: instrument-only columns already built in `est` (passthru level or
-#               differenced external instrument for income)
 fit_abgmm <- function(df_full, est, dep_level, endog, exog = character(),
                       inst_extra = character(), group = "code", period = "period",
                       yearvar = "year", prevyear = "year_l1", gmm_lag_start = 2L) {
@@ -228,8 +174,6 @@ fit_abgmm <- function(df_full, est, dep_level, endog, exog = character(),
     for (j in seq_len(Ti)) for (k in seq_len(Ti)) if (abs(pp[j] - pp[k]) == 1) H[j, k] <- -1
     Zi <- Z[idx, , drop = FALSE]; A <- A + crossprod(Zi, H %*% Zi)
   }
-  # qr() above already dropped collinear instruments, so A is full rank but can
-  # be ill-conditioned; a generalized inverse matches xtabond2's handling.
   W <- MASS::ginv(A)
   ZtX <- crossprod(Z, X); Zty <- crossprod(Z, est$y)
   bread <- solve(t(ZtX) %*% W %*% ZtX)
@@ -245,5 +189,4 @@ fit_abgmm <- function(df_full, est, dep_level, endog, exog = character(),
        n_country = length(unique(grp)), n_inst = ncol(Z))
 }
 
-# Shared table builders (Tables 2 and 3 have an identical structure).
 source(here::here("R", "_engine.R"))

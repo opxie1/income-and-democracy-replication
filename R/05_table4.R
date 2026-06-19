@@ -1,11 +1,3 @@
-# ---------------------------------------------------------------------------
-# 05_table4.R  -- Table 4: Freedom House robustness checks (five-year data).
-# Balanced panel, dropping socialist countries, and adding demographic and
-# education covariates. Odd columns are fixed-effects OLS; even columns are
-# Arellano-Bond GMM. Median age and the four age-structure shares are included
-# but not displayed (as in the paper).
-# ---------------------------------------------------------------------------
-
 source(here::here("R", "00_setup.R"))
 
 d5 <- read_panel(FILE_P5)
@@ -43,24 +35,18 @@ gmm_col <- function(col, m, terms) {
   push(col, "Countries", mod_nc(m), type = "count")
 }
 
-# C1-C2: balanced panel 1970-2000. For the GMM column the authors run
-# `drop if year<1960` before xtabond2 (workbook T4.C2), so its instrument lags
-# are drawn only from 1960 on; every other GMM column uses the full panel.
 ols_col(1, fit_ols(filter(d5, samplebalancefe == 1), "fhpolrigaug", c("Ldep", "Linc"), TRUE),
         c("Ldep", "Linc"))
 est2 <- complete_on(filter(d5, samplebalancegmm == 1), c("y", "dLdep", "dLinc", "L2inc"))
 gmm_col(2, fit_abgmm(filter(d5, year >= 1960), est2, "fhpolrigaug",
                      c("dLdep", "dLinc"), inst_extra = "L2inc"), c("dLdep", "dLinc"))
 
-# C3-C4: exclude former socialist countries. Stata's `if socialist~=1` keeps
-# missings; socialist is never missing here, but mirror that to stay faithful.
 nonsoc <- filter(d5, sample == 1, socialist != 1 | is.na(socialist))
 ols_col(3, fit_ols(nonsoc, "fhpolrigaug", c("Ldep", "Linc"), TRUE), c("Ldep", "Linc"))
 est4 <- complete_on(nonsoc, c("y", "dLdep", "dLinc", "L2inc"))
 gmm_col(4, fit_abgmm(d5, est4, "fhpolrigaug", c("dLdep", "dLinc"), inst_extra = "L2inc"),
         c("dLdep", "dLinc"))
 
-# C5-C6: add log population, median age, age structure
 base <- filter(d5, sample == 1)
 ols_col(5, fit_ols(base, "fhpolrigaug", c("Ldep", "Linc", "Llpop", "Lmed", AGE), TRUE),
         c("Ldep", "Linc", "Llpop"))
@@ -69,7 +55,6 @@ gmm_col(6, fit_abgmm(d5, est6, "fhpolrigaug", c("dLdep", "dLinc"),
                      exog = c("dLpop", "dLmed", dAGE), inst_extra = "L2inc"),
         c("dLdep", "dLinc", "dLpop"))
 
-# C7-C8: also add education
 ols_col(7, fit_ols(base, "fhpolrigaug", c("Ldep", "Ledu", "Linc", "Llpop", "Lmed", AGE), TRUE),
         c("Ldep", "Linc", "Llpop", "Ledu"))
 est8 <- complete_on(base, c("y", "dLdep", "dLinc", "L2inc", "dLedu", "dLpop", "dLmed", dAGE))

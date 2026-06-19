@@ -1,9 +1,3 @@
-# ---------------------------------------------------------------------------
-# 04_table3.R  -- Table 3: Fixed-effects results, Polity democracy.
-# Same nine-column structure as Table 2, with the Polity index as the
-# dependent variable.
-# ---------------------------------------------------------------------------
-
 source(here::here("R", "00_setup.R"))
 
 ROW_ORDER <- c("Democracy_t-1", "Log GDP per capita_t-1",

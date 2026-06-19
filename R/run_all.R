@@ -1,8 +1,3 @@
-# ---------------------------------------------------------------------------
-# run_all.R  -- run the whole replication end to end.
-#   Rscript R/run_all.R
-# ---------------------------------------------------------------------------
-
 source(here::here("R", "00_setup.R"))
 
 cat("Running the Income and Democracy IV replication...\n\n")

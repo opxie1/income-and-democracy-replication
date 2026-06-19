@@ -1,12 +1,3 @@
-# ---------------------------------------------------------------------------
-# 01_load_data.R
-# Read the panels we need from the AER workbook and cache them as one .rds.
-# The workbook stores each sample on its own sheet; the Stata commands that
-# generate every table live in a text box on each sheet (transcribed in the
-# README). We only read the sheets used by the IV tables (2-7); the 500-year
-# and figure sheets are not needed.
-# ---------------------------------------------------------------------------
-
 source(here::here("R", "00_setup.R"))
 
 cat("Reading sheets from", basename(FILE_XLS), "...\n")

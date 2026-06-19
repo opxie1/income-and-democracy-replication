@@ -1,11 +1,3 @@
-# ---------------------------------------------------------------------------
-# 09_verify.R  -- Compare every value in the output tables against the numbers
-# printed in Acemoglu, Johnson, Robinson, and Yared (2008), cell by cell.
-# Writes docs/diff_table_*.csv and docs/replication_check.md, and verifies that
-# every parquet column carries a label. One discrepancy is expected and
-# documented: a misprinted standard error in Table 3, column 3.
-# ---------------------------------------------------------------------------
-
 source(here::here("R", "00_setup.R"))
 
 blank_na <- function(x) ifelse(is.na(x), "", as.character(x))
@@ -27,15 +19,13 @@ pub <- read_csv(file.path(PATH_DOCS, "published_values.csv"), show_col_types = F
 
 keys <- c("table", "panel", "column", "row", "type")
 stopifnot(
-  !anyDuplicated(mine[keys]),                  # no doubled output cell
-  !anyDuplicated(pub[keys]),                   # no doubled published cell
-  all(!is.na(pub$pub_se[pub$type == "coef"]))  # every coefficient carries a transcribed SE
+  !anyDuplicated(mine[keys]),
+  !anyDuplicated(pub[keys]),
+  all(!is.na(pub$pub_se[pub$type == "coef"]))
 )
 cmp <- inner_join(mine, pub, by = keys)
-stopifnot(nrow(cmp) == nrow(pub), nrow(cmp) == nrow(mine))   # exact 1:1 coverage both ways
+stopifnot(nrow(cmp) == nrow(pub), nrow(cmp) == nrow(mine))
 
-# round mine to the published precision for that row's type, then require an
-# exact match. A cell counts as "documented" only when note is genuinely filled.
 dec <- c(coef = 3, ftest_p = 2, count = 0, r2 = 2)
 cmp <- cmp |>
   mutate(
@@ -49,7 +39,6 @@ cmp <- cmp |>
     failure  = !matched & !has_note
   )
 
-# per-table diff files and summary
 summ <- cmp |>
   group_by(table) |>
   summarise(cells = n(), failures = sum(failure),
@@ -63,7 +52,6 @@ for (tb in unique(cmp$table)) {
 write_csv(summ, file.path(PATH_DOCS, "diff_summary.csv"))
 print(summ)
 
-# parquet label / size check
 panel_files <- c("5-year" = FILE_P5, "annual" = FILE_PA, "10-year" = FILE_P10,
                  "20-year" = FILE_P20, "25-year" = FILE_P25, "50-year" = FILE_P50)
 parq <- tibble()
@@ -76,7 +64,6 @@ for (nm in names(panel_files)) {
                                  kb = round(file.info(panel_files[[nm]])$size / 1024, 1)))
 }
 
-# ---- write the report ----
 md <- c("# Replication check",
         "",
         "Every displayed cell of Tables 2-7 in Acemoglu, Johnson, Robinson, and",
