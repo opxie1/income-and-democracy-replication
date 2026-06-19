@@ -25,7 +25,7 @@ Each table is reproduced column by column, including:
 3. Install the R packages:
 
 ```r
-install.packages(c("tidyverse", "arrow", "readxl", "labelled", "estimatr", "plm", "here"))
+install.packages(c("tidyverse", "arrow", "readxl", "estimatr", "here"))
 ```
 
 `MASS` is also used (it ships with R). The pipeline does not need `fixest` or `pdftools`.
@@ -35,6 +35,9 @@ install.packages(c("tidyverse", "arrow", "readxl", "labelled", "estimatr", "plm"
 ```sh
 Rscript R/run_all.R
 ```
+
+Run it from the project root once Setup is finished; the pipeline stops with
+instructions if the `replication-kit/` workbook is missing.
 
 The scripts read the workbook, build one compressed parquet file per sample, make
 Tables 2 through 7, and then check every number against the published paper. A
@@ -64,6 +67,10 @@ then.
 - `docs/published_values.csv`: the published numbers, transcribed from the paper.
 - `docs/diff_table_*.csv`: the comparison behind the report.
 - `docs/sessionInfo.txt`: the R and package versions a run used.
+
+The `data/`, `output/`, and generated `docs/` files are committed as a snapshot of
+a verified run (`docs/published_values.csv` is hand-transcribed input). Re-running
+`Rscript R/run_all.R` regenerates them.
 
 ## Checking the results
 

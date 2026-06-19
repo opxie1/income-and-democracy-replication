@@ -10,7 +10,7 @@
 source(here::here("R", "00_setup.R"))
 
 build_t7_panel <- function(file, panel) {
-  d <- read_parquet(file) |> arrange(code, year_numeric) |> mutate(period = year_numeric)
+  d <- read_panel(file)
   d <- add_lags(d, c("polity4", "lrgdpmad", "year"), 1:2)
   d <- d |> mutate(
     Ldep = polity4_l1, Linc = lrgdpmad_l1,

@@ -7,7 +7,7 @@
 
 source(here::here("R", "00_setup.R"))
 
-d5 <- read_parquet(FILE_P5) |> arrange(code, year_numeric) |> mutate(period = year_numeric)
+d5 <- read_panel(FILE_P5)
 d5 <- add_lags(d5, c("fhpolrigaug", "lrgdpch", "nsave", "laborshare", "year"), 1:3)
 d5 <- d5 |> mutate(
   Linc = lrgdpch_l1, Ldep = fhpolrigaug_l1, L2dep = fhpolrigaug_l2, L3dep = fhpolrigaug_l3,

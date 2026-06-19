@@ -10,7 +10,7 @@
 
 # Convenience: build the differenced/lagged columns a dynamic panel needs.
 .prep_dynamic <- function(file, dep, lags = 1:2) {
-  d <- read_parquet(file) |> arrange(code, year_numeric) |> mutate(period = year_numeric)
+  d <- read_panel(file)
   d <- add_lags(d, c(dep, "lrgdpch", "year"), lags)
   dl1 <- paste0(dep, "_l1"); dl2 <- paste0(dep, "_l2")
   d$Ldep  <- d[[dl1]]
@@ -54,8 +54,7 @@ build_dynamic_table <- function(dep) {
   m5 <- fit_ols(s5, dep, c("Linc"), country_fe = TRUE);          coefcol(5, m5, inc = "Linc"); stats(5, m5)
 
   # ---- annual data: column 6 (five lags each; report F-test p-values) ----
-  da <- read_parquet(FILE_PA) |> arrange(code, year_numeric) |> mutate(period = year_numeric)
-  da <- add_lags(da, c(dep, "lrgdpch"), 1:5)
+  da <- add_lags(read_panel(FILE_PA), c(dep, "lrgdpch"), 1:5)
   deplags <- paste0(dep, "_l", 1:5); inclags <- paste0("lrgdpch_l", 1:5)
   sa <- filter(da, sample == 1)
   m6 <- fit_ols(sa, dep, c(deplags, inclags), country_fe = TRUE)

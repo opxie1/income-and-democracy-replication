@@ -8,7 +8,7 @@
 
 source(here::here("R", "00_setup.R"))
 
-d5 <- read_parquet(FILE_P5) |> arrange(code, year_numeric) |> mutate(period = year_numeric)
+d5 <- read_panel(FILE_P5)
 d5 <- add_lags(d5, c("fhpolrigaug", "lrgdpch", "lpop", "medage", "education",
                      "age_veryyoung", "age_young", "age_midage", "age_old", "year"), 1:2)
 d5 <- d5 |> mutate(

@@ -28,19 +28,20 @@ pub <- read_csv(file.path(PATH_DOCS, "published_values.csv"), show_col_types = F
 cmp <- inner_join(mine, pub, by = c("table", "panel", "column", "row", "type"))
 stopifnot(nrow(cmp) == nrow(pub))   # every published cell must be reproduced
 
+# round mine to the published precision for that row's type, then require an
+# exact match. A cell counts as "documented" only when note is genuinely filled.
 dec <- c(coef = 3, ftest_p = 2, count = 0, r2 = 2)
 cmp <- cmp |>
-  rowwise() |>
   mutate(
-    d_round  = dec[[type]],
-    val_ok   = abs(round(mine, d_round) - pub) < 1e-6,
-    se_ok    = is.na(pub_se) || abs(round(mine_se, 3) - pub_se) < 1e-6,
-    matched  = val_ok && se_ok,
+    d_round  = dec[type],
+    val_ok   = abs(round(mine * 10^d_round) / 10^d_round - pub) < 1e-6,
+    se_ok    = is.na(pub_se) | (abs(round(mine_se, 3) - pub_se) < 1e-6),
+    matched  = val_ok & se_ok,
     diff_val = abs(mine - pub),
     diff_se  = ifelse(is.na(pub_se), NA_real_, abs(mine_se - pub_se)),
-    failure  = !matched && is.na(note)
-  ) |>
-  ungroup()
+    has_note = !is.na(note) & nzchar(note),
+    failure  = !matched & !has_note
+  )
 
 # per-table diff files and summary
 summ <- cmp |>
@@ -91,7 +92,7 @@ md <- c(md, "",
                 nrow(cmp), total_fail),
         "")
 
-noted <- filter(cmp, !matched & !is.na(note))
+noted <- filter(cmp, !matched & has_note)
 if (nrow(noted)) {
   md <- c(md, "## Documented discrepancies", "")
   for (i in seq_len(nrow(noted))) {

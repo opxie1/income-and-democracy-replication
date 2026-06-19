@@ -9,11 +9,10 @@ suppressPackageStartupMessages({
   library(tidyverse)
   library(arrow)
   library(readxl)
-  library(labelled)
   library(estimatr)   # lm_robust / iv_robust with se_type = "stata"
-  library(plm)        # pgmm for the Arellano-Bond GMM columns
   library(here)
 })
+# MASS::ginv (used in fit_abgmm) is called fully qualified; MASS ships with R.
 
 here::i_am("R/00_setup.R")
 
@@ -109,6 +108,11 @@ add_lags <- function(df, vars, ks, id = "code", time = "period") {
   df
 }
 
+# Read a panel parquet and attach the integer panel-time index used for lags.
+read_panel <- function(file) {
+  read_parquet(file) |> arrange(code, year_numeric) |> mutate(period = year_numeric)
+}
+
 # ---------------------------------------------------------------------------
 # Estimation helpers (all SEs clustered, Stata small-sample correction)
 # ---------------------------------------------------------------------------
@@ -127,7 +131,7 @@ ce <- function(m, term) {
 }
 
 # Uniform accessors across estimatr fits and fit_abgmm lists.
-mod_nobs <- function(m) if (!is.null(m$nobs)) m$nobs else length(m$residuals)
+mod_nobs <- function(m) m$nobs
 mod_nc   <- function(m) { a <- attr(m, "n_country"); if (!is.null(a)) a else m$n_country }
 mod_r2   <- function(m) if (!is.null(m$r.squared)) unname(m$r.squared) else NA_real_
 
@@ -151,7 +155,6 @@ fit_ols <- function(df, lhs, rhs, country_fe, cluster = "code") {
   d <- complete_on(df, c(lhs, rhs, cluster))
   m <- lm_robust(f, data = d, clusters = d[[cluster]], se_type = "stata")
   attr(m, "n_country") <- n_distinct(d$code)
-  attr(m, "data_used") <- d
   m
 }
 
@@ -168,7 +171,6 @@ fit_iv <- function(df, lhs, endog, inst, exog = character(), country_fe = TRUE,
   d <- complete_on(df, c(lhs, endog, inst, exog, cluster))
   m <- iv_robust(f, data = d, clusters = d[[cluster]], se_type = "stata")
   attr(m, "n_country") <- n_distinct(d$code)
-  attr(m, "data_used") <- d
   m
 }
 
@@ -241,12 +243,6 @@ fit_abgmm <- function(df_full, est, dep_level, endog, exog = character(),
   V <- bread %*% (t(ZtX) %*% W %*% M %*% W %*% ZtX) %*% bread
   list(coef = beta, se = sqrt(diag(V)), nobs = length(est$y),
        n_country = length(unique(grp)), n_inst = ncol(Z))
-}
-
-# Format an estimate with its SE in parentheses underneath, to 3 decimals.
-fmt <- function(est, se, digits = 3) {
-  ifelse(is.na(est), "",
-         sprintf(paste0("%.", digits, "f (%.", digits, "f)"), est, se))
 }
 
 # Shared table builders (Tables 2 and 3 have an identical structure).
