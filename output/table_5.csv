@@ -1,0 +1,47 @@
+table,column,row,value,se,type
+5,1,Log GDP per capita_t-1,0.23300254416730504,0.01273251572771502,coef
+5,1,Observations,900,NA,count
+5,1,Countries,134,NA,count
+5,2,Log GDP per capita_t-1,0.04357601139175002,0.05065640481055017,coef
+5,2,Observations,900,NA,count
+5,2,Countries,134,NA,count
+5,3,Democracy_t-1,0.3588908730134489,0.053946141041119056,coef
+5,3,Log GDP per capita_t-1,0.00877062148559669,0.037798832314600704,coef
+5,3,Observations,891,NA,count
+5,3,Countries,134,NA,count
+5,4,Log GDP per capita_t-1,-0.03478061054792664,0.09426784895576121,coef
+5,4,First stage: Savings rate_t-2,1.3564257168187397,0.2769177512527385,coef
+5,4,Observations,900,NA,count
+5,4,Countries,134,NA,count
+5,4,First-stage R-squared,0.9612673096261016,NA,r2
+5,5,Democracy_t-1,0.36291038877188053,0.05633092213894717,coef
+5,5,Log GDP per capita_t-1,-0.020492790243709126,0.08136381707054688,coef
+5,5,First stage: Democracy_t-1,0.1437520354959653,0.06590436638411457,coef
+5,5,First stage: Savings rate_t-2,1.342512428634941,0.2702372362417391,coef
+5,5,Observations,891,NA,count
+5,5,Countries,134,NA,count
+5,5,First-stage R-squared,0.9623404003707292,NA,r2
+5,6,Democracy_t-1,0.4271947461854235,0.10043370280623697,coef
+5,6,Log GDP per capita_t-1,-0.22835162160689815,0.10201071181578188,coef
+5,6,Observations,764,NA,count
+5,6,Countries,124,NA,count
+5,7,Log GDP per capita_t-1,-0.03572753001901663,0.19095356764954266,coef
+5,7,Labor share_t-1,0.2504530402511104,0.19879559638170746,coef
+5,7,First stage: Labor share_t-1,0.32925019036972963,0.1866191817587691,coef
+5,7,First stage: Savings rate_t-2,1.2023520486673758,0.315298687067307,coef
+5,7,Observations,471,NA,count
+5,7,Countries,98,NA,count
+5,7,First-stage R-squared,0.9803040701811165,NA,r2
+5,8,Democracy_t-1,2.0452254142921112e-7,NA,ftest_p
+5,8,Log GDP per capita_t-1,-0.07413438984043036,0.11315711577331514,coef
+5,8,First stage: Democracy_t-1,0.2436749180855354,NA,ftest_p
+5,8,First stage: Savings rate_t-2,1.172878564970315,0.2539769789837441,coef
+5,8,Observations,733,NA,count
+5,8,Countries,124,NA,count
+5,8,First-stage R-squared,0.9717099117703949,NA,r2
+5,9,Log GDP per capita_t-1,0.01564592249191421,0.09506419712826002,coef
+5,9,First stage: Savings rate_t-2,1.0219813095518475,0.21849838166200525,coef
+5,9,First stage: Savings rate_t-3,0.7201709091471054,0.18221106823542832,coef
+5,9,Observations,796,NA,count
+5,9,Countries,125,NA,count
+5,9,First-stage R-squared,0.9675727491368528,NA,r2

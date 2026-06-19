@@ -1,0 +1,47 @@
+table,panel,column,row,value,se,type
+7,A (25-year),1,Democracy_t-1,0.4872921121587168,0.08468029682292022,coef
+7,A (25-year),1,Log GDP per capita_t-1,0.11631864066072123,0.03355626640168042,coef
+7,A (25-year),1,Observations,150,NA,count
+7,A (25-year),1,Countries,25,NA,count
+7,A (25-year),1,R-squared,0.5470475420106387,NA,r2
+7,A (25-year),2,Democracy_t-1,0.19229839972678894,0.11919774136550004,coef
+7,A (25-year),2,Log GDP per capita_t-1,-0.01968544768841924,0.09294827952492069,coef
+7,A (25-year),2,Observations,150,NA,count
+7,A (25-year),2,Countries,25,NA,count
+7,A (25-year),2,R-squared,0.6477249059315733,NA,r2
+7,A (25-year),3,Democracy_t-1,0.4391255420281297,0.14317462278567902,coef
+7,A (25-year),3,Log GDP per capita_t-1,-0.4947687908621621,0.2660688178205333,coef
+7,A (25-year),3,Observations,125,NA,count
+7,A (25-year),3,Countries,25,NA,count
+7,A (25-year),4,Log GDP per capita_t-1,0.002976373617468102,0.09204585558698837,coef
+7,A (25-year),4,Observations,150,NA,count
+7,A (25-year),4,Countries,25,NA,count
+7,A (25-year),4,R-squared,0.6342579338460094,NA,r2
+7,A (25-year),5,Democracy_t-1,0.21150866683101327,0.14035777937853802,coef
+7,A (25-year),5,Log GDP per capita_t-1,0.07364001303359943,0.1175170274275377,coef
+7,A (25-year),5,Observations,78,NA,count
+7,A (25-year),5,Countries,13,NA,count
+7,A (25-year),5,R-squared,0.7238848517691148,NA,r2
+7,B (50-year),1,Democracy_t-1,0.2326947426926236,0.07026576027640222,coef
+7,B (50-year),1,Log GDP per capita_t-1,0.19093059156348052,0.04287047957281742,coef
+7,B (50-year),1,Observations,111,NA,count
+7,B (50-year),1,Countries,37,NA,count
+7,B (50-year),1,R-squared,0.4866988682419825,NA,r2
+7,B (50-year),2,Democracy_t-1,-0.24821936198656191,0.12410402073945967,coef
+7,B (50-year),2,Log GDP per capita_t-1,0.038903469200707544,0.1100069472032763,coef
+7,B (50-year),2,Observations,111,NA,count
+7,B (50-year),2,Countries,37,NA,count
+7,B (50-year),2,R-squared,0.7186722144830023,NA,r2
+7,B (50-year),3,Democracy_t-1,0.3194162335783831,0.1481920107209641,coef
+7,B (50-year),3,Log GDP per capita_t-1,-0.41126433980825006,0.19445861184882574,coef
+7,B (50-year),3,Observations,74,NA,count
+7,B (50-year),3,Countries,37,NA,count
+7,B (50-year),4,Log GDP per capita_t-1,-0.0035796866862532334,0.0915607734860337,coef
+7,B (50-year),4,Observations,111,NA,count
+7,B (50-year),4,Countries,37,NA,count
+7,B (50-year),4,R-squared,0.70091391893583,NA,r2
+7,B (50-year),5,Democracy_t-1,-0.2658892669077578,0.18775242448166912,coef
+7,B (50-year),5,Log GDP per capita_t-1,0.027719095134323843,0.22200813310740597,coef
+7,B (50-year),5,Observations,48,NA,count
+7,B (50-year),5,Countries,16,NA,count
+7,B (50-year),5,R-squared,0.6852468330483037,NA,r2

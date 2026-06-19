@@ -1,0 +1,15 @@
+# Raw AER replication kit (download from openICPSR project 113251; see README)
+replication-kit/
+
+# Intermediate cache (rebuilt by 01_load_data.R)
+data/panels_raw.rds
+
+# R session files
+.Rhistory
+.RData
+.Rproj.user/
+
+# Scratch and reference material (not part of the replication)
+scratch_*.R
+scratch_paper.txt
+_ref_abraham_kearney/

@@ -1,0 +1,45 @@
+table,column,row,value,se,type
+6,1,Log GDP per capita_t-1,0.23284733260230459,0.012799993161160856,coef
+6,1,Observations,906,NA,count
+6,1,Countries,124,NA,count
+6,2,Log GDP per capita_t-1,0.038408436482467306,0.04518227883039434,coef
+6,2,Observations,906,NA,count
+6,2,Countries,124,NA,count
+6,3,Democracy_t-1,0.3756554635197948,0.05095370369635687,coef
+6,3,Log GDP per capita_t-1,9.619942343291089e-4,0.03405960336215978,coef
+6,3,Observations,895,NA,count
+6,3,Countries,124,NA,count
+6,4,Log GDP per capita_t-1,-0.21298725188681877,0.15020846380318936,coef
+6,4,First stage: Trade-weighted log GDP_t-1,0.4023767773628407,0.08280711723522706,coef
+6,4,Observations,906,NA,count
+6,4,Countries,124,NA,count
+6,4,First-stage R-squared,0.9543097818897464,NA,r2
+6,5,Democracy_t-1,0.3931384896612049,0.05735003347806576,coef
+6,5,Log GDP per capita_t-1,-0.11964452571510552,0.10537436975943701,coef
+6,5,First stage: Democracy_t-1,0.1691140845897506,0.0627319579020513,coef
+6,5,First stage: Trade-weighted log GDP_t-1,0.4208517845734298,0.08171336663221701,coef
+6,5,Observations,895,NA,count
+6,5,Countries,124,NA,count
+6,5,First-stage R-squared,0.9553723339852376,NA,r2
+6,6,Democracy_t-1,0.4780678547267438,0.0941273062765432,coef
+6,6,Log GDP per capita_t-1,-0.13313698979667254,0.07720295975555728,coef
+6,6,Observations,812,NA,count
+6,6,Countries,122,NA,count
+6,7,Log GDP per capita_t-1,-0.20190383372812054,0.1300067801475783,coef
+6,7,Trade-weighted democracy_t,-0.13732384435715164,0.6346438886442346,coef
+6,7,First stage: Trade-weighted democracy,-1.1947836274029053,0.9588841324513715,coef
+6,7,First stage: Trade-weighted log GDP_t-1,0.4411784043673925,0.07018545484606645,coef
+6,7,Observations,906,NA,count
+6,7,Countries,124,NA,count
+6,7,First-stage R-squared,0.9548878557902647,NA,r2
+6,8,Log GDP per capita_t-1,-0.19840689687871077,0.1600957634432933,coef
+6,8,First stage: Trade-weighted log GDP_t-2,0.34120538021385016,0.09047840701635432,coef
+6,8,Observations,906,NA,count
+6,8,Countries,124,NA,count
+6,8,First-stage R-squared,0.9536690488463804,NA,r2
+6,9,Log GDP per capita_t-1,-0.21732359554548375,0.14892684945633872,coef
+6,9,First stage: Trade-weighted log GDP_t-1,0.5290238972627412,0.18007640399329822,coef
+6,9,First stage: Trade-weighted log GDP_t-2,-0.12728419687961456,0.20573204925886354,coef
+6,9,Observations,906,NA,count
+6,9,Countries,124,NA,count
+6,9,First-stage R-squared,0.9543543556885729,NA,r2

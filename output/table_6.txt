@@ -1,0 +1,18 @@
+Table 6 (2SLS, world income)      (1)      (2)      (3)      (4)      (5)      (6)      (7)      (8)      (9)
+Democracy_t-1                                   0.376             0.393    0.478                           
+                                              (0.051)           (0.057)  (0.094)                           
+Log GDP per capita_t-1        0.233    0.038    0.001   -0.213   -0.120   -0.133   -0.202   -0.198   -0.217
+                            (0.013)  (0.045)  (0.034)  (0.150)  (0.105)  (0.077)  (0.130)  (0.160)  (0.149)
+Trade-weighted democracy_t                                                         -0.137                  
+                                                                                  (0.635)                  
+First stage: Democracy_t-1                                        0.169                                    
+                                                                (0.063)                                    
+First stage: Trade-weighted democracy                                                         -1.195                  
+                                                                                  (0.959)                  
+First stage: Trade-weighted log GDP_t-1                               0.402    0.421             0.441             0.529
+                                                       (0.083)  (0.082)           (0.070)           (0.180)
+First stage: Trade-weighted log GDP_t-2                                                                   0.341   -0.127
+                                                                                           (0.090)  (0.206)
+Observations                    906      906      895      906      895      812      906      906      906
+Countries                       124      124      124      124      124      122      124      124      124
+First-stage R-squared                                     0.95     0.96              0.95     0.95     0.95

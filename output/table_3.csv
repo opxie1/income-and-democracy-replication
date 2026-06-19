@@ -1,0 +1,42 @@
+table,column,row,value,se,type
+3,1,Democracy_t-1,0.7488986210163641,0.03448773856824533,coef
+3,1,Log GDP per capita_t-1,0.053034867799482244,0.010227419972723263,coef
+3,1,Observations,854,NA,count
+3,1,Countries,136,NA,count
+3,1,R-squared,0.7724549781099226,NA,r2
+3,2,Democracy_t-1,0.4486069847546226,0.06320212671425413,coef
+3,2,Log GDP per capita_t-1,-0.0055954196711132005,0.03878785894045791,coef
+3,2,Observations,854,NA,count
+3,2,Countries,136,NA,count
+3,2,R-squared,0.8199956071568211,NA,r2
+3,3,Democracy_t-1,0.5817886745677929,0.12725082301873653,coef
+3,3,Log GDP per capita_t-1,-0.41258131256366126,0.16287459354873884,coef
+3,3,Observations,747,NA,count
+3,3,Countries,114,NA,count
+3,4,Democracy_t-1,0.5897910230548581,0.10617636049166006,coef
+3,4,Log GDP per capita_t-1,-0.35056387752400164,0.12722323171799338,coef
+3,4,Observations,747,NA,count
+3,4,Countries,114,NA,count
+3,5,Log GDP per capita_t-1,-0.011221933126406194,0.05463656518370193,coef
+3,5,Observations,880,NA,count
+3,5,Countries,136,NA,count
+3,5,R-squared,0.7747268952539909,NA,r2
+3,6,Democracy_t-1,1.1840749399291588e-91,NA,ftest_p
+3,6,Log GDP per capita_t-1,0.5318828309484295,NA,ftest_p
+3,6,Observations,3701,NA,count
+3,6,Countries,134,NA,count
+3,6,R-squared,0.9589140092796751,NA,r2
+3,7,Democracy_t-1,0.05987291388044002,0.0913077035737543,coef
+3,7,Log GDP per capita_t-1,0.0074049411483663756,0.07043981869213041,coef
+3,7,Observations,419,NA,count
+3,7,Countries,114,NA,count
+3,7,R-squared,0.7693436468201433,NA,r2
+3,8,Democracy_t-1,0.3088160604543133,0.1337685131176494,coef
+3,8,Log GDP per capita_t-1,-0.3680285185086074,0.189779668019306,coef
+3,8,Observations,302,NA,count
+3,8,Countries,107,NA,count
+3,9,Democracy_t-1,-0.5159982800627975,0.1651993601949901,coef
+3,9,Log GDP per capita_t-1,-0.12594448833753694,0.16390954616829845,coef
+3,9,Observations,168,NA,count
+3,9,Countries,100,NA,count
+3,9,R-squared,0.8676284359981602,NA,r2
