@@ -13,7 +13,7 @@ The paper asks whether countries that grow richer go on to become more democrati
 3. A handful of R packages:
 
 ```r
-install.packages(c("tidyverse", "arrow", "readxl", "estimatr", "here"))
+install.packages(c("tidyverse", "arrow", "readxl", "estimatr", "plm", "here"))
 ```
 
 ## Running it
@@ -33,3 +33,7 @@ It reads the data, rebuilds each table, and compares every value against the pap
 ## How close it is
 
 All 260 published numbers match, down to the last printed digit. The one exception is a single standard error in Table 3: the paper prints 0.127, which is a repeat of the number in the row directly above it, while the correct value (which three independent methods agree on) is 0.163. The code reports 0.163 and flags the difference.
+
+## Trying other methods
+
+Beyond reproducing the paper, the code re-estimates the income effect with a few alternative methods and lays them side by side. The table is in `output/alternatives.txt`, with a plain-language writeup in `docs/alternatives.md`. The short version: the methods that work by comparing changes within a country all agree with the paper that income has little or no positive effect on democracy, and the only way to bring a positive effect back is to use a method that leans on an extra assumption.
