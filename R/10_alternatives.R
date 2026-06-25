@@ -1,6 +1,14 @@
 source(here::here("R", "00_setup.R"))
 suppressPackageStartupMessages(library(plm))
 
+data("EmplUK", package = "plm")
+.bench <- pgmm(log(emp) ~ lag(log(emp), 1:2) + lag(log(wage), 0:1) + log(capital) +
+                 lag(log(output), 0:1) | lag(log(emp), 2:99),
+               data = EmplUK, effect = "twoways", model = "twostep")
+stopifnot(abs(coef(.bench)["lag(log(emp), 1:2)1"] - 0.4742) < 0.001,
+          abs(coef(.bench)["lag(log(emp), 1:2)2"] + 0.0530) < 0.001)
+cat("pgmm reproduces the Arellano-Bond (1991) benchmark.\n")
+
 ladder <- function(dep, inc, panel_label) {
   d <- add_lags(read_panel(FILE_P5), c(dep, inc, "year"), 1:2)
   d$Ldep  <- d[[paste0(dep, "_l1")]]
@@ -13,18 +21,16 @@ ladder <- function(dep, inc, panel_label) {
   s <- filter(d, sample == 1)
 
   rows <- list()
-  add <- function(estimator, income, income_se, dem, dem_se, n, countries,
-                  instruments = NA_real_, hansen_p = NA_real_, ar2_p = NA_real_) {
+  add <- function(estimator, income, income_se, dem, dem_se, countries,
+                  instruments = NA_real_, ar1_p = NA_real_, ar2_p = NA_real_, overid_p = NA_real_) {
     rows[[length(rows) + 1]] <<- tibble(panel = panel_label, estimator = estimator,
       income = as.numeric(income), income_se = as.numeric(income_se),
       dem = as.numeric(dem), dem_se = as.numeric(dem_se),
-      n = as.integer(n), countries = as.integer(countries),
-      instruments = as.numeric(instruments),
-      hansen_p = as.numeric(hansen_p), ar2_p = as.numeric(ar2_p))
+      countries = as.integer(countries), instruments = as.numeric(instruments),
+      ar1_p = as.numeric(ar1_p), ar2_p = as.numeric(ar2_p), overid_p = as.numeric(overid_p))
   }
   reg_row <- function(label, m, dem_t, inc_t) {
-    add(label, ce(m, inc_t)["est"], ce(m, inc_t)["se"], ce(m, dem_t)["est"], ce(m, dem_t)["se"],
-        mod_nobs(m), mod_nc(m))
+    add(label, ce(m, inc_t)["est"], ce(m, inc_t)["se"], ce(m, dem_t)["est"], ce(m, dem_t)["se"], mod_nc(m))
   }
 
   reg_row("Pooled OLS",        fit_ols(s, dep, c("Ldep", "Linc"), FALSE), "Ldep", "Linc")
@@ -35,20 +41,22 @@ ladder <- function(dep, inc, panel_label) {
   est <- complete_on(s, c("y", "dLdep", "dLinc", "L2inc"))
   abr <- fit_abgmm(d, est, dep_level = dep, endog = c("dLdep", "dLinc"), inst_extra = "L2inc")
   add("Arellano-Bond, difference GMM (replication)", ce(abr, "dLinc")["est"], ce(abr, "dLinc")["se"],
-      ce(abr, "dLdep")["est"], ce(abr, "dLdep")["se"], abr$nobs, abr$n_country, abr$n_inst)
+      ce(abr, "dLdep")["est"], ce(abr, "dLdep")["se"], abr$n_country, abr$n_inst)
 
   pd <- pdata.frame(s[stats::complete.cases(s[, c(dep, inc)]), ], index = c("code", "year_numeric"))
-  f <- as.formula(sprintf("%s ~ lag(%s, 1) + lag(%s, 1) | lag(%s, 2:99) + lag(%s, 2:99)",
-                          dep, dep, inc, dep, inc))
   gmm_row <- function(label, model, transformation) {
-    m <- pgmm(f, data = pd, effect = "twoways", model = model, transformation = transformation)
+    f <- as.formula(sprintf("%s ~ lag(%s, 1) + lag(%s, 1) | lag(%s, 2:4) + lag(%s, 2:4)",
+                            dep, dep, inc, dep, inc))
+    m <- pgmm(f, data = pd, effect = "twoways", model = model,
+              transformation = transformation, collapse = TRUE)
     co <- summary(m, robust = TRUE)$coefficients
     ir <- grep(paste0("lag\\(", inc), rownames(co))[1]
     dr <- grep(paste0("lag\\(", dep), rownames(co))[1]
     add(label, co[ir, 1], co[ir, 2], co[dr, 1], co[dr, 2],
-        sum(lengths(m$residuals)), length(m$residuals), dim(m$W[[1]])[2],
-        tryCatch(sargan(m)$p.value, error = function(e) NA_real_),
-        tryCatch(mtest(m, order = 2)$p.value, error = function(e) NA_real_))
+        length(m$residuals), dim(m$W[[1]])[2],
+        tryCatch(mtest(m, 1)$p.value, error = function(e) NA_real_),
+        tryCatch(mtest(m, 2)$p.value, error = function(e) NA_real_),
+        tryCatch(sargan(m)$p.value, error = function(e) NA_real_))
   }
   gmm_row("Arellano-Bond, difference GMM (one-step)", "onestep", "d")
   gmm_row("Arellano-Bond, difference GMM (two-step)", "twostep", "d")
@@ -62,37 +70,38 @@ alt <- bind_rows(ladder("fhpolrigaug", "lrgdpch", "Freedom House"),
                  ladder("polity4", "lrgdpch", "Polity"))
 write_csv(alt, file.path(PATH_OUTPUT, "alternatives.csv"))
 
-num <- function(x, d = 3) ifelse(is.na(x), "", sprintf(paste0("%.", d, "f"), x))
+num  <- function(x, d = 3) ifelse(is.na(x), "", sprintf(paste0("%.", d, "f"), x))
 cell <- function(b, se) ifelse(is.na(b), "", sprintf("%s (%s)", num(b), num(se)))
+
 txt <- c()
 for (pl in unique(alt$panel)) {
   txt <- c(txt, paste0("== ", pl, " =="),
-           sprintf("%-44s %-16s %-16s %5s %5s %8s %6s",
-                   "Estimator", "Income (SE)", "Democracy (SE)", "Ctry", "Inst", "Hansen p", "AR2 p"))
-  sub <- filter(alt, panel == pl)
-  for (i in seq_len(nrow(sub))) {
-    r <- sub[i, ]
-    txt <- c(txt, sprintf("%-44s %-16s %-16s %5d %5s %8s %6s",
-             r$estimator, cell(r$income, r$income_se), cell(r$dem, r$dem_se),
-             r$countries,
+           sprintf("%-44s %-16s %-16s %5s %5s %6s %6s %7s",
+                   "Estimator", "Income (SE)", "Democracy (SE)", "Ctry", "Inst", "AR1 p", "AR2 p", "Overid"))
+  for (i in which(alt$panel == pl)) {
+    r <- alt[i, ]
+    txt <- c(txt, sprintf("%-44s %-16s %-16s %5d %5s %6s %6s %7s",
+             r$estimator, cell(r$income, r$income_se), cell(r$dem, r$dem_se), r$countries,
              ifelse(is.na(r$instruments), "", as.character(as.integer(r$instruments))),
-             ifelse(is.na(r$hansen_p), "", num(r$hansen_p, 2)),
-             ifelse(is.na(r$ar2_p), "", num(r$ar2_p, 2))))
+             ifelse(is.na(r$ar1_p), "", num(r$ar1_p, 2)),
+             ifelse(is.na(r$ar2_p), "", num(r$ar2_p, 2)),
+             ifelse(is.na(r$overid_p), "", num(r$overid_p, 2))))
   }
   txt <- c(txt, "")
 }
 writeLines(txt, file.path(PATH_OUTPUT, "alternatives.txt"))
 
 md_tab <- function(df) {
-  out <- c("| Estimator | Income (SE) | Democracy (SE) | Countries | Instruments | Hansen p | AR(2) p |",
-           "|---|---|---|---|---|---|---|")
+  out <- c("| Estimator | Income (SE) | Democracy (SE) | Countries | Instruments | AR(1) p | AR(2) p | Overid p |",
+           "|---|---|---|---|---|---|---|---|")
   for (i in seq_len(nrow(df))) {
     r <- df[i, ]
-    out <- c(out, sprintf("| %s | %s | %s | %d | %s | %s | %s |",
+    out <- c(out, sprintf("| %s | %s | %s | %d | %s | %s | %s | %s |",
       r$estimator, cell(r$income, r$income_se), cell(r$dem, r$dem_se), r$countries,
       ifelse(is.na(r$instruments), "", as.character(as.integer(r$instruments))),
-      ifelse(is.na(r$hansen_p), "", num(r$hansen_p, 2)),
-      ifelse(is.na(r$ar2_p), "", num(r$ar2_p, 2))))
+      ifelse(is.na(r$ar1_p), "", num(r$ar1_p, 2)),
+      ifelse(is.na(r$ar2_p), "", num(r$ar2_p, 2)),
+      ifelse(is.na(r$overid_p), "", num(r$overid_p, 2))))
   }
   out
 }
@@ -115,15 +124,24 @@ md <- c(
 "  a short panel with a lagged outcome it still carries a known bias.",
 "- Anderson-Hsiao: looks at changes rather than levels to cancel the fixed",
 "  differences, then uses values from two periods earlier as instruments.",
-"- Arellano-Bond (difference GMM): the same change-based idea, using the whole",
-"  set of earlier values as instruments at once. This is the method in the",
-"  paper's own GMM columns.",
+"- Arellano-Bond (difference GMM): the same change-based idea, using a set of",
+"  earlier values as instruments. This is the method in the paper's GMM columns.",
 "- Blundell-Bond (system GMM): adds a second set of conditions, in levels, on top",
 "  of Arellano-Bond. It is more precise when those conditions hold, but they are",
 "  an extra assumption.",
 "",
 "\"One-step\" and \"two-step\" are two ways of weighting the GMM estimators; the",
-"two-step standard errors include the Windmeijer small-sample correction.",
+"two-step standard errors include the Windmeijer small-sample correction. The GMM",
+"rows use a deliberately small instrument set (collapsed, lags two to four) so the",
+"instrument count stays low and the tests below stay meaningful.",
+"",
+"## How to read the diagnostics",
+"",
+"- AR(1) p should be small and AR(2) p should be large: that is the pattern you",
+"  want, and it holds throughout.",
+"- The overidentification p (a Sargan test for one-step, a Hansen test for",
+"  two-step) should not be small; a small value warns that the instruments may not",
+"  all be valid.",
 "",
 "## Results", "")
 for (pl in unique(alt$panel)) md <- c(md, paste0("### ", pl), "", md_tab(filter(alt, panel == pl)), "")
@@ -132,24 +150,32 @@ md <- c(md,
 "",
 "The change-based methods agree. Once fixed differences and persistence are",
 "accounted for, the effect of income on democracy is small, and in the",
-"instrumental-variables estimates it is negative rather than positive. That is",
-"the paper's central finding, and it holds across fixed effects, Anderson-Hsiao,",
-"and Arellano-Bond. The two Arellano-Bond implementations here, the hand-built",
-"one used for the replication and the one from the plm package, land in the same",
-"place, which is a useful check that the replication's estimator is doing what it",
-"should.",
+"instrumental-variables estimates it is negative rather than positive. That is the",
+"paper's central finding, and it holds across fixed effects, Anderson-Hsiao, and",
+"Arellano-Bond. The two Arellano-Bond implementations here, the hand-built one",
+"used for the replication and the one from the plm package, land in the same",
+"place.",
 "",
 "System GMM is the exception. Adding the level conditions pushes the income",
-"coefficient to a small positive and statistically significant value for both",
-"democracy measures. That looks like a reversal, but it rests entirely on the",
-"extra assumption behind those level conditions, which is the kind of assumption",
-"the paper is wary of. The overidentification (Hansen) test is borderline for",
-"several of the one-step GMM runs, and the instrument counts are high, so the GMM",
-"numbers deserve caution.",
+"coefficient to a small positive, statistically significant value for both",
+"democracy measures. That looks like a reversal, but it leans entirely on those",
+"extra level conditions, and the data do not fully support them: the",
+"overidentification test is only borderline for the Freedom House measure and is",
+"rejected for Polity. So the positive system-GMM estimate is shaky rather than a",
+"clean reversal, and it rests on exactly the kind of assumption the paper is wary",
+"of.",
 "",
 "So the paper's conclusion holds up under the change-based alternatives. The only",
 "way to bring back a positive income effect is to assume the extra system-GMM",
-"conditions hold.")
+"conditions hold.",
+"",
+"## Checks",
+"",
+"Two independent checks back these numbers. First, the GMM engine (plm's pgmm)",
+"reproduces the textbook Arellano-Bond (1991) employment results exactly; the run",
+"stops if it ever fails to. Second, a separate package, pdynmc, was used to",
+"re-estimate the same models (see R/11_crosscheck.R); it gives the same picture,",
+"with income negative under difference GMM and positive under system GMM.")
 writeLines(md, file.path(PATH_DOCS, "alternatives.md"))
 
 cat("Alternatives written. Income coefficient by estimator:\n")
