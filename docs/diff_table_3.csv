@@ -10,7 +10,7 @@ table,panel,column,row,type,mine,pub,diff_val,mine_se,pub_se,diff_se,matched,not
 3,,2,Countries,count,136,136,0,NA,NA,NA,TRUE,NA
 3,,2,R-squared,r2,0.8199956071568211,0.82,4.3928431788797795e-6,NA,NA,NA,TRUE,NA
 3,,3,Democracy_t-1,coef,0.5817886745677929,0.582,2.1132543220703237e-4,0.12725082301873653,0.127,2.5082301873652346e-4,TRUE,NA
-3,,3,Log GDP per capita_t-1,coef,-0.41258131256366126,-0.413,4.186874363387161e-4,0.16287459354873884,0.127,0.03587459354873884,FALSE,paper misprints SE as 0.127 (duplicate of the democracy SE above); all standard methods give 0.163
+3,,3,Log GDP per capita_t-1,coef,-0.41258131256366126,-0.413,4.186874363387161e-4,0.16287459354873884,0.127,0.03587459354873884,FALSE,It is a copy of the standard error one row above. Every standard method gives 0.163.
 3,,3,Observations,count,747,747,0,NA,NA,NA,TRUE,NA
 3,,3,Countries,count,114,114,0,NA,NA,NA,TRUE,NA
 3,,4,Democracy_t-1,coef,0.5897910230548581,0.59,2.0897694514188103e-4,0.10617636049166006,0.106,1.763604916600603e-4,TRUE,NA

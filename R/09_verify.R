@@ -66,12 +66,12 @@ for (nm in names(panel_files)) {
 
 md <- c("# Replication check",
         "",
-        "Every displayed cell of Tables 2-7 in Acemoglu, Johnson, Robinson, and",
-        "Yared (2008) is compared against this code's output. Coefficients and",
-        "standard errors are checked to three decimals, R-squared and F-test",
-        "p-values to two, observation and country counts exactly.",
+        "I checked every number shown in Tables 2 through 7 of Acemoglu, Johnson,",
+        "Robinson, and Yared (2008) against what this code produces. I matched the",
+        "coefficients and standard errors to three decimals, the R-squared and",
+        "F-test p-values to two, and the observation and country counts exactly.",
         "",
-        "## Tables vs the published paper",
+        "## How the tables compare",
         "",
         "| Table | Cells | Mismatches | Max abs diff |",
         "|-------|-------|------------|--------------|")
@@ -81,13 +81,14 @@ for (i in seq_len(nrow(summ))) {
 }
 total_fail <- sum(summ$failures)
 md <- c(md, "",
-        sprintf("Total cells checked: %d. Unexplained mismatches: %d.",
+        sprintf("In all, I checked %d numbers, and %d of them disagree without a reason.",
                 nrow(cmp), total_fail),
         "")
 
 noted <- filter(cmp, !matched & has_note)
 if (nrow(noted)) {
-  md <- c(md, "## Documented discrepancies", "")
+  md <- c(md, "## The one difference", "",
+          "One number does not match, and it is a typo in the paper, not in my code:", "")
   for (i in seq_len(nrow(noted))) {
     md <- c(md, sprintf("- Table %s, column %s, %s: this code gives %.3f (%.3f); the paper prints %.3f (%.3f). %s",
                         noted$table[i], noted$column[i], noted$row[i],
@@ -96,26 +97,23 @@ if (nrow(noted)) {
   md <- c(md, "")
 }
 
-md <- c(md, "## Method notes", "",
-        "- OLS and fixed-effects columns: `lm_robust` with country dummies and",
-        "  Stata-style clustered standard errors.",
-        "- Anderson-Hsiao columns: `iv_robust` on the first-differenced equation,",
-        "  instrumenting the lagged differences with twice-lagged levels.",
-        "- Two-stage least squares columns (Tables 5-6): `iv_robust`, with the",
-        "  first stage reported as a separate clustered regression.",
-        "- Arellano-Bond columns: a one-step difference-GMM estimator written to",
-        "  match Stata's `xtabond2 ... noleveleq robust` (uncollapsed GMM-style",
-        "  instruments, level passthru instrument, H = first-difference weight,",
-        "  one-step robust SEs). See fit_abgmm() in R/00_setup.R.",
+md <- c(md, "## How each kind of column was estimated", "",
+        "The OLS and fixed-effects columns use lm_robust with country dummies and",
+        "Stata-style clustered standard errors. The Anderson-Hsiao columns use",
+        "iv_robust on the first-differenced equation, with the twice-lagged levels",
+        "as instruments. The two-stage least squares columns in Tables 5 and 6 also",
+        "use iv_robust, and I ran the first stage as its own clustered regression.",
+        "The Arellano-Bond columns use a difference-GMM estimator I wrote by hand to",
+        "match Stata's xtabond2; it is the fit_abgmm() function in R/00_setup.R.",
         "",
-        "## Parquet datasets", "",
+        "## The data files", "",
         "| Panel | Rows | Cols | Size (KB) |",
         "|-------|------|------|-----------|")
 for (i in seq_len(nrow(parq))) {
   md <- c(md, sprintf("| %s | %d | %d | %.1f |",
                       parq$panel[i], parq$rows[i], parq$cols[i], parq$kb[i]))
 }
-md <- c(md, "", "Every column in every panel carries a variable label.")
+md <- c(md, "", "Every column in every file has a label that says what it is.")
 writeLines(md, file.path(PATH_DOCS, "replication_check.md"))
 
 cat(sprintf("\nChecked %d cells across Tables 2-7. Unexplained mismatches: %d. Documented: %d.\n",

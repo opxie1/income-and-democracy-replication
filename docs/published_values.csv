@@ -50,7 +50,7 @@ table,panel,column,row,type,value,se,note
 3,,9,Democracy_t-1,coef,-0.516,0.165,
 3,,1,Log GDP per capita_t-1,coef,0.053,0.010,
 3,,2,Log GDP per capita_t-1,coef,-0.006,0.039,
-3,,3,Log GDP per capita_t-1,coef,-0.413,0.127,paper misprints SE as 0.127 (duplicate of the democracy SE above); all standard methods give 0.163
+3,,3,Log GDP per capita_t-1,coef,-0.413,0.127,It is a copy of the standard error one row above. Every standard method gives 0.163.
 3,,4,Log GDP per capita_t-1,coef,-0.351,0.127,
 3,,5,Log GDP per capita_t-1,coef,-0.011,0.055,
 3,,6,Log GDP per capita_t-1,ftest_p,0.53,,
