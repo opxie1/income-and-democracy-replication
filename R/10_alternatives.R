@@ -43,17 +43,14 @@ ladder <- function(dep, inc, panel_label) {
   add("Arellano-Bond, difference GMM (replication)", ce(abr, "dLinc")["est"], ce(abr, "dLinc")["se"],
       ce(abr, "dLdep")["est"], ce(abr, "dLdep")["se"], abr$n_country, abr$n_inst)
 
-  pd <- pdata.frame(s[stats::complete.cases(s[, c(dep, inc)]), ], index = c("code", "year_numeric"))
+  pd <- gmm_panel(s, dep, inc)
   gmm_row <- function(label, model, transformation) {
-    f <- as.formula(sprintf("%s ~ lag(%s, 1) + lag(%s, 1) | lag(%s, 2:4) + lag(%s, 2:4)",
-                            dep, dep, inc, dep, inc))
-    m <- pgmm(f, data = pd, effect = "twoways", model = model,
-              transformation = transformation, collapse = TRUE)
-    co <- summary(m, robust = TRUE)$coefficients
-    ir <- grep(paste0("lag\\(", inc), rownames(co))[1]
-    dr <- grep(paste0("lag\\(", dep), rownames(co))[1]
-    add(label, co[ir, 1], co[ir, 2], co[dr, 1], co[dr, 2],
-        length(m$residuals), dim(m$W[[1]])[2],
+    m <- pgmm(gmm_formula(dep, inc, "2:4"), data = pd, effect = "twoways",
+              model = model, transformation = transformation, collapse = TRUE)
+    co <- pgmm_co(m)
+    ic <- co_row(co, inc); dc <- co_row(co, dep)
+    add(label, ic[1], ic[2], dc[1], dc[2],
+        pgmm_countries(m), ncol(m$W[[1]]),
         tryCatch(mtest(m, 1)$p.value, error = function(e) NA_real_),
         tryCatch(mtest(m, 2)$p.value, error = function(e) NA_real_),
         tryCatch(sargan(m)$p.value, error = function(e) NA_real_))
@@ -66,11 +63,9 @@ ladder <- function(dep, inc, panel_label) {
   bind_rows(rows)
 }
 
-alt <- bind_rows(ladder("fhpolrigaug", "lrgdpch", "Freedom House"),
-                 ladder("polity4", "lrgdpch", "Polity"))
+alt <- bind_rows(lapply(MEASURES, function(ms) ladder(ms$dep, ms$inc, ms$label)))
 write_csv(alt, file.path(PATH_OUTPUT, "alternatives.csv"))
 
-num  <- function(x, d = 3) ifelse(is.na(x), "", sprintf(paste0("%.", d, "f"), x))
 cell <- function(b, se) ifelse(is.na(b), "", sprintf("%s (%s)", num(b), num(se)))
 
 txt <- c()
@@ -140,9 +135,8 @@ md <- c(
 "",
 "- The AR(1) p should be small and the AR(2) p should be large. That is the",
 "  pattern you want, and it holds throughout.",
-"- The overidentification p (a Sargan test for one-step, a Hansen test for",
-"  two-step) should not be small. A small value warns that the instruments may",
-"  not all be valid.",
+"- The overidentification p (Hansen's J test) should not be small. A small",
+"  value warns that the instruments may not all be valid.",
 "",
 "## Results", "")
 for (pl in unique(alt$panel)) md <- c(md, paste0("### ", pl), "", md_tab(filter(alt, panel == pl)), "")
@@ -159,11 +153,13 @@ md <- c(md,
 "",
 "System GMM is the exception. Adding the level conditions pushes the income",
 "coefficient to a small positive, statistically significant value for both",
-"democracy measures. That looks like a reversal, but it leans entirely on those",
-"extra level conditions, and the data do not fully back them up. The",
-"overidentification test is only borderline for the Freedom House measure, and it",
-"is rejected for Polity. So the positive system-GMM estimate is shaky, not a clean",
-"reversal, and it rests on the kind of assumption the paper is wary of.",
+"democracy measures. That reversal leans entirely on the extra conditions, and",
+"the two measures treat them differently. For Polity the overidentification",
+"test rejects them outright. For Freedom House the test raises no objection, so",
+"there the positive estimate stands or falls with an assumption the paper",
+"argues democracies in transition are unlikely to satisfy. Either way, the",
+"estimates built on changes alone are all small or negative; the positive,",
+"significant number appears only once the added conditions come in.",
 "",
 "So the paper's conclusion holds up under the change-based methods. The only way",
 "to get a positive income effect back is to assume the extra system-GMM conditions",
@@ -172,10 +168,12 @@ md <- c(md,
 "## Checks",
 "",
 "I checked these numbers two ways. The GMM engine (plm's pgmm) reproduces the",
-"textbook Arellano-Bond (1991) employment results exactly, and the run stops if it",
-"ever fails to. A second package, pdynmc, re-estimates the same models (see",
-"R/11_crosscheck.R) and gives the same picture, with income negative under",
-"difference GMM and positive under system GMM.")
+"textbook Arellano-Bond (1991) employment results exactly, and the run stops if",
+"it ever fails to. Separately, R/11_crosscheck.R runs difference and system GMM",
+"through an independent package, pdynmc, with its own uncollapsed instrument",
+"set, and it stops with an error unless it finds the same picture as the tables",
+"above: income negative under difference GMM and positive under system GMM.",
+"That script needs the pdynmc package; run it with Rscript R/11_crosscheck.R.")
 writeLines(md, file.path(PATH_DOCS, "alternatives.md"))
 
 cat("Alternatives written. Income coefficient by estimator:\n")

@@ -13,7 +13,7 @@ The paper asks whether countries that grow richer end up more democratic. I rebu
 3. A few R packages:
 
 ```r
-install.packages(c("tidyverse", "arrow", "readxl", "estimatr", "plm", "here"))
+install.packages(c("tidyverse", "arrow", "readxl", "estimatr", "plm", "here", "MASS"))
 ```
 
 ## Running it
@@ -22,7 +22,7 @@ install.packages(c("tidyverse", "arrow", "readxl", "estimatr", "plm", "here"))
 Rscript R/run_all.R
 ```
 
-This reads the data, rebuilds each table, and compares every value to the paper. The whole run takes under a minute, and it prints how many numbers matched at the end. On Windows, R sometimes shows an error code on the last line. That is harmless. It comes from the `arrow` package closing, and the files are already saved by then.
+This reads the data, rebuilds each table, and compares every value to the paper. The whole run takes under a minute, and it prints how many numbers matched. On Windows, R sometimes shows an error code on the last line. That is harmless. It comes from the `arrow` package closing, and the files are already saved by then.
 
 ## What you get
 
@@ -32,10 +32,14 @@ This reads the data, rebuilds each table, and compares every value to the paper.
 
 ## How close it is
 
-All 260 published numbers match, down to the last printed digit. There is one exception. In Table 3, the paper prints a standard error of 0.127, but that is just a copy of the number in the row right above it. The correct value is 0.163, which three different methods all give, so the code reports 0.163 and points out the difference.
+Of the 260 published numbers, 259 match down to the last printed digit. The one that does not is a misprint in the paper: in Table 3 it prints a standard error of 0.127, a copy of the number in the row right above it. The correct value is 0.163, which three different methods all give, so the code reports 0.163 and points out the difference.
 
 ## Trying other methods
 
-After the replication, I re-estimated the effect of income on democracy a few other ways and put them next to each other. The table is in `output/alternatives.txt`, and a plain writeup is in `docs/alternatives.md`. Here is what I found. The methods that work by comparing changes within a country all agree with the paper that income has little or no positive effect on democracy. The only method that gives a positive effect leans on an extra assumption, and once you test that assumption it does not hold up.
+After the replication, I re-estimated the effect of income on democracy a few other ways and put them next to each other. The table is in `output/alternatives.txt`, and a plain writeup is in `docs/alternatives.md`. Here is what I found. The methods that work by comparing changes within a country all agree with the paper that income has little or no positive effect on democracy. The only method that gives a positive effect leans on an extra assumption. The data reject that assumption outright for one democracy measure, and for the other the positive result still hangs entirely on it.
 
-I checked these estimates two ways. The code reproduces a standard textbook result exactly, and it stops if it ever fails to. A second package gives the same answer, and that check is in `R/11_crosscheck.R`, which needs the `pdynmc` package.
+I checked these estimates two ways. The code reproduces a standard textbook result exactly, and it stops if it ever fails to. A second package gives the same answer, and that check is in `R/11_crosscheck.R`, which needs the `pdynmc` package. Run it with `Rscript R/11_crosscheck.R`.
+
+## Pushing on the instruments
+
+These GMM methods let you use many past values as instruments, and using too many is a known trap. I re-ran both GMM estimators with the instruments left uncollapsed, building them from longer and longer lags, to see how fast the estimates decay toward the naive ones. With a handful of lags the estimates look like the paper's. As the instrument count grows they drift toward the ordinary estimates, quickly for one democracy measure and only part of the way for the other. The table is in `output/instruments.txt`, the figure in `output/instruments.png`, and the writeup in `docs/instruments.md`.

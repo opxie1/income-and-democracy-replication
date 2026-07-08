@@ -31,9 +31,8 @@ instrument set: collapsed, and limited to lags two through four.
 
 - The AR(1) p should be small and the AR(2) p should be large. That is the
   pattern you want, and it holds throughout.
-- The overidentification p (a Sargan test for one-step, a Hansen test for
-  two-step) should not be small. A small value warns that the instruments may
-  not all be valid.
+- The overidentification p (Hansen's J test) should not be small. A small
+  value warns that the instruments may not all be valid.
 
 ## Results
 
@@ -45,10 +44,10 @@ instrument set: collapsed, and limited to lags two through four.
 | Fixed effects | 0.010 (0.035) | 0.379 (0.051) | 150 |  |  |  |  |
 | Anderson-Hsiao IV | -0.104 (0.107) | 0.469 (0.100) | 127 |  |  |  |  |
 | Arellano-Bond, difference GMM (replication) | -0.129 (0.076) | 0.489 (0.085) | 127 | 55 |  |  |  |
-| Arellano-Bond, difference GMM (one-step) | -0.189 (0.133) | 0.484 (0.091) | 152 | 13 | 0.00 | 0.75 | 0.21 |
-| Arellano-Bond, difference GMM (two-step) | -0.133 (0.127) | 0.514 (0.094) | 152 | 13 | 0.00 | 0.69 | 0.37 |
-| Blundell-Bond, system GMM (one-step) | 0.099 (0.024) | 0.583 (0.068) | 152 | 16 | 0.00 | 0.51 | 0.18 |
-| Blundell-Bond, system GMM (two-step) | 0.100 (0.024) | 0.599 (0.062) | 152 | 16 | 0.00 | 0.51 | 0.30 |
+| Arellano-Bond, difference GMM (one-step) | -0.189 (0.133) | 0.484 (0.091) | 124 | 13 | 0.00 | 0.75 | 0.21 |
+| Arellano-Bond, difference GMM (two-step) | -0.133 (0.127) | 0.514 (0.094) | 124 | 13 | 0.00 | 0.69 | 0.37 |
+| Blundell-Bond, system GMM (one-step) | 0.099 (0.024) | 0.583 (0.068) | 133 | 16 | 0.00 | 0.51 | 0.18 |
+| Blundell-Bond, system GMM (two-step) | 0.100 (0.024) | 0.599 (0.062) | 133 | 16 | 0.00 | 0.51 | 0.30 |
 
 ### Polity
 
@@ -58,10 +57,10 @@ instrument set: collapsed, and limited to lags two through four.
 | Fixed effects | -0.006 (0.039) | 0.449 (0.063) | 136 |  |  |  |  |
 | Anderson-Hsiao IV | -0.413 (0.163) | 0.582 (0.127) | 114 |  |  |  |  |
 | Arellano-Bond, difference GMM (replication) | -0.351 (0.127) | 0.590 (0.106) | 114 | 55 |  |  |  |
-| Arellano-Bond, difference GMM (one-step) | -0.472 (0.213) | 0.627 (0.132) | 138 | 13 | 0.00 | 0.26 | 0.41 |
-| Arellano-Bond, difference GMM (two-step) | -0.480 (0.211) | 0.646 (0.137) | 138 | 13 | 0.00 | 0.28 | 0.51 |
-| Blundell-Bond, system GMM (one-step) | 0.073 (0.022) | 0.703 (0.088) | 138 | 16 | 0.00 | 0.26 | 0.00 |
-| Blundell-Bond, system GMM (two-step) | 0.055 (0.023) | 0.834 (0.075) | 138 | 16 | 0.00 | 0.26 | 0.01 |
+| Arellano-Bond, difference GMM (one-step) | -0.472 (0.213) | 0.627 (0.132) | 111 | 13 | 0.00 | 0.26 | 0.41 |
+| Arellano-Bond, difference GMM (two-step) | -0.480 (0.211) | 0.646 (0.137) | 111 | 13 | 0.00 | 0.28 | 0.51 |
+| Blundell-Bond, system GMM (one-step) | 0.073 (0.022) | 0.703 (0.088) | 120 | 16 | 0.00 | 0.26 | 0.00 |
+| Blundell-Bond, system GMM (two-step) | 0.055 (0.023) | 0.834 (0.075) | 120 | 16 | 0.00 | 0.26 | 0.01 |
 
 ## What the comparison shows
 
@@ -75,11 +74,13 @@ place.
 
 System GMM is the exception. Adding the level conditions pushes the income
 coefficient to a small positive, statistically significant value for both
-democracy measures. That looks like a reversal, but it leans entirely on those
-extra level conditions, and the data do not fully back them up. The
-overidentification test is only borderline for the Freedom House measure, and it
-is rejected for Polity. So the positive system-GMM estimate is shaky, not a clean
-reversal, and it rests on the kind of assumption the paper is wary of.
+democracy measures. That reversal leans entirely on the extra conditions, and
+the two measures treat them differently. For Polity the overidentification
+test rejects them outright. For Freedom House the test raises no objection, so
+there the positive estimate stands or falls with an assumption the paper
+argues democracies in transition are unlikely to satisfy. Either way, the
+estimates built on changes alone are all small or negative; the positive,
+significant number appears only once the added conditions come in.
 
 So the paper's conclusion holds up under the change-based methods. The only way
 to get a positive income effect back is to assume the extra system-GMM conditions
@@ -88,7 +89,9 @@ hold.
 ## Checks
 
 I checked these numbers two ways. The GMM engine (plm's pgmm) reproduces the
-textbook Arellano-Bond (1991) employment results exactly, and the run stops if it
-ever fails to. A second package, pdynmc, re-estimates the same models (see
-R/11_crosscheck.R) and gives the same picture, with income negative under
-difference GMM and positive under system GMM.
+textbook Arellano-Bond (1991) employment results exactly, and the run stops if
+it ever fails to. Separately, R/11_crosscheck.R runs difference and system GMM
+through an independent package, pdynmc, with its own uncollapsed instrument
+set, and it stops with an error unless it finds the same picture as the tables
+above: income negative under difference GMM and positive under system GMM.
+That script needs the pdynmc package; run it with Rscript R/11_crosscheck.R.

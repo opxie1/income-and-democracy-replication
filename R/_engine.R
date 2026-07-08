@@ -13,53 +13,46 @@
 }
 
 build_dynamic_table <- function(dep) {
-  rows <- list()
-  push <- function(column, row, value, se = NA_real_, type = "coef") {
-    rows[[length(rows) + 1]] <<- tibble(column = column, row = row,
-      value = as.numeric(value), se = as.numeric(se), type = type)
-  }
+  tb <- table_builder(dep)
+  push <- tb$push
   coefcol <- function(col, m, dem = NULL, inc = NULL) {
-    if (!is.null(dem)) push(col, "Democracy_t-1",         ce(m, dem)["est"], ce(m, dem)["se"])
-    if (!is.null(inc)) push(col, "Log GDP per capita_t-1", ce(m, inc)["est"], ce(m, inc)["se"])
+    if (!is.null(dem)) push(col, LBL$dem, ce(m, dem)["est"], ce(m, dem)["se"])
+    if (!is.null(inc)) push(col, LBL$inc, ce(m, inc)["est"], ce(m, inc)["se"])
   }
-  stats <- function(col, m, r2 = TRUE) {
-    push(col, "Observations", mod_nobs(m), type = "count")
-    push(col, "Countries",    mod_nc(m),   type = "count")
-    if (r2) push(col, "R-squared", mod_r2(m), type = "r2")
-  }
+  stats_col <- function(col, m, r2 = TRUE) tb$counts(col, m, r2 = r2)
 
   d5 <- .prep_dynamic(FILE_P5, dep); s5 <- filter(d5, sample == 1)
 
-  m1 <- fit_ols(s5, dep, c("Ldep", "Linc"), country_fe = FALSE); coefcol(1, m1, "Ldep", "Linc"); stats(1, m1)
-  m2 <- fit_ols(s5, dep, c("Ldep", "Linc"), country_fe = TRUE);  coefcol(2, m2, "Ldep", "Linc"); stats(2, m2)
+  m1 <- fit_ols(s5, dep, c("Ldep", "Linc"), country_fe = FALSE); coefcol(1, m1, "Ldep", "Linc"); stats_col(1, m1)
+  m2 <- fit_ols(s5, dep, c("Ldep", "Linc"), country_fe = TRUE);  coefcol(2, m2, "Ldep", "Linc"); stats_col(2, m2)
   m3 <- fit_iv(s5, "y", endog = c("dLdep", "dLinc"), inst = c("L2dep", "L2inc"),
-               country_fe = FALSE);                              coefcol(3, m3, "dLdep", "dLinc"); stats(3, m3, r2 = FALSE)
+               country_fe = FALSE);                              coefcol(3, m3, "dLdep", "dLinc"); stats_col(3, m3, r2 = FALSE)
   est4 <- complete_on(s5, c("y", "dLdep", "dLinc", "L2inc"))
   m4 <- fit_abgmm(d5, est4, dep_level = dep, endog = c("dLdep", "dLinc"), inst_extra = "L2inc")
-  coefcol(4, m4, "dLdep", "dLinc"); stats(4, m4, r2 = FALSE)
-  m5 <- fit_ols(s5, dep, c("Linc"), country_fe = TRUE);          coefcol(5, m5, inc = "Linc"); stats(5, m5)
+  coefcol(4, m4, "dLdep", "dLinc"); stats_col(4, m4, r2 = FALSE)
+  m5 <- fit_ols(s5, dep, c("Linc"), country_fe = TRUE);          coefcol(5, m5, inc = "Linc"); stats_col(5, m5)
 
   da <- add_lags(read_panel(FILE_PA), c(dep, "lrgdpch"), 1:5)
   deplags <- paste0(dep, "_l", 1:5); inclags <- paste0("lrgdpch_l", 1:5)
   sa <- filter(da, sample == 1)
   m6 <- fit_ols(sa, dep, c(deplags, inclags), country_fe = TRUE)
-  push(6, "Democracy_t-1",          wald_p(m6, deplags, mod_nc(m6)), type = "ftest_p")
-  push(6, "Log GDP per capita_t-1", wald_p(m6, inclags, mod_nc(m6)), type = "ftest_p")
-  stats(6, m6)
+  push(6, LBL$dem, wald_p(m6, deplags, mod_nc(m6)), type = "ftest_p")
+  push(6, LBL$inc, wald_p(m6, inclags, mod_nc(m6)), type = "ftest_p")
+  stats_col(6, m6)
 
   d10 <- .prep_dynamic(FILE_P10, dep); s10 <- filter(d10, sample == 1)
-  m7 <- fit_ols(s10, dep, c("Ldep", "Linc"), country_fe = TRUE); coefcol(7, m7, "Ldep", "Linc"); stats(7, m7)
+  m7 <- fit_ols(s10, dep, c("Ldep", "Linc"), country_fe = TRUE); coefcol(7, m7, "Ldep", "Linc"); stats_col(7, m7)
   est8 <- complete_on(s10, c("y", "dLdep", "dLinc", "L2inc"))
   m8 <- fit_abgmm(d10, est8, dep_level = dep, endog = c("dLdep", "dLinc"), inst_extra = "L2inc")
-  coefcol(8, m8, "dLdep", "dLinc"); stats(8, m8, r2 = FALSE)
+  coefcol(8, m8, "dLdep", "dLinc"); stats_col(8, m8, r2 = FALSE)
 
   d20 <- .prep_dynamic(FILE_P20, dep); s20 <- filter(d20, sample == 1)
-  m9 <- fit_ols(s20, dep, c("Ldep", "Linc"), country_fe = TRUE); coefcol(9, m9, "Ldep", "Linc"); stats(9, m9)
+  m9 <- fit_ols(s20, dep, c("Ldep", "Linc"), country_fe = TRUE); coefcol(9, m9, "Ldep", "Linc"); stats_col(9, m9)
 
-  bind_rows(rows)
+  tb$collect()
 }
 
-format_table_txt <- function(tab, title, row_order, ncol = max(tab$column)) {
+format_table_txt <- function(tab, title, row_order, ncols = max(tab$column)) {
   cell <- function(col, rw) {
     r <- tab[tab$column == col & tab$row == rw, ]
     if (nrow(r) == 0) return("")
@@ -75,14 +68,16 @@ format_table_txt <- function(tab, title, row_order, ncol = max(tab$column)) {
     if (nrow(r) == 0 || r$type[1] != "coef" || is.na(r$se[1])) return("")
     sprintf("(%.3f)", r$se[1])
   }
-  hdr <- c(sprintf("%-26s", title), sprintf("%9s", paste0("(", 1:ncol, ")")))
+  lw <- max(26L, nchar(c(title, row_order)) + 2L)
+  hdr <- c(sprintf("%-*s", lw, title), sprintf("%9s", paste0("(", 1:ncols, ")")))
   out <- paste(hdr, collapse = "")
   for (rw in row_order) {
-    line  <- c(sprintf("%-26s", rw), sapply(1:ncol, function(cc) sprintf("%9s", cell(cc, rw))))
+    line  <- c(sprintf("%-*s", lw, rw),
+               vapply(1:ncols, function(cc) sprintf("%9s", cell(cc, rw)), character(1)))
     out <- c(out, paste(line, collapse = ""))
-    ses <- sapply(1:ncol, function(cc) se_cell(cc, rw))
-    if (any(nzchar(ses)))
-      out <- c(out, paste(c(sprintf("%-26s", ""), sprintf("%9s", ses)), collapse = ""))
+    ses <- vapply(1:ncols, function(cc) sprintf("%9s", se_cell(cc, rw)), character(1))
+    if (any(nzchar(trimws(ses))))
+      out <- c(out, paste(c(sprintf("%-*s", lw, ""), ses), collapse = ""))
   }
   out
 }

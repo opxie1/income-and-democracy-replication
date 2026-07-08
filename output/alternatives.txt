@@ -4,10 +4,10 @@ Pooled OLS                                   0.072 (0.010)    0.706 (0.035)     
 Fixed effects                                0.010 (0.035)    0.379 (0.051)      150                            
 Anderson-Hsiao IV                            -0.104 (0.107)   0.469 (0.100)      127                            
 Arellano-Bond, difference GMM (replication)  -0.129 (0.076)   0.489 (0.085)      127    55                      
-Arellano-Bond, difference GMM (one-step)     -0.189 (0.133)   0.484 (0.091)      152    13   0.00   0.75    0.21
-Arellano-Bond, difference GMM (two-step)     -0.133 (0.127)   0.514 (0.094)      152    13   0.00   0.69    0.37
-Blundell-Bond, system GMM (one-step)         0.099 (0.024)    0.583 (0.068)      152    16   0.00   0.51    0.18
-Blundell-Bond, system GMM (two-step)         0.100 (0.024)    0.599 (0.062)      152    16   0.00   0.51    0.30
+Arellano-Bond, difference GMM (one-step)     -0.189 (0.133)   0.484 (0.091)      124    13   0.00   0.75    0.21
+Arellano-Bond, difference GMM (two-step)     -0.133 (0.127)   0.514 (0.094)      124    13   0.00   0.69    0.37
+Blundell-Bond, system GMM (one-step)         0.099 (0.024)    0.583 (0.068)      133    16   0.00   0.51    0.18
+Blundell-Bond, system GMM (two-step)         0.100 (0.024)    0.599 (0.062)      133    16   0.00   0.51    0.30
 
 == Polity ==
 Estimator                                    Income (SE)      Democracy (SE)    Ctry  Inst  AR1 p  AR2 p  Overid
@@ -15,8 +15,8 @@ Pooled OLS                                   0.053 (0.010)    0.749 (0.034)     
 Fixed effects                                -0.006 (0.039)   0.449 (0.063)      136                            
 Anderson-Hsiao IV                            -0.413 (0.163)   0.582 (0.127)      114                            
 Arellano-Bond, difference GMM (replication)  -0.351 (0.127)   0.590 (0.106)      114    55                      
-Arellano-Bond, difference GMM (one-step)     -0.472 (0.213)   0.627 (0.132)      138    13   0.00   0.26    0.41
-Arellano-Bond, difference GMM (two-step)     -0.480 (0.211)   0.646 (0.137)      138    13   0.00   0.28    0.51
-Blundell-Bond, system GMM (one-step)         0.073 (0.022)    0.703 (0.088)      138    16   0.00   0.26    0.00
-Blundell-Bond, system GMM (two-step)         0.055 (0.023)    0.834 (0.075)      138    16   0.00   0.26    0.01
+Arellano-Bond, difference GMM (one-step)     -0.472 (0.213)   0.627 (0.132)      111    13   0.00   0.26    0.41
+Arellano-Bond, difference GMM (two-step)     -0.480 (0.211)   0.646 (0.137)      111    13   0.00   0.28    0.51
+Blundell-Bond, system GMM (one-step)         0.073 (0.022)    0.703 (0.088)      120    16   0.00   0.26    0.00
+Blundell-Bond, system GMM (two-step)         0.055 (0.023)    0.834 (0.075)      120    16   0.00   0.26    0.01
 

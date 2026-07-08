@@ -12,10 +12,13 @@ read_out <- function(file) {
 mine <- bind_rows(lapply(
   file.path(PATH_OUTPUT, paste0("table_", c(2:7), ".csv")), read_out))
 
+lab_disp <- c(unlist(LBL), setNames(fstg(unlist(LBL)), paste0("fs_", names(LBL))))
 pub <- read_csv(file.path(PATH_DOCS, "published_values.csv"), show_col_types = FALSE) |>
   mutate(table = as.character(table), panel = blank_na(panel),
          pub = value, pub_se = se) |>
   select(table, panel, column, row, type, pub, pub_se, note)
+stopifnot(all(pub$row %in% names(lab_disp)))
+pub$row <- unname(lab_disp[pub$row])
 
 keys <- c("table", "panel", "column", "row", "type")
 stopifnot(
@@ -87,8 +90,11 @@ md <- c(md, "",
 
 noted <- filter(cmp, !matched & has_note)
 if (nrow(noted)) {
-  md <- c(md, "## The one difference", "",
-          "One number does not match, and it is a typo in the paper, not in my code:", "")
+  md <- c(md,
+          if (nrow(noted) == 1) c("## The one difference", "",
+            "One number does not match, and it is a typo in the paper, not in my code:", "")
+          else c("## Documented differences", "",
+            "These numbers do not match, each for the reason noted:", ""))
   for (i in seq_len(nrow(noted))) {
     md <- c(md, sprintf("- Table %s, column %s, %s: this code gives %.3f (%.3f); the paper prints %.3f (%.3f). %s",
                         noted$table[i], noted$column[i], noted$row[i],

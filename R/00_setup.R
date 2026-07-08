@@ -138,33 +138,36 @@ fit_first_stage <- function(df, endog, inst, exog = character(), country_fe = TR
   fit_ols(df, lhs = endog, rhs = c(inst, exog), country_fe = country_fe, cluster = cluster)
 }
 
+drop_collinear <- function(M) {
+  q <- qr(M)
+  M[, sort(q$pivot[seq_len(q$rank)]), drop = FALSE]
+}
+
 fit_abgmm <- function(df_full, est, dep_level, endog, exog = character(),
                       inst_extra = character(), group = "code", period = "period",
                       yearvar = "year", prevyear = "year_l1", gmm_lag_start = 2L) {
   est <- est[order(est[[group]], est[[period]]), ]
 
   yrs <- sort(unique(est[[yearvar]]))
-  yd <- sapply(yrs, function(tt) as.integer(est[[yearvar]] == tt) -
-                 as.integer(est[[prevyear]] == tt))
+  yd <- vapply(yrs, function(tt) as.integer(est[[yearvar]] == tt) -
+                 as.integer(est[[prevyear]] == tt), integer(nrow(est)))
   yd <- matrix(yd, nrow = nrow(est)); colnames(yd) <- paste0("dyr", yrs)
 
-  Xfull <- cbind(as.matrix(est[, c(endog, exog), drop = FALSE]), yd)
-  X <- Xfull[, sort(qr(Xfull)$pivot[seq_len(qr(Xfull)$rank)]), drop = FALSE]
+  X <- drop_collinear(cbind(as.matrix(est[, c(endog, exog), drop = FALSE]), yd))
 
-  key <- paste(df_full[[group]], df_full[[period]])
+  key <- paste(df_full[[group]], df_full[[period]], sep = "\r")
   lev <- df_full[[dep_level]]
   periods <- sort(unique(df_full[[period]]))
   gmm_cols <- list()
   for (p in periods) for (q in periods[periods <= p - gmm_lag_start]) {
-    col <- ifelse(est[[period]] == p, lev[match(paste(est[[group]], q), key)], 0)
+    col <- ifelse(est[[period]] == p, lev[match(paste(est[[group]], q, sep = "\r"), key)], 0)
     col[is.na(col)] <- 0
     if (any(col != 0)) gmm_cols[[paste0("g", p, "_", q)]] <- col
   }
   Zgmm <- do.call(cbind, gmm_cols)
-  Zfull <- cbind(Zgmm, yd,
-                 if (length(exog))       as.matrix(est[, exog, drop = FALSE]),
-                 if (length(inst_extra)) as.matrix(est[, inst_extra, drop = FALSE]))
-  Z <- Zfull[, sort(qr(Zfull)$pivot[seq_len(qr(Zfull)$rank)]), drop = FALSE]
+  Z <- drop_collinear(cbind(Zgmm, yd,
+         if (length(exog))       as.matrix(est[, exog, drop = FALSE]),
+         if (length(inst_extra)) as.matrix(est[, inst_extra, drop = FALSE])))
 
   grp <- est[[group]]; pe <- est[[period]]
   A <- matrix(0, ncol(Z), ncol(Z))
@@ -187,6 +190,58 @@ fit_abgmm <- function(df_full, est, dep_level, endog, exog = character(),
   V <- bread %*% (t(ZtX) %*% W %*% M %*% W %*% ZtX) %*% bread
   list(coef = beta, se = sqrt(diag(V)), nobs = length(est$y),
        n_country = length(unique(grp)), n_inst = ncol(Z))
+}
+
+LBL <- list(
+  dem = "Democracy_t-1", inc = "Log GDP per capita_t-1",
+  obs = "Observations", ctry = "Countries", r2 = "R-squared",
+  fsr2 = "First-stage R-squared", logpop = "Log population_t-1",
+  educ = "Education_t-1", labor = "Labor share_t-1",
+  twdem_t = "Trade-weighted democracy_t", twdem = "Trade-weighted democracy",
+  sav2 = "Savings rate_t-2", sav3 = "Savings rate_t-3",
+  twgdp1 = "Trade-weighted log GDP_t-1", twgdp2 = "Trade-weighted log GDP_t-2")
+fstg <- function(x) paste("First stage:", x)
+
+MEASURES <- list(
+  list(dep = "fhpolrigaug", inc = "lrgdpch", label = "Freedom House"),
+  list(dep = "polity4",     inc = "lrgdpch", label = "Polity"))
+
+ROWS_DYNAMIC <- c(LBL$dem, LBL$inc, LBL$obs, LBL$ctry, LBL$r2)
+
+num <- function(x, d = 3) ifelse(is.na(x), "", sprintf(paste0("%.", d, "f"), x))
+
+gmm_panel <- function(s, dep, inc)
+  pdata.frame(s[stats::complete.cases(s[, c(dep, inc)]), ], index = c("code", "year_numeric"))
+gmm_formula <- function(dep, inc, lags)
+  as.formula(sprintf("%s ~ lag(%s, 1) + lag(%s, 1) | lag(%s, %s) + lag(%s, %s)",
+                     dep, dep, inc, dep, lags, inc, lags))
+pgmm_co <- function(m) summary(m, robust = TRUE)$coefficients
+co_row  <- function(co, var) co[grep(paste0("lag\\(", var), rownames(co))[1], 1:2]
+pgmm_countries <- function(m)
+  sum(vapply(m$residuals, function(r) any(r != 0), logical(1)))
+
+table_builder <- function(dep, ...) {
+  rows <- list()
+  extra <- list(...)
+  push <- function(column, row, value, se = NA_real_, type = "coef")
+    rows[[length(rows) + 1]] <<- do.call(tibble, c(extra,
+      list(column = column, row = row,
+           value = as.numeric(value), se = as.numeric(se), type = type)))
+  counts <- function(col, m, fs = NULL, r2 = FALSE) {
+    push(col, LBL$obs, mod_nobs(m), type = "count")
+    push(col, LBL$ctry, mod_nc(m), type = "count")
+    if (r2) push(col, LBL$r2, mod_r2(m), type = "r2")
+    if (!is.null(fs)) push(col, LBL$fsr2, mod_r2(fs), type = "r2")
+  }
+  sls <- function(col, dat, inst, exog = character(), endog = "Linc",
+                  second = c(), fs = c()) {
+    m <- fit_iv(dat, dep, endog = endog, inst = inst, exog = exog, country_fe = TRUE)
+    f <- fit_first_stage(dat, endog = endog, inst = c(inst, exog), country_fe = TRUE)
+    for (lab in names(second)) push(col, lab, ce(m, second[[lab]])["est"], ce(m, second[[lab]])["se"])
+    for (lab in names(fs))     push(col, lab, ce(f, fs[[lab]])["est"], ce(f, fs[[lab]])["se"])
+    counts(col, m, f); invisible(NULL)
+  }
+  list(push = push, counts = counts, sls = sls, collect = function() bind_rows(rows))
 }
 
 source(here::here("R", "_engine.R"))
