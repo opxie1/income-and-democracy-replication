@@ -12,6 +12,26 @@
   d
 }
 
+prep_savings_panel <- function() {
+  d <- add_lags(read_panel(FILE_P5),
+                c("fhpolrigaug", "lrgdpch", "nsave", "laborshare", "year"), 1:3)
+  mutate(d,
+    Linc = lrgdpch_l1, Ldep = fhpolrigaug_l1, L2dep = fhpolrigaug_l2, L3dep = fhpolrigaug_l3,
+    z2 = nsave_l2, z3 = nsave_l3, Llabor = laborshare_l1,
+    y = fhpolrigaug - fhpolrigaug_l1, dLdep = fhpolrigaug_l1 - fhpolrigaug_l2,
+    dLinc = lrgdpch_l1 - lrgdpch_l2, dz = nsave_l2 - nsave_l3)
+}
+
+prep_worldincome_panel <- function() {
+  d <- add_lags(read_panel(FILE_P5),
+                c("fhpolrigaug", "lrgdpch", "worldincome", "year"), 1:2)
+  mutate(d,
+    Linc = lrgdpch_l1, Ldep = fhpolrigaug_l1, wdem = worlddemocracy,
+    z1 = worldincome_l1, z2wi = worldincome_l2,
+    y = fhpolrigaug - fhpolrigaug_l1, dLdep = fhpolrigaug_l1 - fhpolrigaug_l2,
+    dLinc = lrgdpch_l1 - lrgdpch_l2, dz_wi = worldincome_l1 - worldincome_l2)
+}
+
 build_dynamic_table <- function(dep) {
   tb <- table_builder(dep)
   push <- tb$push

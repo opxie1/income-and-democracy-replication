@@ -42,4 +42,10 @@ I checked these estimates two ways. The code reproduces a standard textbook resu
 
 ## Pushing on the instruments
 
-These GMM methods let you use many past values as instruments, and using too many is a known trap. I re-ran both GMM estimators with the instruments left uncollapsed, building them from longer and longer lags, to see how fast the estimates decay toward the naive ones. With a handful of lags the estimates look like the paper's. As the instrument count grows they drift toward the ordinary estimates, quickly for one democracy measure and only part of the way for the other. The table is in `output/instruments.txt`, the figure in `output/instruments.png`, and the writeup in `docs/instruments.md`.
+These GMM methods let you use many past values as instruments, and using too many is a known trap. I re-ran both GMM estimators over a widening window of lags, once with the instruments left separate and once with them pooled together, to see how fast the estimates decay toward the naive ones. Pooling them keeps the estimates steady; leaving them separate lets the count grow with the square of the window, and the estimates slide toward the ordinary ones. The writeup is in `docs/instruments.md`.
+
+Pooling can be done in more than one way, so I compared the obvious alternatives against each other in `docs/aggregation.md`. The rule matters: the same data and the same lags give answers that differ by a factor of two depending on how the instruments are combined.
+
+## Are the instruments strong enough
+
+Instrumental-variables estimates go wrong quietly when the instrument barely moves the thing it stands in for. For the two-stage least squares columns I report first-stage F statistics and then two confidence sets built to stay valid even when the instrument is weak, one from Anderson and Rubin and one from Moreira. The instruments hold up reasonably, but the honest confidence sets are wider than the ordinary ones and all of them include zero. The writeup is in `docs/weak-instruments.md`.

@@ -104,13 +104,15 @@ mod_nobs <- function(m) m$nobs
 mod_nc   <- function(m) { a <- attr(m, "n_country"); if (!is.null(a)) a else m$n_country }
 mod_r2   <- function(m) if (!is.null(m$r.squared)) unname(m$r.squared) else NA_real_
 
-wald_p <- function(m, terms, n_clusters) {
+wald_stat <- function(m, terms, n_clusters) {
   b <- m$coefficients[terms]
   V <- m$vcov[terms, terms, drop = FALSE]
   q <- length(terms)
   Fstat <- as.numeric(t(b) %*% solve(V) %*% b) / q
-  pf(Fstat, q, n_clusters - 1, lower.tail = FALSE)
+  list(F = Fstat, p = pf(Fstat, q, n_clusters - 1, lower.tail = FALSE), q = q)
 }
+
+wald_p <- function(m, terms, n_clusters) wald_stat(m, terms, n_clusters)$p
 
 fit_ols <- function(df, lhs, rhs, country_fe, cluster = "code") {
   terms <- c(rhs, "factor(year)", if (country_fe) "factor(code)")
@@ -143,9 +145,39 @@ drop_collinear <- function(M) {
   M[, sort(q$pivot[seq_len(q$rank)]), drop = FALSE]
 }
 
+AGG_SCHEMES <- c("none", "lag", "period", "period_mean", "full")
+
+gmm_instruments <- function(df_full, est, dep_level, group = "code", period = "period",
+                            lag_start = 2L, lag_max = Inf, scheme = "none") {
+  stopifnot(scheme %in% AGG_SCHEMES)
+  key <- paste(df_full[[group]], df_full[[period]], sep = "\r")
+  periods <- sort(unique(df_full[[period]]))
+  cols <- list(); hits <- list()
+  for (vname in dep_level) {
+    lev <- df_full[[vname]]
+    for (p in periods) for (q in periods[periods <= p - lag_start & periods >= p - lag_max]) {
+      v <- ifelse(est[[period]] == p, lev[match(paste(est[[group]], q, sep = "\r"), key)], 0)
+      v[is.na(v)] <- 0
+      if (!any(v != 0)) next
+      k <- paste0(vname, "|", switch(scheme,
+                  none = paste0("g", p, "_", q),
+                  lag  = paste0("l", p - q),
+                  period = paste0("p", p),
+                  period_mean = paste0("p", p),
+                  full = "all"))
+      if (is.null(cols[[k]])) { cols[[k]] <- v; hits[[k]] <- (v != 0) + 0 }
+      else { cols[[k]] <- cols[[k]] + v; hits[[k]] <- hits[[k]] + (v != 0) }
+    }
+  }
+  if (scheme == "period_mean")
+    for (k in names(cols)) cols[[k]] <- ifelse(hits[[k]] > 0, cols[[k]] / pmax(hits[[k]], 1), 0)
+  do.call(cbind, cols)
+}
+
 fit_abgmm <- function(df_full, est, dep_level, endog, exog = character(),
                       inst_extra = character(), group = "code", period = "period",
-                      yearvar = "year", prevyear = "year_l1", gmm_lag_start = 2L) {
+                      yearvar = "year", prevyear = "year_l1", gmm_lag_start = 2L,
+                      lag_max = Inf, scheme = "none") {
   est <- est[order(est[[group]], est[[period]]), ]
 
   yrs <- sort(unique(est[[yearvar]]))
@@ -155,16 +187,8 @@ fit_abgmm <- function(df_full, est, dep_level, endog, exog = character(),
 
   X <- drop_collinear(cbind(as.matrix(est[, c(endog, exog), drop = FALSE]), yd))
 
-  key <- paste(df_full[[group]], df_full[[period]], sep = "\r")
-  lev <- df_full[[dep_level]]
-  periods <- sort(unique(df_full[[period]]))
-  gmm_cols <- list()
-  for (p in periods) for (q in periods[periods <= p - gmm_lag_start]) {
-    col <- ifelse(est[[period]] == p, lev[match(paste(est[[group]], q, sep = "\r"), key)], 0)
-    col[is.na(col)] <- 0
-    if (any(col != 0)) gmm_cols[[paste0("g", p, "_", q)]] <- col
-  }
-  Zgmm <- do.call(cbind, gmm_cols)
+  Zgmm <- gmm_instruments(df_full, est, dep_level, group, period,
+                          lag_start = gmm_lag_start, lag_max = lag_max, scheme = scheme)
   Z <- drop_collinear(cbind(Zgmm, yd,
          if (length(exog))       as.matrix(est[, exog, drop = FALSE]),
          if (length(inst_extra)) as.matrix(est[, inst_extra, drop = FALSE])))

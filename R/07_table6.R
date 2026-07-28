@@ -2,13 +2,7 @@ source(here::here("R", "00_setup.R"))
 
 DEP <- "fhpolrigaug"
 
-d5 <- read_panel(FILE_P5)
-d5 <- add_lags(d5, c(DEP, "lrgdpch", "worldincome", "year"), 1:2)
-d5 <- d5 |> mutate(
-  Linc = lrgdpch_l1, Ldep = fhpolrigaug_l1, wdem = worlddemocracy,
-  z1 = worldincome_l1, z2wi = worldincome_l2,
-  y = fhpolrigaug - fhpolrigaug_l1, dLdep = fhpolrigaug_l1 - fhpolrigaug_l2,
-  dLinc = lrgdpch_l1 - lrgdpch_l2, dz_wi = worldincome_l1 - worldincome_l2)
+d5 <- prep_worldincome_panel()
 s5 <- filter(d5, sample == 1)
 
 tb <- table_builder(DEP)

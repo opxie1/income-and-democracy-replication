@@ -2,13 +2,7 @@ source(here::here("R", "00_setup.R"))
 
 DEP <- "fhpolrigaug"
 
-d5 <- read_panel(FILE_P5)
-d5 <- add_lags(d5, c(DEP, "lrgdpch", "nsave", "laborshare", "year"), 1:3)
-d5 <- d5 |> mutate(
-  Linc = lrgdpch_l1, Ldep = fhpolrigaug_l1, L2dep = fhpolrigaug_l2, L3dep = fhpolrigaug_l3,
-  z2 = nsave_l2, z3 = nsave_l3, Llabor = laborshare_l1,
-  y = fhpolrigaug - fhpolrigaug_l1, dLdep = fhpolrigaug_l1 - fhpolrigaug_l2,
-  dLinc = lrgdpch_l1 - lrgdpch_l2, dz = nsave_l2 - nsave_l3)
+d5 <- prep_savings_panel()
 s5 <- filter(d5, sample == 1)
 
 tb <- table_builder(DEP)

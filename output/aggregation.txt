@@ -1,0 +1,36 @@
+== Freedom House (fixed effects 0.010) ==
+Each cell: estimate (SE) [instruments]
+-- Paper's design (lags of democracy only) --
+Aggregation of the lagged levels       Lags 2-4                 All lags                
+One per lag and period (uncollapsed)   -0.256 (0.117) [34]      -0.129 (0.076) [55]     
+One per lag distance (Roodman)         -0.108 (0.105) [13]      -0.154 (0.110) [19]     
+One per period, summed                 -0.237 (0.114) [19]      -0.204 (0.118) [19]     
+One per period, averaged               -0.263 (0.114) [19]      -0.249 (0.110) [19]     
+One instrument in total                -0.115 (0.104) [11]      -0.118 (0.105) [11]     
+
+-- Symmetric (lags of democracy and income) --
+Aggregation of the lagged levels       Lags 2-4                 All lags                
+One per lag and period (uncollapsed)   -0.139 (0.091) [57]      -0.066 (0.069) [99]     
+One per lag distance (Roodman)         -0.106 (0.103) [15]      -0.169 (0.107) [27]     
+One per period, summed                 -0.361 (0.185) [27]      -0.164 (0.157) [27]     
+One per period, averaged               -0.317 (0.137) [27]      -0.344 (0.151) [27]     
+One instrument in total                -0.204 (0.269) [11]      -0.761 (1.612) [11]     
+
+== Polity (fixed effects -0.006) ==
+Each cell: estimate (SE) [instruments]
+-- Paper's design (lags of democracy only) --
+Aggregation of the lagged levels       Lags 2-4                 All lags                
+One per lag and period (uncollapsed)   -0.578 (0.170) [34]      -0.351 (0.127) [55]     
+One per lag distance (Roodman)         -0.414 (0.160) [13]      -0.512 (0.173) [19]     
+One per period, summed                 -0.580 (0.178) [19]      -0.553 (0.175) [19]     
+One per period, averaged               -0.590 (0.182) [19]      -0.554 (0.170) [19]     
+One instrument in total                -0.411 (0.162) [11]      -0.408 (0.164) [11]     
+
+-- Symmetric (lags of democracy and income) --
+Aggregation of the lagged levels       Lags 2-4                 All lags                
+One per lag and period (uncollapsed)   -0.464 (0.148) [57]      -0.225 (0.096) [99]     
+One per lag distance (Roodman)         -0.390 (0.153) [15]      -0.522 (0.168) [27]     
+One per period, summed                 -1.068 (0.386) [27]      -0.755 (0.294) [27]     
+One per period, averaged               -0.712 (0.239) [27]      -0.744 (0.271) [27]     
+One instrument in total                -0.797 (0.376) [11]      -0.732 (0.584) [11]     
+
