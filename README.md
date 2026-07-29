@@ -42,10 +42,20 @@ I checked these estimates two ways. The code reproduces a standard textbook resu
 
 ## Pushing on the instruments
 
-These GMM methods let you use many past values as instruments, and using too many is a known trap. I re-ran both GMM estimators over a widening window of lags, once with the instruments left separate and once with them pooled together, to see how fast the estimates decay toward the naive ones. Pooling them keeps the estimates steady; leaving them separate lets the count grow with the square of the window, and the estimates slide toward the ordinary ones. The writeup is in `docs/instruments.md`.
+These GMM methods let you use many past values as instruments, and using too many is a known trap. I re-ran both GMM estimators over a widening window of lags, once with the instruments left separate and once with them pooled together, to see how fast the estimates decay toward the naive ones. Pooling holds one of the two democracy measures steady but not the other, so it is not the whole answer. The clearer effect is on the error bars: left separate, they shrink by roughly two thirds as the instruments pile up, which is precision manufactured by the instrument count rather than earned from the data. The writeup is in `docs/instruments.md`.
 
-Pooling can be done in more than one way, so I compared the obvious alternatives against each other in `docs/aggregation.md`. The rule matters: the same data and the same lags give answers that differ by a factor of two depending on how the instruments are combined.
+Pooling can be done in more than one way, so I compared the obvious alternatives against each other in `docs/aggregation.md`. The rule matters. On the same data with the same lags, the answer for one measure moves by about a factor of two depending only on how the instruments are combined. I also ran two versions that can be turned up and down by degrees rather than switched on and off, which is where the more interesting result is: fading out the older lags barely changes anything, so that answer does not depend on counting every lag equally.
 
 ## Are the instruments strong enough
 
 Instrumental-variables estimates go wrong quietly when the instrument barely moves the thing it stands in for. For the two-stage least squares columns I report first-stage F statistics and then two confidence sets built to stay valid even when the instrument is weak, one from Anderson and Rubin and one from Moreira. The instruments hold up reasonably, but the honest confidence sets are wider than the ordinary ones and all of them include zero. The writeup is in `docs/weak-instruments.md`.
+
+I wrote those two tests by hand, so `R/15_ivcrosscheck.R` re-runs every column through the `ivmodel` package and stops if the answers disagree. It needs that package, which is why it sits outside the main run.
+
+## Sources
+
+Every paper and package this project leans on is listed in `docs/references.md`.
+
+## The two optional scripts
+
+`Rscript R/run_all.R` runs the replication and everything built on top of it. Two scripts sit outside it because each needs a package that is not otherwise required, and both are independent checks rather than part of the pipeline: `R/11_crosscheck.R` (needs `pdynmc`) and `R/15_ivcrosscheck.R` (needs `ivmodel`).

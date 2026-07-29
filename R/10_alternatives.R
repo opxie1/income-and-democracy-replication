@@ -10,14 +10,7 @@ stopifnot(abs(coef(.bench)["lag(log(emp), 1:2)1"] - 0.4742) < 0.001,
 cat("pgmm reproduces the Arellano-Bond (1991) benchmark.\n")
 
 ladder <- function(dep, inc, panel_label) {
-  d <- add_lags(read_panel(FILE_P5), c(dep, inc, "year"), 1:2)
-  d$Ldep  <- d[[paste0(dep, "_l1")]]
-  d$Linc  <- d[[paste0(inc, "_l1")]]
-  d$y     <- d[[dep]] - d[[paste0(dep, "_l1")]]
-  d$dLdep <- d[[paste0(dep, "_l1")]] - d[[paste0(dep, "_l2")]]
-  d$dLinc <- d[[paste0(inc, "_l1")]] - d[[paste0(inc, "_l2")]]
-  d$L2dep <- d[[paste0(dep, "_l2")]]
-  d$L2inc <- d[[paste0(inc, "_l2")]]
+  d <- prep_dynamic(FILE_P5, dep, inc)
   s <- filter(d, sample == 1)
 
   rows <- list()

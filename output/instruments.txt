@@ -1,8 +1,9 @@
 == Freedom House (pooled OLS 0.072, fixed effects 0.010) ==
 Each cell: estimate (SE) [instruments, overid p]
+'exact id' means there is nothing left over to test
 -- Difference GMM --
 Max lag  Uncollapsed                    Collapsed                     
-2        -0.253 (0.186) [21, 0.01]      -0.234 (0.147) [9, 0.00]      
+2        -0.253 (0.186) [21, 0.01]      -0.234 (0.147) [9, exact id]  
 3        -0.168 (0.134) [33, 0.11]      -0.178 (0.134) [11, 0.25]     
 4        -0.072 (0.086) [43, 0.13]      -0.133 (0.127) [13, 0.37]     
 5        -0.118 (0.068) [51, 0.20]      -0.146 (0.127) [15, 0.59]     
@@ -22,9 +23,10 @@ Max lag  Uncollapsed                    Collapsed
 
 == Polity (pooled OLS 0.053, fixed effects -0.006) ==
 Each cell: estimate (SE) [instruments, overid p]
+'exact id' means there is nothing left over to test
 -- Difference GMM --
 Max lag  Uncollapsed                    Collapsed                     
-2        -0.343 (0.238) [21, 0.01]      -0.429 (0.202) [9, 0.00]      
+2        -0.343 (0.238) [21, 0.01]      -0.429 (0.202) [9, exact id]  
 3        -0.357 (0.204) [33, 0.05]      -0.449 (0.235) [11, 0.42]     
 4        -0.336 (0.150) [43, 0.12]      -0.480 (0.211) [13, 0.51]     
 5        -0.271 (0.129) [51, 0.18]      -0.478 (0.209) [15, 0.59]     

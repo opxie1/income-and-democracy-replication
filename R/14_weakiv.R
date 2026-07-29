@@ -3,7 +3,7 @@ source(here::here("R", "00_setup.R"))
 DEP <- "fhpolrigaug"
 AR_GRID <- seq(-6, 6, by = 0.002)
 CLR_GRID <- seq(-6, 6, by = 0.005)
-CLR_SIM <- 20000L
+CLR_SIM <- 400000L
 LEVEL <- 0.05
 STOCK_YOGO <- c(`1` = 16.38, `2` = 19.93, `3` = 22.30, `4` = 24.58)
 
@@ -41,15 +41,20 @@ clr_pcurve <- function(dat, inst, exog, grid, nsim = CLR_SIM, seed = 20260728L) 
   ei <- eigen(ZZ, symmetric = TRUE)
   ZZmh <- ei$vectors %*% diag(1 / sqrt(ei$values), k) %*% t(ei$vectors)
   Omi <- solve(Om)
-  set.seed(seed)
-  z1 <- rnorm(nsim); w <- if (k > 1) rchisq(nsim, k - 1) else numeric(nsim)
-  QSs <- z1^2 + w
+  if (k > 1L) {
+    old <- if (exists(".Random.seed", .GlobalEnv)) get(".Random.seed", .GlobalEnv) else NULL
+    on.exit(if (!is.null(old)) assign(".Random.seed", old, .GlobalEnv), add = TRUE)
+    set.seed(seed)
+    z1 <- rnorm(nsim); w <- rchisq(nsim, k - 1)
+    QSs <- z1^2 + w
+  }
   vapply(grid, function(b0) {
     b <- c(1, -b0); a <- c(b0, 1)
     S <- ZZmh %*% (ZY %*% b) / sqrt(as.numeric(t(b) %*% Om %*% b))
     Tt <- ZZmh %*% (ZY %*% (Omi %*% a)) / sqrt(as.numeric(t(a) %*% Omi %*% a))
     QS <- sum(S^2); QT <- sum(Tt^2); QST <- sum(S * Tt)
     LR <- 0.5 * (QS - QT + sqrt(max((QS + QT)^2 - 4 * (QS * QT - QST^2), 0)))
+    if (k == 1L) return(pchisq(LR, 1, lower.tail = FALSE))
     LRs <- 0.5 * (QSs - QT + sqrt(pmax((QSs + QT)^2 - 4 * QT * w, 0)))
     mean(LRs >= LR)
   }, numeric(1))
@@ -124,7 +129,8 @@ for (sp in SPECS) {
     tsls_hi = unname(est["est"] + tcrit * est["se"]),
     ar_set = ai$text, ar_lo = ai$lo, ar_hi = ai$hi, ar_bounded = ai$bounded,
     ar_p0 = ar$p[which.min(abs(AR_GRID))],
-    clr_set = ci$text, clr_p0 = clr_p[which.min(abs(CLR_GRID))])
+    clr_set = ci$text, clr_lo = ci$lo, clr_hi = ci$hi,
+    clr_p0 = clr_p[which.min(abs(CLR_GRID))])
   curves[[length(curves) + 1]] <- bind_rows(
     tibble(spec = lab, beta = AR_GRID, p = ar$p, test = "Anderson-Rubin (clustered)"),
     tibble(spec = lab, beta = CLR_GRID, p = clr_p, test = "Moreira CLR (homoskedastic)"))
@@ -160,7 +166,7 @@ for (sp in SPECS[c(1, 5, 8, 10)]) {
       fitz <- a$Zt %*% solve(crossprod(a$Zt), crossprod(a$Zt, e))
       pchisq(sum(fitz^2) / (sum((e - fitz)^2) / dfree), 1, lower.tail = FALSE)
     }, numeric(1))
-    stopifnot(max(abs(cp - hom)) < 0.02)
+    stopifnot(max(abs(cp - hom)) < 1e-12)
   }
 }
 cat("Partialling reproduces the 2SLS estimates; the fast Anderson-Rubin curve matches",
@@ -201,6 +207,10 @@ n_zero <- sum(tab$ar_p0 >= LEVEL)
 widen <- tab |>
   mutate(conv = tsls_hi - tsls_lo, ar = ar_hi - ar_lo, ratio = ar / conv) |>
   arrange(desc(ratio))
+ord <- arrange(widen, first_stage_F)
+inv <- NULL
+for (i in seq_len(nrow(ord) - 1L)) for (j in (i + 1L):nrow(ord))
+  if (is.null(inv) && ord$ratio[i] < ord$ratio[j]) inv <- c(i, j)
 strongest <- tab[which.max(tab$first_stage_F), ]
 weakest <- tab[which.min(tab$first_stage_F), ]
 
@@ -214,7 +224,9 @@ md <- c(
 "income, and a small number of instruments for it: the savings rate in Table 5",
 "and trade-weighted world income in Table 6. That gives ten columns to check.",
 "The numbers are in output/weakiv.csv and output/weakiv.txt, and the p-value",
-"curves are drawn in output/weakiv.png.",
+"curves are drawn in output/weakiv.png. The two tests are from Anderson and",
+"Rubin (1949) and Moreira (2003), the first-stage cutoffs from Stock and Yogo",
+"(2005), and full details are in docs/references.md.",
 "",
 "## Why this matters",
 "",
@@ -230,11 +242,20 @@ md <- c(
 sprintf("The first-stage F statistics run from %.1f to %.1f, clustered by country the",
         min(tab$first_stage_F), max(tab$first_stage_F)),
 "same way the paper clusters everything else. Every column clears the old rule",
-sprintf("of thumb that an F above 10 is good enough. Against the stricter Stock and"),
+"of thumb that an F above 10 is good enough. Against the stricter Stock and",
 sprintf("Yogo threshold, %d of the %d columns fall short. So the instruments are not",
         n_below, nrow(tab)),
 "badly weak, but a few are not comfortably strong either, which is exactly the",
 "situation the next two tests are designed for.",
+"",
+"One caveat on that comparison. The Stock and Yogo cutoffs were worked out for a",
+"setting with well behaved, unclustered errors, and the F statistics here are",
+"clustered by country. Lining the two up is what most applied work does, and it",
+"is what the standard software prints, but it is not strictly justified. I use",
+"the threshold as a rough marker rather than a real test, which is another",
+"reason to lean on the confidence sets below instead. The properly justified",
+"cutoff for clustered errors would be the effective F statistic of Montiel Olea",
+"and Pflueger (2013), which I have not implemented.",
 "",
 "## Anderson-Rubin",
 "",
@@ -245,28 +266,48 @@ sprintf("Yogo threshold, %d of the %d columns fall short. So the instruments are
 "confidence set, and it stays valid no matter how weak the instruments are. I",
 "clustered it by country to match the paper.",
 "",
-sprintf("%s of the %d sets come out bounded, and %s contain zero. Where the first",
-        ifelse(all(tab$ar_bounded), "All", sum(tab$ar_bounded)), nrow(tab),
+sprintf("%s %d sets come out bounded, and %s contain zero. Where the first stage",
+        ifelse(all(tab$ar_bounded), "All", paste(sum(tab$ar_bounded), "of the")),
+        nrow(tab),
         ifelse(n_zero == nrow(tab), "all of them", paste(n_zero, "of them"))),
-sprintf("stage is strongest (%s, F of %.1f) the set is %s, which is",
+sprintf("is strongest (%s, F of %.1f) the set is %s, which is",
         strongest$spec, strongest$first_stage_F, strongest$ar_set),
 sprintf("nearly the same as the ordinary interval of [%.2f, %.2f]. Where it is",
         strongest$tsls_lo, strongest$tsls_hi),
 sprintf("weakest (%s, F of %.1f) the set widens to %s against an",
         weakest$spec, weakest$first_stage_F, weakest$ar_set),
-sprintf("ordinary interval of [%.2f, %.2f]. That is the pattern you would hope to",
+sprintf("ordinary interval of [%.2f, %.2f]. The Anderson-Rubin set is at least as wide",
         weakest$tsls_lo, weakest$tsls_hi),
-"see: the two agree when the instrument is strong and separate when it is not,",
-"so the ordinary intervals understate the uncertainty in precisely the columns",
-"where the first stage is thinnest.",
+"as the ordinary interval in every column, so the ordinary intervals are",
+"optimistic throughout, not just at the extremes.",
+"",
+"I should not push that comparison further than it goes. Lining the ten columns",
+"up by first-stage F does not give a tidy ordering. The widening ratio runs",
+sprintf("from %.2f to %.2f, and it does not fall neatly as the first stage gets",
+        min(widen$ratio), max(widen$ratio)),
+sprintf("stronger. %s has the weaker first stage of the two,",  ord$spec[inv[1]]),
+sprintf("F of %.1f against %.1f, yet widens less, %.2f against %.2f, than %s does.",
+        ord$first_stage_F[inv[1]], ord$first_stage_F[inv[2]],
+        ord$ratio[inv[1]], ord$ratio[inv[2]], ord$spec[inv[2]]),
+"These specifications",
+"differ in their controls and samples as well as in instrument strength, so the",
+"two ends of the range are suggestive rather than a clean relationship.",
 "",
 "## Moreira's conditional likelihood ratio",
 "",
-"The conditional likelihood ratio test is the sharper of the two. Rather than",
-"comparing against a fixed cutoff, it adjusts the cutoff using a quantity that",
-"carries the information about how strong the instruments are, which buys back",
-"power that Anderson-Rubin gives away. I coded it directly, including the",
-"conditional cutoff by simulation, since no package for it was installed.",
+"The conditional likelihood ratio test can be sharper than Anderson-Rubin.",
+"Rather than comparing against a fixed cutoff, it adjusts the cutoff using a",
+"quantity that carries the information about how strong the instruments are,",
+"which buys back power that Anderson-Rubin gives away. I coded it directly,",
+"since no package for it was installed.",
+"",
+sprintf("The catch is that %d of the %d columns here have exactly one instrument, and",
+        sum(tab$k == 1), nrow(tab)),
+"with one instrument there is nothing to buy back: the two tests are the same",
+"test. So the extra power is only in play for the two columns with a pair of",
+"instruments. For the single-instrument columns the cutoff is a chi-squared",
+"quantile that can be written down exactly, and the code uses that rather than",
+"simulating a distribution it already knows.",
 "",
 "There is a caveat worth stating plainly. The version of this test I implemented",
 "assumes the errors are well behaved and independent, and it does not cluster by",
@@ -286,10 +327,26 @@ sprintf("of the %d two-stage least squares columns leaves zero inside the confid
         nrow(tab)),
 "set. So none of them establishes an effect of income on democracy in either",
 "direction.",
+"",
 "This does not overturn anything in the paper, whose argument is that the effect",
 "is not there once the fixed differences between countries are taken out. It",
 "does mean the instrumental-variables columns should be read as uninformative",
-"about the sign of the effect rather than as evidence for a negative one.")
+"about the sign of the effect rather than as evidence for a negative one.",
+"",
+"## Checks",
+"",
+"This is fiddly enough that I did not want to rely on code I wrote myself. Three",
+"checks run every time the script does. The partialling step has to reproduce",
+"the published two-stage least squares estimates, the fast Anderson-Rubin curve",
+"has to match the slower clustered regression it stands in for, and the",
+"conditional likelihood ratio test has to collapse onto Anderson-Rubin for the",
+"columns with a single instrument. Any failure stops the run.",
+"",
+"On top of that, R/15_ivcrosscheck.R sends all ten columns through the ivmodel",
+"package and stops unless its conditional likelihood ratio sets agree with mine",
+"and its two-stage least squares estimates match exactly. They do, for all ten.",
+"That script needs the ivmodel package, so it sits outside the main run; use",
+"Rscript R/15_ivcrosscheck.R.")
 writeLines(md, file.path(PATH_DOCS, "weak-instruments.md"))
 
 cat("Weak-instrument diagnostics written.\n")

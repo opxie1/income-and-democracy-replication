@@ -1,161 +1,161 @@
-panel,design,scheme,scheme_label,lag_max,income,income_se,dem,n_inst,obs,countries
-Freedom House,Paper's design (lags of democracy only),none,One per lag and period (uncollapsed),2,-0.21362774867831602,0.12424254153502254,0.4126526528357247,19,838,127
-Freedom House,Paper's design (lags of democracy only),none,One per lag and period (uncollapsed),3,-0.2487796308355752,0.1191949225918016,0.459222263448927,27,838,127
-Freedom House,Paper's design (lags of democracy only),none,One per lag and period (uncollapsed),4,-0.25596745648647934,0.11674031102304448,0.4552375181869227,34,838,127
-Freedom House,Paper's design (lags of democracy only),none,One per lag and period (uncollapsed),5,-0.2331992244350496,0.10576062189729502,0.4596650037325266,40,838,127
-Freedom House,Paper's design (lags of democracy only),none,One per lag and period (uncollapsed),6,-0.193843504461356,0.09807122672644157,0.4633762579074408,45,838,127
-Freedom House,Paper's design (lags of democracy only),none,One per lag and period (uncollapsed),7,-0.1720027396713366,0.09413176734332729,0.47247900265036713,49,838,127
-Freedom House,Paper's design (lags of democracy only),none,One per lag and period (uncollapsed),8,-0.17424323820164855,0.09021579889405315,0.4784046927180268,52,838,127
-Freedom House,Paper's design (lags of democracy only),none,One per lag and period (uncollapsed),Inf,-0.1291143441007352,0.07585984673292612,0.48882861391324006,55,838,127
-Freedom House,Paper's design (lags of democracy only),lag,One per lag distance (Roodman),2,-0.10357926859240774,0.10635309165694848,0.4686592975601547,11,838,127
-Freedom House,Paper's design (lags of democracy only),lag,One per lag distance (Roodman),3,-0.10593271975950103,0.10581278486860175,0.4804452656160185,12,838,127
-Freedom House,Paper's design (lags of democracy only),lag,One per lag distance (Roodman),4,-0.1076265187703438,0.10498283638395416,0.4837340278746689,13,838,127
-Freedom House,Paper's design (lags of democracy only),lag,One per lag distance (Roodman),5,-0.12403806568653408,0.10607018840625984,0.48452365635548056,14,838,127
-Freedom House,Paper's design (lags of democracy only),lag,One per lag distance (Roodman),6,-0.12467122617862358,0.1063076692463856,0.4841754628787487,15,838,127
-Freedom House,Paper's design (lags of democracy only),lag,One per lag distance (Roodman),7,-0.12989414413992595,0.10616977171427824,0.4812407006677214,16,838,127
-Freedom House,Paper's design (lags of democracy only),lag,One per lag distance (Roodman),8,-0.12552367185724833,0.10530241728156159,0.4824968318401398,17,838,127
-Freedom House,Paper's design (lags of democracy only),lag,One per lag distance (Roodman),Inf,-0.15423860708535653,0.11027694189411727,0.47316064118540313,19,838,127
-Freedom House,Paper's design (lags of democracy only),period,"One per period, summed",2,-0.21362774867831602,0.12424254153502254,0.4126526528357247,19,838,127
-Freedom House,Paper's design (lags of democracy only),period,"One per period, summed",3,-0.23950262953571544,0.117000626369491,0.49580252267156244,19,838,127
-Freedom House,Paper's design (lags of democracy only),period,"One per period, summed",4,-0.23654606356940366,0.1144986022248246,0.5050409500851047,19,838,127
-Freedom House,Paper's design (lags of democracy only),period,"One per period, summed",5,-0.24041941435751646,0.11496364314286858,0.5550358685298179,19,838,127
-Freedom House,Paper's design (lags of democracy only),period,"One per period, summed",6,-0.2242686018092659,0.11546597425219303,0.5660235403716197,19,838,127
-Freedom House,Paper's design (lags of democracy only),period,"One per period, summed",7,-0.2167020785941931,0.11774502109108238,0.55622157136726,19,838,127
-Freedom House,Paper's design (lags of democracy only),period,"One per period, summed",8,-0.20825038853823763,0.1188771319731325,0.5345809335950567,19,838,127
-Freedom House,Paper's design (lags of democracy only),period,"One per period, summed",Inf,-0.20359021999188842,0.11754349439120443,0.547470202650153,19,838,127
-Freedom House,Paper's design (lags of democracy only),period_mean,"One per period, averaged",2,-0.21362774867831602,0.12424254153502254,0.4126526528357247,19,838,127
-Freedom House,Paper's design (lags of democracy only),period_mean,"One per period, averaged",3,-0.23586181181085353,0.1171271017169075,0.48816594954610604,19,838,127
-Freedom House,Paper's design (lags of democracy only),period_mean,"One per period, averaged",4,-0.2631865716888431,0.11368738833583389,0.5272146709802378,19,838,127
-Freedom House,Paper's design (lags of democracy only),period_mean,"One per period, averaged",5,-0.2853158958871749,0.113084936210634,0.5924711185181142,19,838,127
-Freedom House,Paper's design (lags of democracy only),period_mean,"One per period, averaged",6,-0.26097162312204025,0.11226822059873788,0.5967987095505881,19,838,127
-Freedom House,Paper's design (lags of democracy only),period_mean,"One per period, averaged",7,-0.24787022812512083,0.11076446639151888,0.6124545729292639,19,838,127
-Freedom House,Paper's design (lags of democracy only),period_mean,"One per period, averaged",8,-0.24633588375187498,0.11034852353017204,0.625903923808936,19,838,127
-Freedom House,Paper's design (lags of democracy only),period_mean,"One per period, averaged",Inf,-0.24895072738101254,0.1102735947282548,0.6357244741129536,19,838,127
-Freedom House,Paper's design (lags of democracy only),full,One instrument in total,2,-0.10357926859240774,0.10635309165694848,0.4686592975601547,11,838,127
-Freedom House,Paper's design (lags of democracy only),full,One instrument in total,3,-0.11040196187342222,0.1061001163890852,0.5004656939483878,11,838,127
-Freedom House,Paper's design (lags of democracy only),full,One instrument in total,4,-0.11526101540608202,0.10376682496047701,0.5231178895497943,11,838,127
-Freedom House,Paper's design (lags of democracy only),full,One instrument in total,5,-0.1326410166861045,0.10243982180579154,0.6041409089306442,11,838,127
-Freedom House,Paper's design (lags of democracy only),full,One instrument in total,6,-0.13032350484149813,0.10339643655234783,0.5933370082820046,11,838,127
-Freedom House,Paper's design (lags of democracy only),full,One instrument in total,7,-0.12346406174581404,0.10459393907944778,0.5613592896428529,11,838,127
-Freedom House,Paper's design (lags of democracy only),full,One instrument in total,8,-0.1262757379694639,0.10460797575855332,0.57446691221954,11,838,127
-Freedom House,Paper's design (lags of democracy only),full,One instrument in total,Inf,-0.11815614241486205,0.10493254677466024,0.5366145474591236,11,838,127
-Freedom House,Symmetric (lags of democracy and income),none,One per lag and period (uncollapsed),2,-0.20187241549398305,0.1244772824590679,0.43042739384492,27,838,127
-Freedom House,Symmetric (lags of democracy and income),none,One per lag and period (uncollapsed),3,-0.18443511726327744,0.10801261384336183,0.48302342555189764,43,838,127
-Freedom House,Symmetric (lags of democracy and income),none,One per lag and period (uncollapsed),4,-0.1391832799016992,0.09100236554869179,0.48176825782442984,57,838,127
-Freedom House,Symmetric (lags of democracy and income),none,One per lag and period (uncollapsed),5,-0.06467773162124191,0.09166981086912533,0.49523939061568123,69,838,127
-Freedom House,Symmetric (lags of democracy and income),none,One per lag and period (uncollapsed),6,-0.05921153633996812,0.08936224759989071,0.4888450171952561,79,838,127
-Freedom House,Symmetric (lags of democracy and income),none,One per lag and period (uncollapsed),7,-0.08296772954064369,0.08407859990702704,0.48296797555659654,87,838,127
-Freedom House,Symmetric (lags of democracy and income),none,One per lag and period (uncollapsed),8,-0.09219176585287281,0.08191109778689798,0.46590089326660034,93,838,127
-Freedom House,Symmetric (lags of democracy and income),none,One per lag and period (uncollapsed),Inf,-0.06613264716339584,0.06864685985964965,0.4677593741024791,99,838,127
-Freedom House,Symmetric (lags of democracy and income),lag,One per lag distance (Roodman),2,-0.10357926859236688,0.10635309165824819,0.4686592975601688,11,838,127
-Freedom House,Symmetric (lags of democracy and income),lag,One per lag distance (Roodman),3,-0.1101556570163833,0.10521665284425143,0.480809476394775,13,838,127
-Freedom House,Symmetric (lags of democracy and income),lag,One per lag distance (Roodman),4,-0.1057927478209928,0.10349093774669851,0.48060765612806133,15,838,127
-Freedom House,Symmetric (lags of democracy and income),lag,One per lag distance (Roodman),5,-0.09797669417839039,0.10373227829185111,0.48094621386413383,17,838,127
-Freedom House,Symmetric (lags of democracy and income),lag,One per lag distance (Roodman),6,-0.08589845942771035,0.09877572237859948,0.4809564243064992,19,838,127
-Freedom House,Symmetric (lags of democracy and income),lag,One per lag distance (Roodman),7,-0.11084858290326327,0.10021650025649947,0.47065957798355285,21,838,127
-Freedom House,Symmetric (lags of democracy and income),lag,One per lag distance (Roodman),8,-0.11748862170706076,0.10078548267197016,0.46777400182293094,23,838,127
-Freedom House,Symmetric (lags of democracy and income),lag,One per lag distance (Roodman),Inf,-0.16925907633571358,0.1072934702211292,0.45058572205606706,27,838,127
-Freedom House,Symmetric (lags of democracy and income),period,"One per period, summed",2,-0.20187241549398305,0.1244772824590679,0.43042739384492,27,838,127
-Freedom House,Symmetric (lags of democracy and income),period,"One per period, summed",3,-0.41503729574584103,0.19665086167738924,0.34954185500879875,27,838,127
-Freedom House,Symmetric (lags of democracy and income),period,"One per period, summed",4,-0.36130024842765707,0.18474987372420615,0.34242414616153205,27,838,127
-Freedom House,Symmetric (lags of democracy and income),period,"One per period, summed",5,-0.16026346808083503,0.16874871083355814,0.5231122768385852,27,838,127
-Freedom House,Symmetric (lags of democracy and income),period,"One per period, summed",6,-0.20286624706244538,0.16290663358964658,0.4552143073149848,27,838,127
-Freedom House,Symmetric (lags of democracy and income),period,"One per period, summed",7,-0.20438014644530966,0.15950306114896914,0.45528145096549233,27,838,127
-Freedom House,Symmetric (lags of democracy and income),period,"One per period, summed",8,-0.16780275521187704,0.16112362483849546,0.42331825136402035,27,838,127
-Freedom House,Symmetric (lags of democracy and income),period,"One per period, summed",Inf,-0.1638082447793261,0.15699835079207952,0.4236699958797945,27,838,127
-Freedom House,Symmetric (lags of democracy and income),period_mean,"One per period, averaged",2,-0.20187241549398305,0.1244772824590679,0.43042739384492,27,838,127
-Freedom House,Symmetric (lags of democracy and income),period_mean,"One per period, averaged",3,-0.29499558958569017,0.13029132614144417,0.4518318520745489,27,838,127
-Freedom House,Symmetric (lags of democracy and income),period_mean,"One per period, averaged",4,-0.3165935409340066,0.13697123966081398,0.46223288449287625,27,838,127
-Freedom House,Symmetric (lags of democracy and income),period_mean,"One per period, averaged",5,-0.357719927726444,0.14126103751591615,0.49109623685645654,27,838,127
-Freedom House,Symmetric (lags of democracy and income),period_mean,"One per period, averaged",6,-0.3386283054897725,0.14651855475802986,0.4888719702162445,27,838,127
-Freedom House,Symmetric (lags of democracy and income),period_mean,"One per period, averaged",7,-0.3403485772856709,0.1507162648915955,0.4897678720089993,27,838,127
-Freedom House,Symmetric (lags of democracy and income),period_mean,"One per period, averaged",8,-0.3427573067148266,0.15170593069034155,0.4909601733739586,27,838,127
-Freedom House,Symmetric (lags of democracy and income),period_mean,"One per period, averaged",Inf,-0.3438776491505431,0.15102032965484655,0.4949191485913551,27,838,127
-Freedom House,Symmetric (lags of democracy and income),full,One instrument in total,2,-0.10357926859236688,0.10635309165824819,0.4686592975601688,11,838,127
-Freedom House,Symmetric (lags of democracy and income),full,One instrument in total,3,-0.09877013658071832,0.2661270884986894,0.5088988170335433,11,838,127
-Freedom House,Symmetric (lags of democracy and income),full,One instrument in total,4,-0.2043115982819721,0.26878234334303075,0.4447621833861106,11,838,127
-Freedom House,Symmetric (lags of democracy and income),full,One instrument in total,5,-0.43857493751859167,0.3656280698883232,0.2958388034259265,11,838,127
-Freedom House,Symmetric (lags of democracy and income),full,One instrument in total,6,-0.6188722720448041,0.5965221915059246,0.11194950440472695,11,838,127
-Freedom House,Symmetric (lags of democracy and income),full,One instrument in total,7,-0.4915124396003563,0.7516314662100972,0.19521868096198602,11,838,127
-Freedom House,Symmetric (lags of democracy and income),full,One instrument in total,8,-0.9078872224490055,1.252812437388379,-0.2121886170268823,11,838,127
-Freedom House,Symmetric (lags of democracy and income),full,One instrument in total,Inf,-0.7614771617675729,1.6118125734970115,-0.09448808073943837,11,838,127
-Polity,Paper's design (lags of democracy only),none,One per lag and period (uncollapsed),2,-0.5466521414476722,0.1780450181710198,0.5558650940843488,19,747,114
-Polity,Paper's design (lags of democracy only),none,One per lag and period (uncollapsed),3,-0.5809134929143163,0.16697167705168786,0.5515229140985429,27,747,114
-Polity,Paper's design (lags of democracy only),none,One per lag and period (uncollapsed),4,-0.5777168961461232,0.16964476513464471,0.5305384249911658,34,747,114
-Polity,Paper's design (lags of democracy only),none,One per lag and period (uncollapsed),5,-0.6014776881777242,0.17383831992867416,0.5312715562860268,40,747,114
-Polity,Paper's design (lags of democracy only),none,One per lag and period (uncollapsed),6,-0.49098840896082185,0.15685741260706393,0.5418993348721186,45,747,114
-Polity,Paper's design (lags of democracy only),none,One per lag and period (uncollapsed),7,-0.3694402201207043,0.13668958025407507,0.5832343561552246,49,747,114
-Polity,Paper's design (lags of democracy only),none,One per lag and period (uncollapsed),8,-0.3566069061023853,0.1324836628479546,0.5875394177103662,52,747,114
-Polity,Paper's design (lags of democracy only),none,One per lag and period (uncollapsed),Inf,-0.35056387752400164,0.12722323171799338,0.5897910230548581,55,747,114
-Polity,Paper's design (lags of democracy only),lag,One per lag distance (Roodman),2,-0.41258131256376007,0.1610681366375454,0.5817886745677583,11,747,114
-Polity,Paper's design (lags of democracy only),lag,One per lag distance (Roodman),3,-0.4132530158881389,0.15954515033515018,0.5824522443219837,12,747,114
-Polity,Paper's design (lags of democracy only),lag,One per lag distance (Roodman),4,-0.41353488616944745,0.16004142490719542,0.5836276926402317,13,747,114
-Polity,Paper's design (lags of democracy only),lag,One per lag distance (Roodman),5,-0.42045404745342285,0.16357866798926268,0.5829791791086387,14,747,114
-Polity,Paper's design (lags of democracy only),lag,One per lag distance (Roodman),6,-0.4293264436368238,0.16492735066338482,0.583480827851083,15,747,114
-Polity,Paper's design (lags of democracy only),lag,One per lag distance (Roodman),7,-0.4229337880786366,0.16229666577262286,0.5835072041026952,16,747,114
-Polity,Paper's design (lags of democracy only),lag,One per lag distance (Roodman),8,-0.408630686667693,0.16152896693054558,0.5853457448196333,17,747,114
-Polity,Paper's design (lags of democracy only),lag,One per lag distance (Roodman),Inf,-0.5123273814850702,0.173417259578702,0.5531883303650083,19,747,114
-Polity,Paper's design (lags of democracy only),period,"One per period, summed",2,-0.5466521414476722,0.1780450181710198,0.5558650940843488,19,747,114
-Polity,Paper's design (lags of democracy only),period,"One per period, summed",3,-0.5754804885538451,0.1785166484950512,0.566581005950809,19,747,114
-Polity,Paper's design (lags of democracy only),period,"One per period, summed",4,-0.5803470701806228,0.17825187630321798,0.5757222427190032,19,747,114
-Polity,Paper's design (lags of democracy only),period,"One per period, summed",5,-0.5624990512948349,0.174673870596344,0.5947864748417482,19,747,114
-Polity,Paper's design (lags of democracy only),period,"One per period, summed",6,-0.5502725819445935,0.17566389620368383,0.627153278635483,19,747,114
-Polity,Paper's design (lags of democracy only),period,"One per period, summed",7,-0.5465141988332904,0.17379124601332172,0.5981400203361225,19,747,114
-Polity,Paper's design (lags of democracy only),period,"One per period, summed",8,-0.5477368644588374,0.17244459930604375,0.6095052464184838,19,747,114
-Polity,Paper's design (lags of democracy only),period,"One per period, summed",Inf,-0.5533186886827854,0.17524246100145682,0.6242225791850511,19,747,114
-Polity,Paper's design (lags of democracy only),period_mean,"One per period, averaged",2,-0.5466521414476722,0.1780450181710198,0.5558650940843488,19,747,114
-Polity,Paper's design (lags of democracy only),period_mean,"One per period, averaged",3,-0.5792116097693931,0.1834998481609613,0.5682240594478634,19,747,114
-Polity,Paper's design (lags of democracy only),period_mean,"One per period, averaged",4,-0.5899130869638674,0.18156735816256997,0.5276319820859428,19,747,114
-Polity,Paper's design (lags of democracy only),period_mean,"One per period, averaged",5,-0.5589027364582835,0.1745108073630762,0.5163243359403857,19,747,114
-Polity,Paper's design (lags of democracy only),period_mean,"One per period, averaged",6,-0.545369038635056,0.17170762768543454,0.5321971947985285,19,747,114
-Polity,Paper's design (lags of democracy only),period_mean,"One per period, averaged",7,-0.5497924950142075,0.17168100356782315,0.542313816178499,19,747,114
-Polity,Paper's design (lags of democracy only),period_mean,"One per period, averaged",8,-0.5470018107317189,0.16846333950966402,0.550367164696639,19,747,114
-Polity,Paper's design (lags of democracy only),period_mean,"One per period, averaged",Inf,-0.5537178579985342,0.169588954279181,0.5488004516346274,19,747,114
-Polity,Paper's design (lags of democracy only),full,One instrument in total,2,-0.41258131256376007,0.1610681366375454,0.5817886745677583,11,747,114
-Polity,Paper's design (lags of democracy only),full,One instrument in total,3,-0.41228237780588195,0.1633659989396937,0.5838322215187501,11,747,114
-Polity,Paper's design (lags of democracy only),full,One instrument in total,4,-0.41142178162621423,0.16208195022595578,0.5897153403375408,11,747,114
-Polity,Paper's design (lags of democracy only),full,One instrument in total,5,-0.4103252400872224,0.16306078414870004,0.5972114044787911,11,747,114
-Polity,Paper's design (lags of democracy only),full,One instrument in total,6,-0.4062162226991832,0.16384222721201386,0.6253010452318786,11,747,114
-Polity,Paper's design (lags of democracy only),full,One instrument in total,7,-0.4092330113081015,0.16388403164863227,0.6046779861764429,11,747,114
-Polity,Paper's design (lags of democracy only),full,One instrument in total,8,-0.4028196853756931,0.16504657670905132,0.6485201032719146,11,747,114
-Polity,Paper's design (lags of democracy only),full,One instrument in total,Inf,-0.4080622693101361,0.16432027145462902,0.6126812918415285,11,747,114
-Polity,Symmetric (lags of democracy and income),none,One per lag and period (uncollapsed),2,-0.591201227611057,0.19177149907850344,0.5261383835621718,27,747,114
-Polity,Symmetric (lags of democracy and income),none,One per lag and period (uncollapsed),3,-0.583753419634756,0.16484355264113829,0.5023175239031012,43,747,114
-Polity,Symmetric (lags of democracy and income),none,One per lag and period (uncollapsed),4,-0.46351681639625575,0.14842240282466151,0.5005738256581899,57,747,114
-Polity,Symmetric (lags of democracy and income),none,One per lag and period (uncollapsed),5,-0.4389117636000033,0.13440567873884388,0.4997824269919086,69,747,114
-Polity,Symmetric (lags of democracy and income),none,One per lag and period (uncollapsed),6,-0.36010490749702484,0.109716776442965,0.49680327402300284,79,747,114
-Polity,Symmetric (lags of democracy and income),none,One per lag and period (uncollapsed),7,-0.3043803910719447,0.10525718868763072,0.5111378752167182,87,747,114
-Polity,Symmetric (lags of democracy and income),none,One per lag and period (uncollapsed),8,-0.25895324452843527,0.10541784080316542,0.5191211194633666,93,747,114
-Polity,Symmetric (lags of democracy and income),none,One per lag and period (uncollapsed),Inf,-0.22492792561803032,0.09599194167686433,0.5225470253380617,99,747,114
-Polity,Symmetric (lags of democracy and income),lag,One per lag distance (Roodman),2,-0.4125813125636508,0.16106813663768813,0.5817886745678011,11,747,114
-Polity,Symmetric (lags of democracy and income),lag,One per lag distance (Roodman),3,-0.3860352075901474,0.15358964545632045,0.5651920597650353,13,747,114
-Polity,Symmetric (lags of democracy and income),lag,One per lag distance (Roodman),4,-0.3904781634895578,0.15342099591413652,0.5562441097945285,15,747,114
-Polity,Symmetric (lags of democracy and income),lag,One per lag distance (Roodman),5,-0.40260081025904526,0.15972709215560565,0.5532505955953959,17,747,114
-Polity,Symmetric (lags of democracy and income),lag,One per lag distance (Roodman),6,-0.41644524508993985,0.1607721236857294,0.5485819577593289,19,747,114
-Polity,Symmetric (lags of democracy and income),lag,One per lag distance (Roodman),7,-0.4381393946648684,0.16045850375043472,0.5425667110527352,21,747,114
-Polity,Symmetric (lags of democracy and income),lag,One per lag distance (Roodman),8,-0.4399217671074034,0.16176559255665957,0.5351800803012667,23,747,114
-Polity,Symmetric (lags of democracy and income),lag,One per lag distance (Roodman),Inf,-0.5215060379687877,0.16831517112309766,0.5090346526593206,27,747,114
-Polity,Symmetric (lags of democracy and income),period,"One per period, summed",2,-0.591201227611057,0.19177149907850344,0.5261383835621718,27,747,114
-Polity,Symmetric (lags of democracy and income),period,"One per period, summed",3,-0.9694180572217395,0.2895917006285966,0.350075130296263,27,747,114
-Polity,Symmetric (lags of democracy and income),period,"One per period, summed",4,-1.0683277303047394,0.3864253005960688,0.26746283757278544,27,747,114
-Polity,Symmetric (lags of democracy and income),period,"One per period, summed",5,-0.9698734903181592,0.38795732719457465,0.25471085211178757,27,747,114
-Polity,Symmetric (lags of democracy and income),period,"One per period, summed",6,-0.8468828251466931,0.34082489094365237,0.3230029602307001,27,747,114
-Polity,Symmetric (lags of democracy and income),period,"One per period, summed",7,-0.7238354655761654,0.29701422605893313,0.3769313985089058,27,747,114
-Polity,Symmetric (lags of democracy and income),period,"One per period, summed",8,-0.7460210460523342,0.29726605354148755,0.3224779532156612,27,747,114
-Polity,Symmetric (lags of democracy and income),period,"One per period, summed",Inf,-0.7545884526196911,0.29370003845031983,0.3141484923675604,27,747,114
-Polity,Symmetric (lags of democracy and income),period_mean,"One per period, averaged",2,-0.591201227611057,0.19177149907850344,0.5261383835621718,27,747,114
-Polity,Symmetric (lags of democracy and income),period_mean,"One per period, averaged",3,-0.6675312695856936,0.21158373547220877,0.5129691895933961,27,747,114
-Polity,Symmetric (lags of democracy and income),period_mean,"One per period, averaged",4,-0.7122891563550962,0.23918227364051928,0.4393350143697039,27,747,114
-Polity,Symmetric (lags of democracy and income),period_mean,"One per period, averaged",5,-0.7190671250592535,0.2524419681671576,0.39256558667892394,27,747,114
-Polity,Symmetric (lags of democracy and income),period_mean,"One per period, averaged",6,-0.7323902634342625,0.2651169233000439,0.38351219990699326,27,747,114
-Polity,Symmetric (lags of democracy and income),period_mean,"One per period, averaged",7,-0.7425911133088432,0.26922767950161824,0.38029150598972983,27,747,114
-Polity,Symmetric (lags of democracy and income),period_mean,"One per period, averaged",8,-0.741206164748462,0.2705722979482961,0.38294088191477593,27,747,114
-Polity,Symmetric (lags of democracy and income),period_mean,"One per period, averaged",Inf,-0.7435419742698492,0.27129004474681423,0.38110459479484415,27,747,114
-Polity,Symmetric (lags of democracy and income),full,One instrument in total,2,-0.4125813125636508,0.16106813663768813,0.5817886745678011,11,747,114
-Polity,Symmetric (lags of democracy and income),full,One instrument in total,3,-0.7695702087373348,0.33703127795839155,0.39101037874118383,11,747,114
-Polity,Symmetric (lags of democracy and income),full,One instrument in total,4,-0.7969245271240268,0.37583152789169927,0.35565843408086906,11,747,114
-Polity,Symmetric (lags of democracy and income),full,One instrument in total,5,-0.8129050030461471,0.5002633879224915,0.3059231089743193,11,747,114
-Polity,Symmetric (lags of democracy and income),full,One instrument in total,6,-0.8375180024899507,0.4924316027082484,0.2930684922555038,11,747,114
-Polity,Symmetric (lags of democracy and income),full,One instrument in total,7,-0.5727262575004488,0.456686462399462,0.47415234491278824,11,747,114
-Polity,Symmetric (lags of democracy and income),full,One instrument in total,8,-0.9318861181137734,0.6037790246811344,0.21148281923423085,11,747,114
-Polity,Symmetric (lags of democracy and income),full,One instrument in total,Inf,-0.7316233458887353,0.5843542052647656,0.3598199486903084,11,747,114
+panel,design,design_short,scheme,scheme_label,lag_max,income,income_se,dem,n_gmm,n_inst,obs,countries
+Freedom House,Paper's design (lags of democracy only),paper,none,One per lag and period (uncollapsed),2,-0.21362774867831602,0.12424254153502254,0.4126526528357247,9,19,838,127
+Freedom House,Paper's design (lags of democracy only),paper,none,One per lag and period (uncollapsed),3,-0.2487796308355752,0.1191949225918016,0.459222263448927,17,27,838,127
+Freedom House,Paper's design (lags of democracy only),paper,none,One per lag and period (uncollapsed),4,-0.25596745648647934,0.11674031102304448,0.4552375181869227,24,34,838,127
+Freedom House,Paper's design (lags of democracy only),paper,none,One per lag and period (uncollapsed),5,-0.2331992244350496,0.10576062189729502,0.4596650037325266,30,40,838,127
+Freedom House,Paper's design (lags of democracy only),paper,none,One per lag and period (uncollapsed),6,-0.193843504461356,0.09807122672644157,0.4633762579074408,35,45,838,127
+Freedom House,Paper's design (lags of democracy only),paper,none,One per lag and period (uncollapsed),7,-0.1720027396713366,0.09413176734332729,0.47247900265036713,39,49,838,127
+Freedom House,Paper's design (lags of democracy only),paper,none,One per lag and period (uncollapsed),8,-0.17424323820164855,0.09021579889405315,0.4784046927180268,42,52,838,127
+Freedom House,Paper's design (lags of democracy only),paper,none,One per lag and period (uncollapsed),Inf,-0.1291143441007352,0.07585984673292612,0.48882861391324006,45,55,838,127
+Freedom House,Paper's design (lags of democracy only),paper,lag,One per lag distance (Roodman),2,-0.10357926859240774,0.10635309165694848,0.4686592975601547,1,11,838,127
+Freedom House,Paper's design (lags of democracy only),paper,lag,One per lag distance (Roodman),3,-0.10593271975950103,0.10581278486860175,0.4804452656160185,2,12,838,127
+Freedom House,Paper's design (lags of democracy only),paper,lag,One per lag distance (Roodman),4,-0.1076265187703438,0.10498283638395416,0.4837340278746689,3,13,838,127
+Freedom House,Paper's design (lags of democracy only),paper,lag,One per lag distance (Roodman),5,-0.12403806568653408,0.10607018840625984,0.48452365635548056,4,14,838,127
+Freedom House,Paper's design (lags of democracy only),paper,lag,One per lag distance (Roodman),6,-0.12467122617862358,0.1063076692463856,0.4841754628787487,5,15,838,127
+Freedom House,Paper's design (lags of democracy only),paper,lag,One per lag distance (Roodman),7,-0.12989414413992595,0.10616977171427824,0.4812407006677214,6,16,838,127
+Freedom House,Paper's design (lags of democracy only),paper,lag,One per lag distance (Roodman),8,-0.12552367185724833,0.10530241728156159,0.4824968318401398,7,17,838,127
+Freedom House,Paper's design (lags of democracy only),paper,lag,One per lag distance (Roodman),Inf,-0.15423860708535653,0.11027694189411727,0.47316064118540313,9,19,838,127
+Freedom House,Paper's design (lags of democracy only),paper,period,"One per period, summed",2,-0.21362774867831602,0.12424254153502254,0.4126526528357247,9,19,838,127
+Freedom House,Paper's design (lags of democracy only),paper,period,"One per period, summed",3,-0.23950262953571544,0.117000626369491,0.49580252267156244,9,19,838,127
+Freedom House,Paper's design (lags of democracy only),paper,period,"One per period, summed",4,-0.23654606356940366,0.1144986022248246,0.5050409500851047,9,19,838,127
+Freedom House,Paper's design (lags of democracy only),paper,period,"One per period, summed",5,-0.24041941435751646,0.11496364314286858,0.5550358685298179,9,19,838,127
+Freedom House,Paper's design (lags of democracy only),paper,period,"One per period, summed",6,-0.2242686018092659,0.11546597425219303,0.5660235403716197,9,19,838,127
+Freedom House,Paper's design (lags of democracy only),paper,period,"One per period, summed",7,-0.2167020785941931,0.11774502109108238,0.55622157136726,9,19,838,127
+Freedom House,Paper's design (lags of democracy only),paper,period,"One per period, summed",8,-0.20825038853823763,0.1188771319731325,0.5345809335950567,9,19,838,127
+Freedom House,Paper's design (lags of democracy only),paper,period,"One per period, summed",Inf,-0.20359021999188842,0.11754349439120443,0.547470202650153,9,19,838,127
+Freedom House,Paper's design (lags of democracy only),paper,period_mean,"One per period, averaged",2,-0.21362774867831602,0.12424254153502254,0.4126526528357247,9,19,838,127
+Freedom House,Paper's design (lags of democracy only),paper,period_mean,"One per period, averaged",3,-0.247498768181027,0.1171378524279199,0.4953614301446404,9,19,838,127
+Freedom House,Paper's design (lags of democracy only),paper,period_mean,"One per period, averaged",4,-0.24972250193765033,0.11459206275768309,0.48503348852511186,9,19,838,127
+Freedom House,Paper's design (lags of democracy only),paper,period_mean,"One per period, averaged",5,-0.257189546615479,0.1130129537682584,0.5209938960517053,9,19,838,127
+Freedom House,Paper's design (lags of democracy only),paper,period_mean,"One per period, averaged",6,-0.24800549428052943,0.11098898788691904,0.5536368757845118,9,19,838,127
+Freedom House,Paper's design (lags of democracy only),paper,period_mean,"One per period, averaged",7,-0.24251417368725514,0.11054131305110006,0.5585559153913386,9,19,838,127
+Freedom House,Paper's design (lags of democracy only),paper,period_mean,"One per period, averaged",8,-0.24110082649268616,0.1107119060940158,0.5566140997626516,9,19,838,127
+Freedom House,Paper's design (lags of democracy only),paper,period_mean,"One per period, averaged",Inf,-0.24336952296832415,0.11075923731205523,0.5613889627490374,9,19,838,127
+Freedom House,Paper's design (lags of democracy only),paper,full,"One per variable, all lags pooled",2,-0.10357926859240774,0.10635309165694848,0.4686592975601547,1,11,838,127
+Freedom House,Paper's design (lags of democracy only),paper,full,"One per variable, all lags pooled",3,-0.11040196187342222,0.1061001163890852,0.5004656939483878,1,11,838,127
+Freedom House,Paper's design (lags of democracy only),paper,full,"One per variable, all lags pooled",4,-0.11526101540608202,0.10376682496047701,0.5231178895497943,1,11,838,127
+Freedom House,Paper's design (lags of democracy only),paper,full,"One per variable, all lags pooled",5,-0.1326410166861045,0.10243982180579154,0.6041409089306442,1,11,838,127
+Freedom House,Paper's design (lags of democracy only),paper,full,"One per variable, all lags pooled",6,-0.13032350484149813,0.10339643655234783,0.5933370082820046,1,11,838,127
+Freedom House,Paper's design (lags of democracy only),paper,full,"One per variable, all lags pooled",7,-0.12346406174581404,0.10459393907944778,0.5613592896428529,1,11,838,127
+Freedom House,Paper's design (lags of democracy only),paper,full,"One per variable, all lags pooled",8,-0.1262757379694639,0.10460797575855332,0.57446691221954,1,11,838,127
+Freedom House,Paper's design (lags of democracy only),paper,full,"One per variable, all lags pooled",Inf,-0.11815614241486205,0.10493254677466024,0.5366145474591236,1,11,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,none,One per lag and period (uncollapsed),2,-0.20187241549398305,0.1244772824590679,0.43042739384492,18,27,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,none,One per lag and period (uncollapsed),3,-0.18443511726327744,0.10801261384336183,0.48302342555189764,34,43,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,none,One per lag and period (uncollapsed),4,-0.1391832799016992,0.09100236554869179,0.48176825782442984,48,57,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,none,One per lag and period (uncollapsed),5,-0.06467773162124191,0.09166981086912533,0.49523939061568123,60,69,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,none,One per lag and period (uncollapsed),6,-0.05921153633996812,0.08936224759989071,0.4888450171952561,70,79,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,none,One per lag and period (uncollapsed),7,-0.08296772954064369,0.08407859990702704,0.48296797555659654,78,87,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,none,One per lag and period (uncollapsed),8,-0.09219176585287281,0.08191109778689798,0.46590089326660034,84,93,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,none,One per lag and period (uncollapsed),Inf,-0.06613264716339584,0.06864685985964965,0.4677593741024791,90,99,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,lag,One per lag distance (Roodman),2,-0.10357926859236688,0.10635309165824819,0.4686592975601688,2,11,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,lag,One per lag distance (Roodman),3,-0.1101556570163833,0.10521665284425143,0.480809476394775,4,13,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,lag,One per lag distance (Roodman),4,-0.1057927478209928,0.10349093774669851,0.48060765612806133,6,15,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,lag,One per lag distance (Roodman),5,-0.09797669417839039,0.10373227829185111,0.48094621386413383,8,17,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,lag,One per lag distance (Roodman),6,-0.08589845942771035,0.09877572237859948,0.4809564243064992,10,19,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,lag,One per lag distance (Roodman),7,-0.11084858290326327,0.10021650025649947,0.47065957798355285,12,21,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,lag,One per lag distance (Roodman),8,-0.11748862170706076,0.10078548267197016,0.46777400182293094,14,23,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,lag,One per lag distance (Roodman),Inf,-0.16925907633571358,0.1072934702211292,0.45058572205606706,18,27,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,period,"One per period, summed",2,-0.20187241549398305,0.1244772824590679,0.43042739384492,18,27,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,period,"One per period, summed",3,-0.41503729574584103,0.19665086167738924,0.34954185500879875,18,27,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,period,"One per period, summed",4,-0.36130024842765707,0.18474987372420615,0.34242414616153205,18,27,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,period,"One per period, summed",5,-0.16026346808083503,0.16874871083355814,0.5231122768385852,18,27,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,period,"One per period, summed",6,-0.20286624706244538,0.16290663358964658,0.4552143073149848,18,27,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,period,"One per period, summed",7,-0.20438014644530966,0.15950306114896914,0.45528145096549233,18,27,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,period,"One per period, summed",8,-0.16780275521187704,0.16112362483849546,0.42331825136402035,18,27,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,period,"One per period, summed",Inf,-0.1638082447793261,0.15699835079207952,0.4236699958797945,18,27,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,period_mean,"One per period, averaged",2,-0.20187241549398305,0.1244772824590679,0.43042739384492,18,27,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,period_mean,"One per period, averaged",3,-0.2996494187477028,0.12920957358200633,0.45449334233751837,18,27,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,period_mean,"One per period, averaged",4,-0.3028852536733151,0.13291031739960585,0.4344932247752048,18,27,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,period_mean,"One per period, averaged",5,-0.3213865583454485,0.13665149106326896,0.44922939877494894,18,27,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,period_mean,"One per period, averaged",6,-0.32287018426181957,0.13974233109102718,0.4661383756967763,18,27,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,period_mean,"One per period, averaged",7,-0.32132851366887083,0.1420100552036072,0.4665167248542963,18,27,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,period_mean,"One per period, averaged",8,-0.319346388878905,0.14197984287695145,0.4614045472771535,18,27,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,period_mean,"One per period, averaged",Inf,-0.3185414147119561,0.14059687778162355,0.46427188007645803,18,27,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,full,"One per variable, all lags pooled",2,-0.10357926859236688,0.10635309165824819,0.4686592975601688,2,11,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,full,"One per variable, all lags pooled",3,-0.09877013658071832,0.2661270884986894,0.5088988170335433,2,11,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,full,"One per variable, all lags pooled",4,-0.2043115982819721,0.26878234334303075,0.4447621833861106,2,11,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,full,"One per variable, all lags pooled",5,-0.43857493751859167,0.3656280698883232,0.2958388034259265,2,11,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,full,"One per variable, all lags pooled",6,-0.6188722720448041,0.5965221915059246,0.11194950440472695,2,11,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,full,"One per variable, all lags pooled",7,-0.4915124396003563,0.7516314662100972,0.19521868096198602,2,11,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,full,"One per variable, all lags pooled",8,-0.9078872224490055,1.252812437388379,-0.2121886170268823,2,11,838,127
+Freedom House,Symmetric (lags of democracy and income),symmetric,full,"One per variable, all lags pooled",Inf,-0.7614771617675729,1.6118125734970115,-0.09448808073943837,2,11,838,127
+Polity,Paper's design (lags of democracy only),paper,none,One per lag and period (uncollapsed),2,-0.5466521414476722,0.1780450181710198,0.5558650940843488,9,19,747,114
+Polity,Paper's design (lags of democracy only),paper,none,One per lag and period (uncollapsed),3,-0.5809134929143163,0.16697167705168786,0.5515229140985429,17,27,747,114
+Polity,Paper's design (lags of democracy only),paper,none,One per lag and period (uncollapsed),4,-0.5777168961461232,0.16964476513464471,0.5305384249911658,24,34,747,114
+Polity,Paper's design (lags of democracy only),paper,none,One per lag and period (uncollapsed),5,-0.6014776881777242,0.17383831992867416,0.5312715562860268,30,40,747,114
+Polity,Paper's design (lags of democracy only),paper,none,One per lag and period (uncollapsed),6,-0.49098840896082185,0.15685741260706393,0.5418993348721186,35,45,747,114
+Polity,Paper's design (lags of democracy only),paper,none,One per lag and period (uncollapsed),7,-0.3694402201207043,0.13668958025407507,0.5832343561552246,39,49,747,114
+Polity,Paper's design (lags of democracy only),paper,none,One per lag and period (uncollapsed),8,-0.3566069061023853,0.1324836628479546,0.5875394177103662,42,52,747,114
+Polity,Paper's design (lags of democracy only),paper,none,One per lag and period (uncollapsed),Inf,-0.35056387752400164,0.12722323171799338,0.5897910230548581,45,55,747,114
+Polity,Paper's design (lags of democracy only),paper,lag,One per lag distance (Roodman),2,-0.41258131256376007,0.1610681366375454,0.5817886745677583,1,11,747,114
+Polity,Paper's design (lags of democracy only),paper,lag,One per lag distance (Roodman),3,-0.4132530158881389,0.15954515033515018,0.5824522443219837,2,12,747,114
+Polity,Paper's design (lags of democracy only),paper,lag,One per lag distance (Roodman),4,-0.41353488616944745,0.16004142490719542,0.5836276926402317,3,13,747,114
+Polity,Paper's design (lags of democracy only),paper,lag,One per lag distance (Roodman),5,-0.42045404745342285,0.16357866798926268,0.5829791791086387,4,14,747,114
+Polity,Paper's design (lags of democracy only),paper,lag,One per lag distance (Roodman),6,-0.4293264436368238,0.16492735066338482,0.583480827851083,5,15,747,114
+Polity,Paper's design (lags of democracy only),paper,lag,One per lag distance (Roodman),7,-0.4229337880786366,0.16229666577262286,0.5835072041026952,6,16,747,114
+Polity,Paper's design (lags of democracy only),paper,lag,One per lag distance (Roodman),8,-0.408630686667693,0.16152896693054558,0.5853457448196333,7,17,747,114
+Polity,Paper's design (lags of democracy only),paper,lag,One per lag distance (Roodman),Inf,-0.5123273814850702,0.173417259578702,0.5531883303650083,9,19,747,114
+Polity,Paper's design (lags of democracy only),paper,period,"One per period, summed",2,-0.5466521414476722,0.1780450181710198,0.5558650940843488,9,19,747,114
+Polity,Paper's design (lags of democracy only),paper,period,"One per period, summed",3,-0.5754804885538451,0.1785166484950512,0.566581005950809,9,19,747,114
+Polity,Paper's design (lags of democracy only),paper,period,"One per period, summed",4,-0.5803470701806228,0.17825187630321798,0.5757222427190032,9,19,747,114
+Polity,Paper's design (lags of democracy only),paper,period,"One per period, summed",5,-0.5624990512948349,0.174673870596344,0.5947864748417482,9,19,747,114
+Polity,Paper's design (lags of democracy only),paper,period,"One per period, summed",6,-0.5502725819445935,0.17566389620368383,0.627153278635483,9,19,747,114
+Polity,Paper's design (lags of democracy only),paper,period,"One per period, summed",7,-0.5465141988332904,0.17379124601332172,0.5981400203361225,9,19,747,114
+Polity,Paper's design (lags of democracy only),paper,period,"One per period, summed",8,-0.5477368644588374,0.17244459930604375,0.6095052464184838,9,19,747,114
+Polity,Paper's design (lags of democracy only),paper,period,"One per period, summed",Inf,-0.5533186886827854,0.17524246100145682,0.6242225791850511,9,19,747,114
+Polity,Paper's design (lags of democracy only),paper,period_mean,"One per period, averaged",2,-0.5466521414476722,0.1780450181710198,0.5558650940843488,9,19,747,114
+Polity,Paper's design (lags of democracy only),paper,period_mean,"One per period, averaged",3,-0.5766716102795302,0.18143269200232215,0.5763898586709042,9,19,747,114
+Polity,Paper's design (lags of democracy only),paper,period_mean,"One per period, averaged",4,-0.5876000969583801,0.1793723876958532,0.5326422098318895,9,19,747,114
+Polity,Paper's design (lags of democracy only),paper,period_mean,"One per period, averaged",5,-0.560135392672251,0.17321147389012748,0.5281092616608651,9,19,747,114
+Polity,Paper's design (lags of democracy only),paper,period_mean,"One per period, averaged",6,-0.5458104720204107,0.1706951366680429,0.5475105836581542,9,19,747,114
+Polity,Paper's design (lags of democracy only),paper,period_mean,"One per period, averaged",7,-0.549610067208044,0.17081643664183302,0.5606957597267872,9,19,747,114
+Polity,Paper's design (lags of democracy only),paper,period_mean,"One per period, averaged",8,-0.5463230360381948,0.16762806178554637,0.5699261960101443,9,19,747,114
+Polity,Paper's design (lags of democracy only),paper,period_mean,"One per period, averaged",Inf,-0.5520550343458561,0.16844729928811605,0.5696599314557922,9,19,747,114
+Polity,Paper's design (lags of democracy only),paper,full,"One per variable, all lags pooled",2,-0.41258131256376007,0.1610681366375454,0.5817886745677583,1,11,747,114
+Polity,Paper's design (lags of democracy only),paper,full,"One per variable, all lags pooled",3,-0.41228237780588195,0.1633659989396937,0.5838322215187501,1,11,747,114
+Polity,Paper's design (lags of democracy only),paper,full,"One per variable, all lags pooled",4,-0.41142178162621423,0.16208195022595578,0.5897153403375408,1,11,747,114
+Polity,Paper's design (lags of democracy only),paper,full,"One per variable, all lags pooled",5,-0.4103252400872224,0.16306078414870004,0.5972114044787911,1,11,747,114
+Polity,Paper's design (lags of democracy only),paper,full,"One per variable, all lags pooled",6,-0.4062162226991832,0.16384222721201386,0.6253010452318786,1,11,747,114
+Polity,Paper's design (lags of democracy only),paper,full,"One per variable, all lags pooled",7,-0.4092330113081015,0.16388403164863227,0.6046779861764429,1,11,747,114
+Polity,Paper's design (lags of democracy only),paper,full,"One per variable, all lags pooled",8,-0.4028196853756931,0.16504657670905132,0.6485201032719146,1,11,747,114
+Polity,Paper's design (lags of democracy only),paper,full,"One per variable, all lags pooled",Inf,-0.4080622693101361,0.16432027145462902,0.6126812918415285,1,11,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,none,One per lag and period (uncollapsed),2,-0.591201227611057,0.19177149907850344,0.5261383835621718,18,27,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,none,One per lag and period (uncollapsed),3,-0.583753419634756,0.16484355264113829,0.5023175239031012,34,43,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,none,One per lag and period (uncollapsed),4,-0.46351681639625575,0.14842240282466151,0.5005738256581899,48,57,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,none,One per lag and period (uncollapsed),5,-0.4389117636000033,0.13440567873884388,0.4997824269919086,60,69,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,none,One per lag and period (uncollapsed),6,-0.36010490749702484,0.109716776442965,0.49680327402300284,70,79,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,none,One per lag and period (uncollapsed),7,-0.3043803910719447,0.10525718868763072,0.5111378752167182,78,87,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,none,One per lag and period (uncollapsed),8,-0.25895324452843527,0.10541784080316542,0.5191211194633666,84,93,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,none,One per lag and period (uncollapsed),Inf,-0.22492792561803032,0.09599194167686433,0.5225470253380617,90,99,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,lag,One per lag distance (Roodman),2,-0.4125813125636508,0.16106813663768813,0.5817886745678011,2,11,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,lag,One per lag distance (Roodman),3,-0.3860352075901474,0.15358964545632045,0.5651920597650353,4,13,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,lag,One per lag distance (Roodman),4,-0.3904781634895578,0.15342099591413652,0.5562441097945285,6,15,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,lag,One per lag distance (Roodman),5,-0.40260081025904526,0.15972709215560565,0.5532505955953959,8,17,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,lag,One per lag distance (Roodman),6,-0.41644524508993985,0.1607721236857294,0.5485819577593289,10,19,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,lag,One per lag distance (Roodman),7,-0.4381393946648684,0.16045850375043472,0.5425667110527352,12,21,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,lag,One per lag distance (Roodman),8,-0.4399217671074034,0.16176559255665957,0.5351800803012667,14,23,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,lag,One per lag distance (Roodman),Inf,-0.5215060379687877,0.16831517112309766,0.5090346526593206,18,27,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,period,"One per period, summed",2,-0.591201227611057,0.19177149907850344,0.5261383835621718,18,27,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,period,"One per period, summed",3,-0.9694180572217395,0.2895917006285966,0.350075130296263,18,27,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,period,"One per period, summed",4,-1.0683277303047394,0.3864253005960688,0.26746283757278544,18,27,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,period,"One per period, summed",5,-0.9698734903181592,0.38795732719457465,0.25471085211178757,18,27,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,period,"One per period, summed",6,-0.8468828251466931,0.34082489094365237,0.3230029602307001,18,27,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,period,"One per period, summed",7,-0.7238354655761654,0.29701422605893313,0.3769313985089058,18,27,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,period,"One per period, summed",8,-0.7460210460523342,0.29726605354148755,0.3224779532156612,18,27,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,period,"One per period, summed",Inf,-0.7545884526196911,0.29370003845031983,0.3141484923675604,18,27,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,period_mean,"One per period, averaged",2,-0.591201227611057,0.19177149907850344,0.5261383835621718,18,27,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,period_mean,"One per period, averaged",3,-0.6672455902548329,0.21047432401574512,0.5215162825115154,18,27,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,period_mean,"One per period, averaged",4,-0.7082844770471848,0.23655536510269556,0.44658004520590366,18,27,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,period_mean,"One per period, averaged",5,-0.7182454056520244,0.25068669639260815,0.4073062073154472,18,27,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,period_mean,"One per period, averaged",6,-0.731258827894516,0.2629295304008847,0.4020524776547756,18,27,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,period_mean,"One per period, averaged",7,-0.741917627010821,0.2671631805566204,0.4014286905382147,18,27,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,period_mean,"One per period, averaged",8,-0.7408175184661943,0.26853757273500717,0.40471454057214284,18,27,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,period_mean,"One per period, averaged",Inf,-0.7430641126694084,0.26863759256682124,0.4031182630095027,18,27,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,full,"One per variable, all lags pooled",2,-0.4125813125636508,0.16106813663768813,0.5817886745678011,2,11,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,full,"One per variable, all lags pooled",3,-0.7695702087373348,0.33703127795839155,0.39101037874118383,2,11,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,full,"One per variable, all lags pooled",4,-0.7969245271240268,0.37583152789169927,0.35565843408086906,2,11,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,full,"One per variable, all lags pooled",5,-0.8129050030461471,0.5002633879224915,0.3059231089743193,2,11,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,full,"One per variable, all lags pooled",6,-0.8375180024899507,0.4924316027082484,0.2930684922555038,2,11,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,full,"One per variable, all lags pooled",7,-0.5727262575004488,0.456686462399462,0.47415234491278824,2,11,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,full,"One per variable, all lags pooled",8,-0.9318861181137734,0.6037790246811344,0.21148281923423085,2,11,747,114
+Polity,Symmetric (lags of democracy and income),symmetric,full,"One per variable, all lags pooled",Inf,-0.7316233458887353,0.5843542052647656,0.3598199486903084,2,11,747,114

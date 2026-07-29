@@ -1,14 +1,15 @@
-.prep_dynamic <- function(file, dep, lags = 1:2) {
+prep_dynamic <- function(file, dep, inc = "lrgdpch", lags = 1:2) {
   d <- read_panel(file)
-  d <- add_lags(d, c(dep, "lrgdpch", "year"), lags)
+  d <- add_lags(d, c(dep, inc, "year"), lags)
   dl1 <- paste0(dep, "_l1"); dl2 <- paste0(dep, "_l2")
+  il1 <- paste0(inc, "_l1"); il2 <- paste0(inc, "_l2")
   d$Ldep  <- d[[dl1]]
-  d$Linc  <- d$lrgdpch_l1
+  d$Linc  <- d[[il1]]
   d$y     <- d[[dep]] - d[[dl1]]
   d$dLdep <- d[[dl1]] - d[[dl2]]
-  d$dLinc <- d$lrgdpch_l1 - d$lrgdpch_l2
+  d$dLinc <- d[[il1]] - d[[il2]]
   d$L2dep <- d[[dl2]]
-  d$L2inc <- d$lrgdpch_l2
+  d$L2inc <- d[[il2]]
   d
 }
 
@@ -41,7 +42,7 @@ build_dynamic_table <- function(dep) {
   }
   stats_col <- function(col, m, r2 = TRUE) tb$counts(col, m, r2 = r2)
 
-  d5 <- .prep_dynamic(FILE_P5, dep); s5 <- filter(d5, sample == 1)
+  d5 <- prep_dynamic(FILE_P5, dep); s5 <- filter(d5, sample == 1)
 
   m1 <- fit_ols(s5, dep, c("Ldep", "Linc"), country_fe = FALSE); coefcol(1, m1, "Ldep", "Linc"); stats_col(1, m1)
   m2 <- fit_ols(s5, dep, c("Ldep", "Linc"), country_fe = TRUE);  coefcol(2, m2, "Ldep", "Linc"); stats_col(2, m2)
@@ -60,13 +61,13 @@ build_dynamic_table <- function(dep) {
   push(6, LBL$inc, wald_p(m6, inclags, mod_nc(m6)), type = "ftest_p")
   stats_col(6, m6)
 
-  d10 <- .prep_dynamic(FILE_P10, dep); s10 <- filter(d10, sample == 1)
+  d10 <- prep_dynamic(FILE_P10, dep); s10 <- filter(d10, sample == 1)
   m7 <- fit_ols(s10, dep, c("Ldep", "Linc"), country_fe = TRUE); coefcol(7, m7, "Ldep", "Linc"); stats_col(7, m7)
   est8 <- complete_on(s10, c("y", "dLdep", "dLinc", "L2inc"))
   m8 <- fit_abgmm(d10, est8, dep_level = dep, endog = c("dLdep", "dLinc"), inst_extra = "L2inc")
   coefcol(8, m8, "dLdep", "dLinc"); stats_col(8, m8, r2 = FALSE)
 
-  d20 <- .prep_dynamic(FILE_P20, dep); s20 <- filter(d20, sample == 1)
+  d20 <- prep_dynamic(FILE_P20, dep); s20 <- filter(d20, sample == 1)
   m9 <- fit_ols(s20, dep, c("Ldep", "Linc"), country_fe = TRUE); coefcol(9, m9, "Ldep", "Linc"); stats_col(9, m9)
 
   tb$collect()

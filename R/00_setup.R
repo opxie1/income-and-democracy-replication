@@ -146,27 +146,41 @@ drop_collinear <- function(M) {
 }
 
 AGG_SCHEMES <- c("none", "lag", "period", "period_mean", "full")
+AGG_FAMILIES <- c("block", "period_geom")
+
+SCHEME_LABEL <- c(
+  none = "One per lag and period (uncollapsed)",
+  lag = "One per lag distance (Roodman)",
+  period = "One per period, summed",
+  period_mean = "One per period, averaged",
+  full = "One per variable, all lags pooled")
 
 gmm_instruments <- function(df_full, est, dep_level, group = "code", period = "period",
-                            lag_start = 2L, lag_max = Inf, scheme = "none") {
-  stopifnot(scheme %in% AGG_SCHEMES)
+                            lag_start = 2L, lag_max = Inf, scheme = "none",
+                            block_size = 1L, rho = 1) {
+  stopifnot(scheme %in% c(AGG_SCHEMES, AGG_FAMILIES), block_size >= 1L, rho > 0)
   key <- paste(df_full[[group]], df_full[[period]], sep = "\r")
   periods <- sort(unique(df_full[[period]]))
+  p0 <- min(periods)
   cols <- list(); hits <- list()
   for (vname in dep_level) {
     lev <- df_full[[vname]]
     for (p in periods) for (q in periods[periods <= p - lag_start & periods >= p - lag_max]) {
-      v <- ifelse(est[[period]] == p, lev[match(paste(est[[group]], q, sep = "\r"), key)], 0)
-      v[is.na(v)] <- 0
+      src <- lev[match(paste(est[[group]], q, sep = "\r"), key)]
+      avail <- est[[period]] == p & !is.na(src)
+      v <- ifelse(avail, src, 0)
+      if (scheme == "period_geom") v <- v * rho^(p - q - lag_start)
       if (!any(v != 0)) next
       k <- paste0(vname, "|", switch(scheme,
                   none = paste0("g", p, "_", q),
                   lag  = paste0("l", p - q),
                   period = paste0("p", p),
                   period_mean = paste0("p", p),
-                  full = "all"))
-      if (is.null(cols[[k]])) { cols[[k]] <- v; hits[[k]] <- (v != 0) + 0 }
-      else { cols[[k]] <- cols[[k]] + v; hits[[k]] <- hits[[k]] + (v != 0) }
+                  period_geom = paste0("p", p),
+                  full = "all",
+                  block = paste0("l", p - q, "b", ceiling((p - p0 + 1) / block_size))))
+      if (is.null(cols[[k]])) { cols[[k]] <- v; hits[[k]] <- avail + 0 }
+      else { cols[[k]] <- cols[[k]] + v; hits[[k]] <- hits[[k]] + avail }
     }
   }
   if (scheme == "period_mean")
@@ -177,7 +191,7 @@ gmm_instruments <- function(df_full, est, dep_level, group = "code", period = "p
 fit_abgmm <- function(df_full, est, dep_level, endog, exog = character(),
                       inst_extra = character(), group = "code", period = "period",
                       yearvar = "year", prevyear = "year_l1", gmm_lag_start = 2L,
-                      lag_max = Inf, scheme = "none") {
+                      lag_max = Inf, scheme = "none", block_size = 1L, rho = 1) {
   est <- est[order(est[[group]], est[[period]]), ]
 
   yrs <- sort(unique(est[[yearvar]]))
@@ -188,7 +202,8 @@ fit_abgmm <- function(df_full, est, dep_level, endog, exog = character(),
   X <- drop_collinear(cbind(as.matrix(est[, c(endog, exog), drop = FALSE]), yd))
 
   Zgmm <- gmm_instruments(df_full, est, dep_level, group, period,
-                          lag_start = gmm_lag_start, lag_max = lag_max, scheme = scheme)
+                          lag_start = gmm_lag_start, lag_max = lag_max, scheme = scheme,
+                          block_size = block_size, rho = rho)
   Z <- drop_collinear(cbind(Zgmm, yd,
          if (length(exog))       as.matrix(est[, exog, drop = FALSE]),
          if (length(inst_extra)) as.matrix(est[, inst_extra, drop = FALSE])))
@@ -213,7 +228,7 @@ fit_abgmm <- function(df_full, est, dep_level, endog, exog = character(),
   }
   V <- bread %*% (t(ZtX) %*% W %*% M %*% W %*% ZtX) %*% bread
   list(coef = beta, se = sqrt(diag(V)), nobs = length(est$y),
-       n_country = length(unique(grp)), n_inst = ncol(Z))
+       n_country = length(unique(grp)), n_inst = ncol(Z), n_gmm = ncol(Zgmm))
 }
 
 LBL <- list(
