@@ -1,5 +1,6 @@
 source(here::here("R", "00_setup.R"))
 
+# table5
 DEP <- "fhpolrigaug"
 
 d5 <- prep_savings_panel()

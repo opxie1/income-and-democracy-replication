@@ -8,6 +8,7 @@ suppressPackageStartupMessages({
 
 here::i_am("R/00_setup.R")
 
+# paths
 PATH_KIT    <- here("replication-kit")
 FILE_XLS    <- file.path(PATH_KIT, "Income-and-Democracy-Data-AER-adjustment.xls")
 
@@ -30,6 +31,7 @@ if (!file.exists(FILE_XLS)) {
        "into a folder called 'replication-kit' in the project root (see README).")
 }
 
+# columns
 COLS_5YR <- c("code", "country", "code_numeric", "year", "year_numeric",
               "sample", "samplebalancefe", "samplebalancegmm", "socialist",
               "fhpolrigaug", "polity4", "lrgdpch", "nsave", "worldincome",
@@ -40,6 +42,7 @@ COLS_FREQ <- c("code", "country", "code_numeric", "year", "year_numeric",
 COLS_MAD  <- c("code", "country", "code_numeric", "year", "year_numeric",
                "sample", "noextrapolation", "madid", "polity4", "lrgdpmad")
 
+# labels
 VAR_LABELS <- c(
   code             = "Country code (3-letter)",
   country          = "Country name",
@@ -76,6 +79,7 @@ apply_labels <- function(df) {
   df
 }
 
+# lags
 add_lags <- function(df, vars, ks, id = "code", time = "period") {
   stopifnot(!anyDuplicated(df[c(id, time)]))
   key <- paste(df[[id]], df[[time]], sep = "\r")
@@ -86,6 +90,7 @@ add_lags <- function(df, vars, ks, id = "code", time = "period") {
   df
 }
 
+# panels
 read_panel <- function(file) {
   read_parquet(file) |> arrange(code, year_numeric) |> mutate(period = year_numeric)
 }
@@ -104,6 +109,7 @@ mod_nobs <- function(m) m$nobs
 mod_nc   <- function(m) { a <- attr(m, "n_country"); if (!is.null(a)) a else m$n_country }
 mod_r2   <- function(m) if (!is.null(m$r.squared)) unname(m$r.squared) else NA_real_
 
+# wald
 wald_stat <- function(m, terms, n_clusters) {
   b <- m$coefficients[terms]
   V <- m$vcov[terms, terms, drop = FALSE]
@@ -114,8 +120,12 @@ wald_stat <- function(m, terms, n_clusters) {
 
 wald_p <- function(m, terms, n_clusters) wald_stat(m, terms, n_clusters)$p
 
+# effects
+FE_TERMS  <- c("factor(year)", "factor(code)")
+FE_YEAR   <- FE_TERMS[1]
+
 fit_ols <- function(df, lhs, rhs, country_fe, cluster = "code") {
-  terms <- c(rhs, "factor(year)", if (country_fe) "factor(code)")
+  terms <- c(rhs, FE_YEAR, if (country_fe) FE_TERMS[2])
   f <- reformulate(terms, response = lhs)
   d <- complete_on(df, c(lhs, rhs, cluster))
   m <- lm_robust(f, data = d, clusters = d[[cluster]], se_type = "stata")
@@ -125,7 +135,7 @@ fit_ols <- function(df, lhs, rhs, country_fe, cluster = "code") {
 
 fit_iv <- function(df, lhs, endog, inst, exog = character(), country_fe = TRUE,
                    cluster = "code") {
-  dummies <- c("factor(year)", if (country_fe) "factor(code)")
+  dummies <- c(FE_YEAR, if (country_fe) FE_TERMS[2])
   rhs  <- paste(c(endog, exog, dummies), collapse = " + ")
   inst_rhs <- paste(c(inst, exog, dummies), collapse = " + ")
   f <- as.formula(paste(lhs, "~", rhs, "|", inst_rhs))
@@ -140,11 +150,13 @@ fit_first_stage <- function(df, endog, inst, exog = character(), country_fe = TR
   fit_ols(df, lhs = endog, rhs = c(inst, exog), country_fe = country_fe, cluster = cluster)
 }
 
+# rank
 drop_collinear <- function(M) {
   q <- qr(M)
   M[, sort(q$pivot[seq_len(q$rank)]), drop = FALSE]
 }
 
+# schemes
 AGG_SCHEMES <- c("none", "lag", "period", "period_mean", "full")
 AGG_FAMILIES <- c("block", "period_geom")
 
@@ -153,8 +165,40 @@ SCHEME_LABEL <- c(
   lag = "One per lag distance (Roodman)",
   period = "One per period, summed",
   period_mean = "One per period, averaged",
-  full = "One per variable, all lags pooled")
+  full = "One per variable, all lags collapsed")
 
+# sweeps
+LAG_WINDOW  <- 2:8
+KEEP_LABEL  <- c(none = "uncollapsed", lag = "collapsed")
+GMM_MODELS  <- c(onestep = "One-step", twostep = "Two-step")
+OVERID_TEST <- c(onestep = "Sargan", twostep = "Hansen")
+GEOM_RHO    <- seq(0.1, 1, by = 0.1)
+SUBSET_DRAWS <- 200L
+SUBSET_SEED  <- 20260811L
+
+# inference
+CI_LEVEL   <- 0.05
+AR_GRID    <- seq(-6, 6, by = 0.002)
+CLR_GRID   <- seq(-6, 6, by = 0.005)
+CLR_SIM    <- 400000L
+CLR_SEED   <- 20260728L
+
+# thresholds
+STOCK_YOGO_10 <- list(`1` = c(`1` = 16.38, `2` = 19.93, `3` = 22.30, `4` = 24.58),
+                      `2` = c(`2` = 7.03))
+sy10 <- function(n_endog, k)
+  unname(STOCK_YOGO_10[[as.character(n_endog)]][as.character(k)])
+MOP_CV_10 <- 23.109
+
+# citations
+CITE_ARELLANO_OPT <- "Arellano (2003b)"
+
+TEST_LABEL <- c(
+  ar = "Anderson-Rubin (clustered)",
+  clr_robust = "Moreira CLR, cluster-robust (Kleibergen)",
+  clr_hom = "Moreira CLR (homoskedastic)")
+
+# instruments
 gmm_instruments <- function(df_full, est, dep_level, group = "code", period = "period",
                             lag_start = 2L, lag_max = Inf, scheme = "none",
                             block_size = 1L, rho = 1) {
@@ -188,10 +232,13 @@ gmm_instruments <- function(df_full, est, dep_level, group = "code", period = "p
   do.call(cbind, cols)
 }
 
+# gmm
 fit_abgmm <- function(df_full, est, dep_level, endog, exog = character(),
                       inst_extra = character(), group = "code", period = "period",
                       yearvar = "year", prevyear = "year_l1", gmm_lag_start = 2L,
-                      lag_max = Inf, scheme = "none", block_size = 1L, rho = 1) {
+                      lag_max = Inf, scheme = "none", block_size = 1L, rho = 1,
+                      keep_gmm = NULL, model = "onestep") {
+  stopifnot(model %in% names(GMM_MODELS))
   est <- est[order(est[[group]], est[[period]]), ]
 
   yrs <- sort(unique(est[[yearvar]]))
@@ -204,6 +251,7 @@ fit_abgmm <- function(df_full, est, dep_level, endog, exog = character(),
   Zgmm <- gmm_instruments(df_full, est, dep_level, group, period,
                           lag_start = gmm_lag_start, lag_max = lag_max, scheme = scheme,
                           block_size = block_size, rho = rho)
+  if (!is.null(keep_gmm)) Zgmm <- Zgmm[, keep_gmm, drop = FALSE]
   Z <- drop_collinear(cbind(Zgmm, yd,
          if (length(exog))       as.matrix(est[, exog, drop = FALSE]),
          if (length(inst_extra)) as.matrix(est[, inst_extra, drop = FALSE])))
@@ -216,21 +264,42 @@ fit_abgmm <- function(df_full, est, dep_level, endog, exog = character(),
     for (j in seq_len(Ti)) for (k in seq_len(Ti)) if (abs(pp[j] - pp[k]) == 1) H[j, k] <- -1
     Zi <- Z[idx, , drop = FALSE]; A <- A + crossprod(Zi, H %*% Zi)
   }
-  W <- MASS::ginv(A)
   ZtX <- crossprod(Z, X); Zty <- crossprod(Z, est$y)
-  bread <- solve(t(ZtX) %*% W %*% ZtX)
-  beta <- as.numeric(bread %*% (t(ZtX) %*% W %*% Zty)); names(beta) <- colnames(X)
-  e <- as.numeric(est$y - X %*% beta)
-  M <- matrix(0, ncol(Z), ncol(Z))
-  for (g in unique(grp)) {
-    idx <- which(grp == g); gi <- crossprod(Z[idx, , drop = FALSE], e[idx])
-    M <- M + gi %*% t(gi)
+  solve_gmm <- function(W) {
+    bread <- solve(t(ZtX) %*% W %*% ZtX)
+    b <- as.numeric(bread %*% (t(ZtX) %*% W %*% Zty)); names(b) <- colnames(X)
+    list(bread = bread, beta = b, e = as.numeric(est$y - X %*% b))
   }
-  V <- bread %*% (t(ZtX) %*% W %*% M %*% W %*% ZtX) %*% bread
-  list(coef = beta, se = sqrt(diag(V)), nobs = length(est$y),
-       n_country = length(unique(grp)), n_inst = ncol(Z), n_gmm = ncol(Zgmm))
+  meat <- function(e) {
+    M <- matrix(0, ncol(Z), ncol(Z))
+    for (g in unique(grp)) {
+      idx <- which(grp == g); gi <- crossprod(Z[idx, , drop = FALSE], e[idx])
+      M <- M + gi %*% t(gi)
+    }
+    M
+  }
+  W1 <- MASS::ginv(A)
+  s1 <- solve_gmm(W1)
+  M1 <- meat(s1$e)
+  if (model == "onestep") {
+    fit <- s1
+    V <- s1$bread %*% (t(ZtX) %*% W1 %*% M1 %*% W1 %*% ZtX) %*% s1$bread
+  } else {
+    W2 <- MASS::ginv(M1)
+    fit <- solve_gmm(W2)
+    V <- fit$bread
+  }
+  W2 <- MASS::ginv(M1)
+  gbar <- crossprod(Z, fit$e)
+  df_j <- ncol(Z) - ncol(X)
+  hansen <- as.numeric(t(gbar) %*% W2 %*% gbar)
+  list(coef = fit$beta, se = sqrt(diag(V)), nobs = length(est$y),
+       n_country = length(unique(grp)), n_inst = ncol(Z), n_gmm = ncol(Zgmm),
+       n_par = ncol(X), model = model, hansen = hansen, hansen_df = df_j,
+       hansen_p = if (df_j > 0L) pchisq(hansen, df_j, lower.tail = FALSE) else NA_real_)
 }
 
+# rows
 LBL <- list(
   dem = "Democracy_t-1", inc = "Log GDP per capita_t-1",
   obs = "Observations", ctry = "Countries", r2 = "R-squared",
@@ -241,14 +310,45 @@ LBL <- list(
   twgdp1 = "Trade-weighted log GDP_t-1", twgdp2 = "Trade-weighted log GDP_t-2")
 fstg <- function(x) paste("First stage:", x)
 
+# measures
 MEASURES <- list(
   list(dep = "fhpolrigaug", inc = "lrgdpch", label = "Freedom House"),
   list(dep = "polity4",     inc = "lrgdpch", label = "Polity"))
 
 ROWS_DYNAMIC <- c(LBL$dem, LBL$inc, LBL$obs, LBL$ctry, LBL$r2)
 
+# format
 num <- function(x, d = 3) ifelse(is.na(x), "", sprintf(paste0("%.", d, "f"), x))
 
+NUMWORD <- c("one", "two", "three", "four", "five", "six", "seven", "eight",
+             "nine", "ten", "eleven", "twelve")
+spell <- function(n) if (n >= 1L && n <= length(NUMWORD)) NUMWORD[n] else as.character(n)
+sentence_case <- function(x) sub("^(.)", "\\U\\1", x, perl = TRUE)
+commas <- function(x, d = NULL) paste(
+  if (!is.numeric(x)) x
+  else if (is.null(d)) format(x, trim = TRUE, drop0trailing = TRUE)
+  else num(x, d), collapse = ", ")
+
+# wrapping
+MD_WIDTH <- 78
+
+md_doc <- function(...) {
+  blocks <- unlist(list(...), use.names = FALSE)
+  out <- character(0)
+  for (b in blocks) {
+    if (!nzchar(b)) { out <- c(out, ""); next }
+    if (grepl("^#", b)) { out <- c(out, b, ""); next }
+    if (grepl("^(\\||-{2,}|[ ]{2})", b)) { out <- c(out, b); next }
+    out <- c(out, strwrap(b, width = MD_WIDTH), "")
+  }
+  out <- out[c(TRUE, head(out, -1) != "" | out[-1] != "")]
+  while (length(out) && !nzchar(out[length(out)])) out <- head(out, -1)
+  out
+}
+
+write_doc <- function(file, ...) writeLines(md_doc(...), file.path(PATH_DOCS, file))
+
+# plm
 gmm_panel <- function(s, dep, inc)
   pdata.frame(s[stats::complete.cases(s[, c(dep, inc)]), ], index = c("code", "year_numeric"))
 gmm_formula <- function(dep, inc, lags)
@@ -259,6 +359,7 @@ co_row  <- function(co, var) co[grep(paste0("lag\\(", var), rownames(co))[1], 1:
 pgmm_countries <- function(m)
   sum(vapply(m$residuals, function(r) any(r != 0), logical(1)))
 
+# builder
 table_builder <- function(dep, ...) {
   rows <- list()
   extra <- list(...)
@@ -284,3 +385,48 @@ table_builder <- function(dep, ...) {
 }
 
 source(here::here("R", "_engine.R"))
+source(here::here("R", "_weakiv.R"))
+
+# weakiv
+DEP_WEAKIV <- MEASURES[[1]]$dep
+
+# specs
+TSLS_SPECS <- list(
+  list(tab = "5", col = 4, panel = "savings",     inst = "z2",            exog = character()),
+  list(tab = "5", col = 5, panel = "savings",     inst = "z2",            exog = "Ldep"),
+  list(tab = "5", col = 7, panel = "savings",     inst = "z2",            exog = "Llabor"),
+  list(tab = "5", col = 8, panel = "savings",     inst = "z2",
+       exog = c("Ldep", "L2dep", "L3dep")),
+  list(tab = "5", col = 9, panel = "savings",     inst = c("z2", "z3"),   exog = character()),
+  list(tab = "6", col = 4, panel = "worldincome", inst = "z1",            exog = character()),
+  list(tab = "6", col = 5, panel = "worldincome", inst = "z1",            exog = "Ldep"),
+  list(tab = "6", col = 7, panel = "worldincome", inst = "z1",            exog = "wdem"),
+  list(tab = "6", col = 8, panel = "worldincome", inst = "z2wi",          exog = character()),
+  list(tab = "6", col = 9, panel = "worldincome", inst = c("z1", "z2wi"), exog = character()))
+
+AH_SPEC <- list(tab = c("2", "3"), col = 3, endog = c("dLdep", "dLinc"),
+                inst = c("L2dep", "L2inc"))
+
+spec_label <- function(tab, col) sprintf("Table %s col %d", tab, col)
+
+tsls_panel <- local({
+  builders <- list(savings = prep_savings_panel, worldincome = prep_worldincome_panel)
+  cache <- list()
+  function(name) {
+    if (is.null(cache[[name]])) cache[[name]] <<- filter(builders[[name]](), sample == 1)
+    cache[[name]]
+  }
+})
+
+spec_data <- function(sp, dep = DEP_WEAKIV)
+  complete_on(tsls_panel(sp$panel), c(dep, "Linc", sp$inst, sp$exog, "code"))
+
+# published
+published <- local({
+  cache <- NULL
+  function(...) {
+    if (is.null(cache))
+      cache <<- read_csv(file.path(PATH_DOCS, "published_values.csv"), show_col_types = FALSE)
+    filter(cache, ...)
+  }
+})

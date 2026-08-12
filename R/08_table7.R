@@ -1,5 +1,6 @@
 source(here::here("R", "00_setup.R"))
 
+# table7
 build_t7_panel <- function(file, panel) {
   DEP <- "polity4"
   d <- read_panel(file)

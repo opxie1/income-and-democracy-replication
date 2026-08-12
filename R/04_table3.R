@@ -1,5 +1,6 @@
 source(here::here("R", "00_setup.R"))
 
+# table3
 tab <- build_dynamic_table("polity4")
 tab <- mutate(tab, table = "3", .before = 1)
 

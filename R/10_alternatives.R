@@ -1,6 +1,7 @@
 source(here::here("R", "00_setup.R"))
 suppressPackageStartupMessages(library(plm))
 
+# benchmark
 data("EmplUK", package = "plm")
 .bench <- pgmm(log(emp) ~ lag(log(emp), 1:2) + lag(log(wage), 0:1) + log(capital) +
                  lag(log(output), 0:1) | lag(log(emp), 2:99),
@@ -9,6 +10,7 @@ stopifnot(abs(coef(.bench)["lag(log(emp), 1:2)1"] - 0.4742) < 0.001,
           abs(coef(.bench)["lag(log(emp), 1:2)2"] + 0.0530) < 0.001)
 cat("pgmm reproduces the Arellano-Bond (1991) benchmark.\n")
 
+# ladder
 ladder <- function(dep, inc, panel_label) {
   d <- prep_dynamic(FILE_P5, dep, inc)
   s <- filter(d, sample == 1)
@@ -46,7 +48,7 @@ ladder <- function(dep, inc, panel_label) {
         pgmm_countries(m), ncol(m$W[[1]]),
         tryCatch(mtest(m, 1)$p.value, error = function(e) NA_real_),
         tryCatch(mtest(m, 2)$p.value, error = function(e) NA_real_),
-        tryCatch(sargan(m)$p.value, error = function(e) NA_real_))
+        tryCatch(sargan(m, weights = model)$p.value, error = function(e) NA_real_))
   }
   gmm_row("Arellano-Bond, difference GMM (one-step)", "onestep", "d")
   gmm_row("Arellano-Bond, difference GMM (two-step)", "twostep", "d")
@@ -56,9 +58,28 @@ ladder <- function(dep, inc, panel_label) {
   bind_rows(rows)
 }
 
+# estimates
 alt <- bind_rows(lapply(MEASURES, function(ms) ladder(ms$dep, ms$inc, ms$label)))
 write_csv(alt, file.path(PATH_OUTPUT, "alternatives.csv"))
 
+ab <- filter(alt, grepl("^Arellano-Bond", estimator))
+for (pl in unique(ab$panel)) {
+  r <- filter(ab, panel == pl)
+  ref <- filter(r, grepl("replication", estimator))
+  stopifnot(nrow(ref) == 1L,
+            all(abs(r$income - ref$income) <= r$income_se + 1e-12))
+}
+cat("The Arellano-Bond rows agree to within one standard error.\n")
+
+# checks
+sysp <- function(pl, wt)
+  filter(alt, panel == pl, estimator == sprintf("Blundell-Bond, system GMM (%s)", wt))$overid_p
+stopifnot(sysp(MEASURES[[2]]$label, "two-step") < CI_LEVEL,
+          sysp(MEASURES[[1]]$label, "two-step") >= CI_LEVEL,
+          all(filter(alt, grepl("one-step", estimator))$overid_p < CI_LEVEL))
+cat("The Hansen test separates the two measures, and the Sargan test rejects every row.\n")
+
+# layout
 cell <- function(b, se) ifelse(is.na(b), "", sprintf("%s (%s)", num(b), num(se)))
 
 txt <- c()
@@ -79,6 +100,7 @@ for (pl in unique(alt$panel)) {
 }
 writeLines(txt, file.path(PATH_OUTPUT, "alternatives.txt"))
 
+# table
 md_tab <- function(df) {
   out <- c("| Estimator | Income (SE) | Democracy (SE) | Countries | Instruments | AR(1) p | AR(2) p | Overid p |",
            "|---|---|---|---|---|---|---|---|")
@@ -94,79 +116,103 @@ md_tab <- function(df) {
   out
 }
 
+# report
 md <- c(
 "# Alternative estimators for the income effect",
 "",
-"The paper asks whether a country growing richer ends up more democratic. A plain",
-"correlation can fool you, so the authors use methods that take out the steady",
-"differences between countries and the fact that democracy changes slowly. Here I",
-"estimate that income effect several different ways and put them side by side.",
-"This is the follow-up Professor Torgovitsky asked for. All of these use the",
-"five-year sample, the same one behind Tables 2 and 3.",
+"The paper asks whether a country becomes more democratic when it becomes richer.",
+"A plain correlation can give the wrong answer. The authors therefore use methods",
+"that remove the steady differences between countries and account for the slow",
+"movement of democracy. Here I estimate the income effect in several ways and put",
+"the results side by side. Professor Torgovitsky asked for this comparison. All of",
+"the estimates use the five-year sample, the same sample behind Tables 2 and 3.",
 "",
 "## The methods, in plain terms",
 "",
-"- Pooled regression: ignores the steady differences between countries, so it",
-"  reads too high.",
-"- Fixed effects: takes out anything about a country that stays the same over",
-"  time. With only a few time periods and a lagged outcome, it still has a known",
+"- Pooled OLS pools the observations across countries. This method pools",
+"  observations, not instruments. Pooled OLS ignores the steady differences",
+"  between countries, and the estimate is therefore too high.",
+"- Fixed effects removes anything about a country that stays the same over time.",
+"  With few time periods and a lagged outcome, this method still has a known",
 "  bias.",
-"- Anderson-Hsiao: looks at changes instead of levels to cancel the steady",
-"  differences, then uses values from two periods earlier as instruments.",
-"- Arellano-Bond (difference GMM): the same change-based idea, using a set of",
-"  earlier values as instruments. This is the method in the paper's GMM columns.",
-"- Blundell-Bond (system GMM): adds a second set of conditions, in levels, on top",
-"  of Arellano-Bond. It is more precise when those conditions hold, but they are",
-"  an extra assumption.",
+"- Anderson-Hsiao uses changes instead of levels to cancel the steady",
+"  differences. It then uses values from two periods earlier as instruments.",
+"- Arellano-Bond (difference GMM) also works with changes, and it uses a set of",
+"  earlier values as instruments. The paper uses this method in its GMM columns.",
+"- Blundell-Bond (system GMM) keeps the Arellano-Bond conditions and adds a",
+"  second set of conditions in levels. When these level conditions hold, system",
+"  GMM is more precise. However, the level conditions are an extra assumption.",
 "",
-"\"One-step\" and \"two-step\" are two ways of weighting these GMM estimators. The",
-"two-step standard errors use the Windmeijer correction. To keep the number of",
-"instruments small, so the tests below mean something, the GMM rows use a small",
-"instrument set: collapsed, and limited to lags two through four.",
+"\"One-step\" and \"two-step\" are two weighting schemes for these GMM estimators.",
+"The two-step standard errors use the Windmeijer correction. The GMM rows use a",
+"small instrument set: collapsed, and limited to lags two through four. A small",
+"instrument set keeps the diagnostic tests informative.",
 "",
 "## How to read the diagnostics",
 "",
-"- The AR(1) p should be small and the AR(2) p should be large. That is the",
-"  pattern you want, and it holds throughout.",
-"- The overidentification p (Hansen's J test) should not be small. A small",
-"  value warns that the instruments may not all be valid.",
+"- A valid specification gives a small AR(1) p and a large AR(2) p. Every GMM row",
+"  here shows this pattern.",
+"- A valid specification gives an overidentification p that is not small. A small",
+"  value warns that some of the instruments can be invalid. Each GMM row reports",
+"  the test of its own estimator. The one-step rows report the Sargan test, which",
+"  assumes well-behaved errors. The two-step rows report the Hansen test, which",
+"  does not make this assumption.",
+"- The Sargan test rejects every GMM row here, so it separates nothing. The paper",
+"  clusters all of its own inference by country, and that is the situation in",
+"  which a homoskedastic test over-rejects. The Hansen column is the one to read.",
 "",
 "## Results", "")
 for (pl in unique(alt$panel)) md <- c(md, paste0("### ", pl), "", md_tab(filter(alt, panel == pl)), "")
 md <- c(md,
 "## What the comparison shows",
 "",
-"The change-based methods agree. Once the steady differences and the slow movement",
-"of democracy are accounted for, the effect of income on democracy is small, and",
-"in the instrumental-variables estimates it is negative rather than positive. This",
-"is the paper's main finding, and it shows up in fixed effects, Anderson-Hsiao,",
-"and Arellano-Bond alike. The two Arellano-Bond versions here, the one I wrote by",
-"hand for the replication and the one from the plm package, land in the same",
-"place.",
+"The change-based methods agree with each other. These methods remove the steady",
+"differences between countries and account for the slow movement of democracy.",
+"After these corrections, the effect of income on democracy is small. In the",
+"instrumental-variables estimates the effect is negative, not positive. This",
+"result is the main finding of the paper, and fixed effects, Anderson-Hsiao and",
+"Arellano-Bond all show it.",
 "",
-"System GMM is the exception. Adding the level conditions pushes the income",
-"coefficient to a small positive, statistically significant value for both",
-"democracy measures. That reversal leans entirely on the extra conditions, and",
-"the two measures treat them differently. For Polity the overidentification",
-"test rejects them outright. For Freedom House the test raises no objection, so",
-"there the positive estimate stands or falls with an assumption the paper",
-"argues democracies in transition are unlikely to satisfy. Either way, the",
-"estimates built on changes alone are all small or negative; the positive,",
-"significant number appears only once the added conditions come in.",
+"The Arellano-Bond rows differ among themselves by less than one standard error.",
+"I do not expect closer agreement than this. The replication row uses the",
+"instrument set of the paper, which is uncollapsed and uses every lag. The plm",
+"rows use a collapsed set limited to lags two through four.",
 "",
-"So the paper's conclusion holds up under the change-based methods. The only way",
-"to get a positive income effect back is to assume the extra system-GMM conditions",
-"hold.",
+"The gap between the one-step and two-step rows carries little information here.",
+"The gap is small because the instrument set is small. The gap is not small in",
+"general. With a wide lag window, the weighting step decides whether collapsing",
+"works at all. The file docs/instruments.md covers this question.",
+"",
+"System GMM is the exception. The level conditions push the income coefficient to",
+"a small positive value for both democracy measures, and that value is",
+"statistically significant. This reversal rests entirely on the level conditions.",
+"The two democracy measures treat these conditions differently. For Polity, the",
+"Hansen test rejects them outright. For Freedom House, the Hansen test raises no",
+"objection.",
+"",
+"For Freedom House the positive estimate therefore depends on one assumption. The",
+"paper argues that democracies in transition are unlikely to satisfy this",
+"assumption. Either way, every change-based estimate is small or negative. The",
+"positive and significant number appears only in the rows that add the level",
+"conditions.",
+"",
+"The conclusion of the paper therefore holds under the change-based methods. A",
+"positive income effect returns only under the assumption that the level",
+"conditions hold.",
 "",
 "## Checks",
 "",
-"I checked these numbers two ways. The GMM engine (plm's pgmm) reproduces the",
-"textbook Arellano-Bond (1991) employment results exactly, and the run stops if",
-"it ever fails to. Separately, R/11_crosscheck.R runs difference and system GMM",
-"through an independent package, pdynmc, with its own uncollapsed instrument",
-"set, and it stops with an error unless it finds the same picture as the tables",
-"above: income negative under difference GMM and positive under system GMM.",
-"That script needs the pdynmc package; run it with Rscript R/11_crosscheck.R.")
+"I checked these numbers two ways. The GMM engine is the pgmm function in plm. It",
+"reproduces the textbook Arellano-Bond (1991) employment results exactly. If it",
+"does not reproduce them, the script stops.",
+"",
+"The script R/11_crosscheck.R runs difference and system GMM through an",
+"independent package, pdynmc, with its own uncollapsed instrument set. That",
+"script must find the same result as the tables above: income negative under",
+"difference GMM and positive under system GMM. If it finds anything else, the",
+"script stops. R/11_crosscheck.R needs the pdynmc package.",
+"",
+"To run the cross-check, use `Rscript R/11_crosscheck.R`.")
 writeLines(md, file.path(PATH_DOCS, "alternatives.md"))
 
 cat("Alternatives written. Income coefficient by estimator:\n")

@@ -2,10 +2,12 @@ source(here::here("R", "00_setup.R"))
 
 cat("Reading sheets from", basename(FILE_XLS), "...\n")
 
+# sheets
 read_sheet <- function(sheet) {
   suppressMessages(read_excel(FILE_XLS, sheet = sheet))
 }
 
+# panels
 panels_raw <- list(
   p5yr    = read_sheet("5 Year Panel"),
   annual  = read_sheet("Annual Panel"),

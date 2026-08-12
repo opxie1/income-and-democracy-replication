@@ -1,5 +1,6 @@
 source(here::here("R", "00_setup.R"))
 
+# table2
 tab <- build_dynamic_table("fhpolrigaug")
 tab <- mutate(tab, table = "2", .before = 1)
 

@@ -1,5 +1,6 @@
 source(here::here("R", "00_setup.R"))
 
+# table4
 DEP <- "fhpolrigaug"
 
 d5 <- read_panel(FILE_P5)

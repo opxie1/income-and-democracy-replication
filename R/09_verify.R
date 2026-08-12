@@ -13,6 +13,8 @@ mine <- bind_rows(lapply(
   file.path(PATH_OUTPUT, paste0("table_", c(2:7), ".csv")), read_out))
 
 lab_disp <- c(unlist(LBL), setNames(fstg(unlist(LBL)), paste0("fs_", names(LBL))))
+
+# published
 pub <- read_csv(file.path(PATH_DOCS, "published_values.csv"), show_col_types = FALSE) |>
   mutate(table = as.character(table), panel = blank_na(panel),
          pub = value, pub_se = se) |>
@@ -67,65 +69,72 @@ for (nm in names(panel_files)) {
                                  kb = round(file.info(panel_files[[nm]])$size / 1024, 1)))
 }
 
+# report
 md <- c("# Replication check",
         "",
-        "I checked every number shown in Tables 2 through 7 of Acemoglu, Johnson,",
-        "Robinson, and Yared (2008) against what this code produces. I matched the",
-        "coefficients and standard errors to three decimals, the R-squared and",
-        "F-test p-values to two, and the observation and country counts exactly.",
+        "I checked every number in Tables 2 through 7 of Acemoglu, Johnson,",
+        "Robinson, and Yared (2008) against the output of this code. The",
+        "coefficients and the standard errors must agree to three decimals. The",
+        "R-squared values and the F-test p-values must agree to two decimals. The",
+        "observation counts and the country counts must agree exactly.",
         "",
         "## How the tables compare",
         "",
-        "| Table | Cells | Mismatches | Max abs diff |",
-        "|-------|-------|------------|--------------|")
+        "| Table | Numbers | Unexplained mismatches | Largest absolute difference |",
+        "|-------|---------|------------------------|-----------------------------|")
 for (i in seq_len(nrow(summ))) {
   md <- c(md, sprintf("| %s | %d | %d | %.3g |",
                       summ$table[i], summ$cells[i], summ$failures[i], summ$max_diff[i]))
 }
 total_fail <- sum(summ$failures)
 md <- c(md, "",
-        sprintf("In all, I checked %d numbers, and %d of them disagree without a reason.",
+        sprintf("I checked %d numbers in all. The count of unexplained mismatches is %d.",
                 nrow(cmp), total_fail),
+        "An unexplained mismatch is a number that differs from the paper for a reason",
+        "that I do not document.",
         "")
 
 noted <- filter(cmp, !matched & has_note)
 if (nrow(noted)) {
   md <- c(md,
-          if (nrow(noted) == 1) c("## The one difference", "",
-            "One number does not match, and it is a typo in the paper, not in my code:", "")
-          else c("## Documented differences", "",
-            "These numbers do not match, each for the reason noted:", ""))
+          if (nrow(noted) == 1) c("## The one documented mismatch", "",
+            "One number does not match. The cause is a typo in the paper, not an error in this code:", "")
+          else c("## Documented mismatches", "",
+            "These numbers do not match. Each entry below gives the reason:", ""))
   for (i in seq_len(nrow(noted))) {
-    md <- c(md, sprintf("- Table %s, column %s, %s: this code gives %.3f (%.3f); the paper prints %.3f (%.3f). %s",
+    md <- c(md, sprintf("- Table %s, column %s, %s: this code gives %.3f (%.3f). The paper prints %.3f (%.3f). %s",
                         noted$table[i], noted$column[i], noted$row[i],
                         noted$mine[i], noted$mine_se[i], noted$pub[i], noted$pub_se[i], noted$note[i]))
   }
   md <- c(md, "")
 }
 
-md <- c(md, "## How each kind of column was estimated", "",
+md <- c(md, "## How I estimated each type of column", "",
         "The OLS and fixed-effects columns use lm_robust with country dummies and",
         "Stata-style clustered standard errors. The Anderson-Hsiao columns use",
         "iv_robust on the first-differenced equation, with the twice-lagged levels",
         "as instruments. The two-stage least squares columns in Tables 5 and 6 also",
-        "use iv_robust, and I ran the first stage as its own clustered regression.",
-        "The Arellano-Bond columns use a difference-GMM estimator I wrote by hand to",
-        "match Stata's xtabond2; it is the fit_abgmm() function in R/00_setup.R.",
+        "use iv_robust. I ran the first stage of these columns as a separate",
+        "clustered regression.",
+        "",
+        "The Arellano-Bond columns use a difference-GMM estimator that I wrote by",
+        "hand. This estimator matches the xtabond2 command in Stata. The code is",
+        "the fit_abgmm() function in R/00_setup.R.",
         "",
         "## The data files", "",
-        "| Panel | Rows | Cols | Size (KB) |",
-        "|-------|------|------|-----------|")
+        "| Panel | Rows | Columns | Size (KB) |",
+        "|-------|------|---------|-----------|")
 for (i in seq_len(nrow(parq))) {
   md <- c(md, sprintf("| %s | %d | %d | %.1f |",
                       parq$panel[i], parq$rows[i], parq$cols[i], parq$kb[i]))
 }
-md <- c(md, "", "Every column in every file has a label that says what it is.")
+md <- c(md, "", "Every column in every file has a label that describes the column.")
 writeLines(md, file.path(PATH_DOCS, "replication_check.md"))
 
 cat(sprintf("\nChecked %d cells across Tables 2-7. Unexplained mismatches: %d. Documented: %d.\n",
             nrow(cmp), total_fail, nrow(noted)))
 if (total_fail > 0) {
   print(filter(cmp, failure) |> select(table, column, row, mine, pub, mine_se, pub_se))
-  stop("Some cells did not match the paper; see docs/diff_table_*.csv.")
+  stop("Some cells did not match the paper. See docs/diff_table_*.csv.")
 }
 cat("All cells match the published paper (aside from the documented misprint).\n")

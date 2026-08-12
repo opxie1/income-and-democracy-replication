@@ -1,6 +1,7 @@
 source(here::here("R", "00_setup.R"))
 suppressPackageStartupMessages(library(pdynmc))
 
+# pdynmc
 xcheck <- function(dep, inc, label) {
   lcol <- paste0(inc, "_l1")
   d0 <- add_lags(read_panel(FILE_P5), inc, 1) |> filter(sample == 1)

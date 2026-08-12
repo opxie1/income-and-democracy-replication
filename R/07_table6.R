@@ -1,5 +1,6 @@
 source(here::here("R", "00_setup.R"))
 
+# table6
 DEP <- "fhpolrigaug"
 
 d5 <- prep_worldincome_panel()

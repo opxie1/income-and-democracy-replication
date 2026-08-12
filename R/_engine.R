@@ -1,3 +1,4 @@
+# dynamic
 prep_dynamic <- function(file, dep, inc = "lrgdpch", lags = 1:2) {
   d <- read_panel(file)
   d <- add_lags(d, c(dep, inc, "year"), lags)
@@ -13,6 +14,7 @@ prep_dynamic <- function(file, dep, inc = "lrgdpch", lags = 1:2) {
   d
 }
 
+# savings
 prep_savings_panel <- function() {
   d <- add_lags(read_panel(FILE_P5),
                 c("fhpolrigaug", "lrgdpch", "nsave", "laborshare", "year"), 1:3)
@@ -23,6 +25,7 @@ prep_savings_panel <- function() {
     dLinc = lrgdpch_l1 - lrgdpch_l2, dz = nsave_l2 - nsave_l3)
 }
 
+# worldincome
 prep_worldincome_panel <- function() {
   d <- add_lags(read_panel(FILE_P5),
                 c("fhpolrigaug", "lrgdpch", "worldincome", "year"), 1:2)
@@ -33,6 +36,7 @@ prep_worldincome_panel <- function() {
     dLinc = lrgdpch_l1 - lrgdpch_l2, dz_wi = worldincome_l1 - worldincome_l2)
 }
 
+# tables
 build_dynamic_table <- function(dep) {
   tb <- table_builder(dep)
   push <- tb$push
@@ -73,6 +77,7 @@ build_dynamic_table <- function(dep) {
   tb$collect()
 }
 
+# layout
 format_table_txt <- function(tab, title, row_order, ncols = max(tab$column)) {
   cell <- function(col, rw) {
     r <- tab[tab$column == col & tab$row == rw, ]

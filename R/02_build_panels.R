@@ -2,10 +2,12 @@ source(here::here("R", "00_setup.R"))
 
 panels_raw <- readRDS(FILE_RAW)
 
+# integers
 INT_COLS <- c("code_numeric", "year", "year_numeric", "sample",
               "samplebalancefe", "samplebalancegmm", "socialist",
               "noextrapolation", "madid")
 
+# build
 build_panel <- function(df, keep) {
   df <- df[, keep, drop = FALSE]
   for (cc in intersect(INT_COLS, names(df))) df[[cc]] <- as.integer(round(df[[cc]]))
