@@ -75,7 +75,7 @@ POOLED <- c("lag", "period", "period_mean")
 pooled_p <- filter(tab, scheme %in% POOLED, hansen_df > 0L)
 best_p <- pooled_p |> group_by(panel, design_short, lag_max) |>
   summarise(has_lag = any(scheme == "lag"),
-            lag_p = max(hansen_p[scheme == "lag"], na.rm = TRUE),
+            lag_p = if (any(scheme == "lag")) max(hansen_p[scheme == "lag"]) else NA_real_,
             rival = max(hansen_p[scheme != "lag"]), .groups = "drop") |>
   filter(has_lag) |> mutate(lag_wins = lag_p > rival)
 stopifnot(nrow(best_p) > 0, mean(best_p$lag_wins) > 0.9)

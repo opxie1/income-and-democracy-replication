@@ -39,21 +39,17 @@ ladder <- function(dep, inc, panel_label) {
       ce(abr, "dLdep")["est"], ce(abr, "dLdep")["se"], abr$n_country, abr$n_inst)
 
   pd <- gmm_panel(s, dep, inc)
-  gmm_row <- function(label, model, transformation) {
-    m <- pgmm(gmm_formula(dep, inc, "2:4"), data = pd, effect = "twoways",
-              model = model, transformation = transformation, collapse = TRUE)
+  gmm_row <- function(spec) {
+    m <- fit_gmm_spec(pd, dep, inc, spec)
     co <- pgmm_co(m)
     ic <- co_row(co, inc); dc <- co_row(co, dep)
-    add(label, ic[1], ic[2], dc[1], dc[2],
+    add(spec$label, ic[1], ic[2], dc[1], dc[2],
         pgmm_countries(m), ncol(m$W[[1]]),
         tryCatch(mtest(m, 1)$p.value, error = function(e) NA_real_),
         tryCatch(mtest(m, 2)$p.value, error = function(e) NA_real_),
-        tryCatch(sargan(m, weights = model)$p.value, error = function(e) NA_real_))
+        tryCatch(sargan(m, weights = spec$model)$p.value, error = function(e) NA_real_))
   }
-  gmm_row("Arellano-Bond, difference GMM (one-step)", "onestep", "d")
-  gmm_row("Arellano-Bond, difference GMM (two-step)", "twostep", "d")
-  gmm_row("Blundell-Bond, system GMM (one-step)",     "onestep", "ld")
-  gmm_row("Blundell-Bond, system GMM (two-step)",     "twostep", "ld")
+  for (.k in ALT_GMM_KEYS) gmm_row(gmm_spec(.k))
 
   bind_rows(rows)
 }

@@ -1,0 +1,224 @@
+== Freedom House | Persistence from difference GMM | Mean-stationary start ==
+true persistence 0.489, true income effect 0.000
+Estimator                                            bias       sd  mean se coverage reject 0
+-- Persistence of democracy --
+Pooled OLS                                          0.289    0.024    0.023     0.00     1.00
+Fixed effects                                      -0.215    0.035    0.037     0.00     1.00
+Anderson-Hsiao IV                                  -0.054    1.040    3.138     0.98     0.89
+Arellano-Bond, difference GMM (replication)        -0.058    0.067    0.066     0.85     1.00
+Arellano-Bond, difference GMM (one-step)           -0.027    0.117    0.124     0.96     0.93
+Arellano-Bond, difference GMM (two-step)           -0.029    0.124    0.127     0.96     0.91
+Blundell-Bond, system GMM (one-step)                0.005    0.067    0.074     0.97     1.00
+Blundell-Bond, system GMM (two-step)                0.003    0.071    0.074     0.95     1.00
+Difference GMM, uncollapsed, all lags (one-step)   -0.098    0.071    0.073     0.73     1.00
+Difference GMM, uncollapsed, all lags (two-step)   -0.104    0.081    0.087     0.78     0.99
+System GMM, uncollapsed, all lags (two-step)        0.035    0.059    0.057     0.91     1.00
+-- Effect of income --
+Pooled OLS                                          0.040    0.007    0.007     0.00     1.00
+Fixed effects                                      -0.036    0.045    0.048     0.90     0.10
+Anderson-Hsiao IV                                  -0.206    4.320   13.417     0.99     0.01
+Arellano-Bond, difference GMM (replication)        -0.058    0.169    0.172     0.93     0.07
+Arellano-Bond, difference GMM (one-step)           -0.063    0.523    0.506     0.99     0.01
+Arellano-Bond, difference GMM (two-step)           -0.082    0.553    0.515     0.97     0.03
+Blundell-Bond, system GMM (one-step)                0.044    0.162    0.165     0.96     0.04
+Blundell-Bond, system GMM (two-step)                0.042    0.163    0.155     0.96     0.04
+Difference GMM, uncollapsed, all lags (one-step)   -0.091    0.172    0.165     0.90     0.10
+Difference GMM, uncollapsed, all lags (two-step)   -0.095    0.189    0.185     0.91     0.09
+System GMM, uncollapsed, all lags (two-step)        0.077    0.049    0.047     0.57     0.43
+
+== Freedom House | Persistence from difference GMM | Start tied to the country effect ==
+true persistence 0.489, true income effect 0.000
+Estimator                                            bias       sd  mean se coverage reject 0
+-- Persistence of democracy --
+Pooled OLS                                          0.287    0.022    0.022     0.00     1.00
+Fixed effects                                      -0.215    0.037    0.037     0.00     1.00
+Anderson-Hsiao IV                                  -0.000    0.073    0.071     0.94     1.00
+Arellano-Bond, difference GMM (replication)        -0.042    0.058    0.057     0.87     1.00
+Arellano-Bond, difference GMM (one-step)           -0.014    0.081    0.078     0.93     1.00
+Arellano-Bond, difference GMM (two-step)           -0.014    0.083    0.080     0.92     1.00
+Blundell-Bond, system GMM (one-step)               -0.007    0.068    0.065     0.93     1.00
+Blundell-Bond, system GMM (two-step)               -0.005    0.071    0.067     0.92     1.00
+Difference GMM, uncollapsed, all lags (one-step)   -0.082    0.069    0.066     0.77     1.00
+Difference GMM, uncollapsed, all lags (two-step)   -0.085    0.078    0.078     0.80     1.00
+System GMM, uncollapsed, all lags (two-step)        0.027    0.059    0.057     0.90     1.00
+-- Effect of income --
+Pooled OLS                                          0.026    0.005    0.005     0.00     1.00
+Fixed effects                                      -0.020    0.036    0.040     0.93     0.07
+Anderson-Hsiao IV                                  -0.007    0.067    0.066     0.94     0.06
+Arellano-Bond, difference GMM (replication)        -0.007    0.056    0.058     0.96     0.04
+Arellano-Bond, difference GMM (one-step)           -0.006    0.085    0.080     0.95     0.05
+Arellano-Bond, difference GMM (two-step)           -0.007    0.086    0.082     0.94     0.06
+Blundell-Bond, system GMM (one-step)                0.072    0.036    0.035     0.42     0.58
+Blundell-Bond, system GMM (two-step)                0.072    0.038    0.037     0.45     0.55
+Difference GMM, uncollapsed, all lags (one-step)   -0.012    0.069    0.064     0.94     0.06
+Difference GMM, uncollapsed, all lags (two-step)   -0.015    0.076    0.073     0.93     0.07
+System GMM, uncollapsed, all lags (two-step)        0.064    0.025    0.025     0.26     0.74
+
+== Freedom House | Persistence that reproduces the fixed-effects estimate | Mean-stationary start ==
+true persistence 0.600, true income effect 0.000
+Estimator                                            bias       sd  mean se coverage reject 0
+-- Persistence of democracy --
+Pooled OLS                                          0.193    0.022    0.021     0.00     1.00
+Fixed effects                                      -0.235    0.035    0.037     0.00     1.00
+Anderson-Hsiao IV                                  -0.011    0.336    0.747     0.98     0.90
+Arellano-Bond, difference GMM (replication)        -0.067    0.073    0.068     0.83     1.00
+Arellano-Bond, difference GMM (one-step)           -0.030    0.131    0.135     0.96     0.94
+Arellano-Bond, difference GMM (two-step)           -0.032    0.139    0.139     0.96     0.94
+Blundell-Bond, system GMM (one-step)                0.002    0.071    0.075     0.96     1.00
+Blundell-Bond, system GMM (two-step)                0.001    0.074    0.075     0.95     1.00
+Difference GMM, uncollapsed, all lags (one-step)   -0.107    0.076    0.075     0.71     1.00
+Difference GMM, uncollapsed, all lags (two-step)   -0.116    0.088    0.090     0.74     1.00
+System GMM, uncollapsed, all lags (two-step)        0.016    0.057    0.056     0.93     1.00
+-- Effect of income --
+Pooled OLS                                          0.036    0.006    0.007     0.00     1.00
+Fixed effects                                      -0.040    0.046    0.049     0.89     0.11
+Anderson-Hsiao IV                                  -0.018    1.668    4.134     0.99     0.01
+Arellano-Bond, difference GMM (replication)        -0.076    0.179    0.175     0.93     0.07
+Arellano-Bond, difference GMM (one-step)           -0.078    0.507    0.519     0.98     0.02
+Arellano-Bond, difference GMM (two-step)           -0.098    0.541    0.526     0.97     0.03
+Blundell-Bond, system GMM (one-step)                0.030    0.166    0.162     0.98     0.02
+Blundell-Bond, system GMM (two-step)                0.029    0.169    0.153     0.97     0.03
+Difference GMM, uncollapsed, all lags (one-step)   -0.113    0.173    0.168     0.90     0.10
+Difference GMM, uncollapsed, all lags (two-step)   -0.120    0.190    0.189     0.90     0.10
+System GMM, uncollapsed, all lags (two-step)        0.056    0.048    0.044     0.72     0.28
+
+== Freedom House | Persistence that reproduces the fixed-effects estimate | Start tied to the country effect ==
+true persistence 0.600, true income effect 0.000
+Estimator                                            bias       sd  mean se coverage reject 0
+-- Persistence of democracy --
+Pooled OLS                                          0.191    0.020    0.020     0.00     1.00
+Fixed effects                                      -0.237    0.036    0.037     0.00     1.00
+Anderson-Hsiao IV                                   0.002    0.078    0.073     0.93     1.00
+Arellano-Bond, difference GMM (replication)        -0.046    0.058    0.057     0.86     1.00
+Arellano-Bond, difference GMM (one-step)           -0.013    0.081    0.079     0.94     1.00
+Arellano-Bond, difference GMM (two-step)           -0.012    0.084    0.081     0.93     1.00
+Blundell-Bond, system GMM (one-step)               -0.015    0.068    0.065     0.94     1.00
+Blundell-Bond, system GMM (two-step)               -0.011    0.070    0.067     0.93     1.00
+Difference GMM, uncollapsed, all lags (one-step)   -0.089    0.068    0.066     0.75     1.00
+Difference GMM, uncollapsed, all lags (two-step)   -0.093    0.075    0.078     0.79     1.00
+System GMM, uncollapsed, all lags (two-step)        0.001    0.057    0.056     0.95     1.00
+-- Effect of income --
+Pooled OLS                                          0.023    0.005    0.004     0.00     1.00
+Fixed effects                                      -0.016    0.038    0.041     0.93     0.07
+Anderson-Hsiao IV                                  -0.006    0.069    0.068     0.94     0.06
+Arellano-Bond, difference GMM (replication)        -0.004    0.059    0.059     0.95     0.05
+Arellano-Bond, difference GMM (one-step)           -0.002    0.084    0.081     0.96     0.04
+Arellano-Bond, difference GMM (two-step)           -0.004    0.086    0.083     0.95     0.05
+Blundell-Bond, system GMM (one-step)                0.055    0.035    0.034     0.59     0.41
+Blundell-Bond, system GMM (two-step)                0.055    0.036    0.036     0.60     0.40
+Difference GMM, uncollapsed, all lags (one-step)   -0.009    0.071    0.066     0.93     0.07
+Difference GMM, uncollapsed, all lags (two-step)   -0.013    0.078    0.075     0.93     0.07
+System GMM, uncollapsed, all lags (two-step)        0.051    0.023    0.024     0.38     0.62
+
+== Polity | Persistence from difference GMM | Mean-stationary start ==
+true persistence 0.590, true income effect 0.000
+Estimator                                            bias       sd  mean se coverage reject 0
+-- Persistence of democracy --
+Pooled OLS                                          0.254    0.019    0.019     0.00     1.00
+Fixed effects                                      -0.226    0.035    0.039     0.00     1.00
+Anderson-Hsiao IV                                  -0.025    0.858    6.382     0.97     0.91
+Arellano-Bond, difference GMM (replication)        -0.079    0.072    0.075     0.80     1.00
+Arellano-Bond, difference GMM (one-step)           -0.015    0.118    0.134     0.97     0.97
+Arellano-Bond, difference GMM (two-step)           -0.010    0.122    0.137     0.97     0.96
+Blundell-Bond, system GMM (one-step)                0.005    0.075    0.081     0.95     1.00
+Blundell-Bond, system GMM (two-step)                0.007    0.076    0.082     0.97     1.00
+Difference GMM, uncollapsed, all lags (one-step)   -0.125    0.085    0.083     0.68     1.00
+Difference GMM, uncollapsed, all lags (two-step)   -0.137    0.094    0.099     0.73     0.99
+System GMM, uncollapsed, all lags (two-step)        0.032    0.065    0.063     0.90     1.00
+-- Effect of income --
+Pooled OLS                                          0.025    0.006    0.006     0.01     0.99
+Fixed effects                                       0.007    0.045    0.049     0.96     0.04
+Anderson-Hsiao IV                                  -0.050    4.821   39.085     1.00     0.00
+Arellano-Bond, difference GMM (replication)        -0.002    0.179    0.180     0.95     0.05
+Arellano-Bond, difference GMM (one-step)            0.005    0.545    0.576     0.99     0.01
+Arellano-Bond, difference GMM (two-step)            0.010    0.567    0.582     0.99     0.01
+Blundell-Bond, system GMM (one-step)                0.029    0.132    0.148     0.97     0.03
+Blundell-Bond, system GMM (two-step)                0.030    0.135    0.145     0.96     0.04
+Difference GMM, uncollapsed, all lags (one-step)   -0.016    0.180    0.173     0.95     0.05
+Difference GMM, uncollapsed, all lags (two-step)   -0.018    0.203    0.196     0.94     0.06
+System GMM, uncollapsed, all lags (two-step)        0.055    0.048    0.048     0.78     0.22
+
+== Polity | Persistence from difference GMM | Start tied to the country effect ==
+true persistence 0.590, true income effect 0.000
+Estimator                                            bias       sd  mean se coverage reject 0
+-- Persistence of democracy --
+Pooled OLS                                          0.243    0.019    0.018     0.00     1.00
+Fixed effects                                      -0.225    0.036    0.039     0.00     1.00
+Anderson-Hsiao IV                                  -0.001    0.078    0.079     0.94     1.00
+Arellano-Bond, difference GMM (replication)        -0.058    0.063    0.062     0.85     1.00
+Arellano-Bond, difference GMM (one-step)           -0.015    0.094    0.092     0.93     1.00
+Arellano-Bond, difference GMM (two-step)           -0.012    0.095    0.095     0.93     1.00
+Blundell-Bond, system GMM (one-step)               -0.028    0.077    0.077     0.94     1.00
+Blundell-Bond, system GMM (two-step)               -0.023    0.077    0.079     0.94     1.00
+Difference GMM, uncollapsed, all lags (one-step)   -0.115    0.079    0.075     0.67     1.00
+Difference GMM, uncollapsed, all lags (two-step)   -0.119    0.090    0.088     0.74     1.00
+System GMM, uncollapsed, all lags (two-step)        0.005    0.068    0.063     0.92     1.00
+-- Effect of income --
+Pooled OLS                                          0.015    0.004    0.004     0.00     1.00
+Fixed effects                                       0.016    0.042    0.046     0.95     0.05
+Anderson-Hsiao IV                                   0.008    0.118    0.116     0.96     0.04
+Arellano-Bond, difference GMM (replication)         0.024    0.101    0.095     0.95     0.05
+Arellano-Bond, difference GMM (one-step)            0.011    0.146    0.135     0.94     0.06
+Arellano-Bond, difference GMM (two-step)            0.011    0.150    0.139     0.94     0.06
+Blundell-Bond, system GMM (one-step)                0.053    0.046    0.048     0.77     0.23
+Blundell-Bond, system GMM (two-step)                0.050    0.050    0.052     0.79     0.21
+Difference GMM, uncollapsed, all lags (one-step)    0.013    0.112    0.102     0.94     0.06
+Difference GMM, uncollapsed, all lags (two-step)    0.016    0.126    0.115     0.94     0.06
+System GMM, uncollapsed, all lags (two-step)        0.045    0.028    0.028     0.61     0.39
+
+== Polity | Persistence that reproduces the fixed-effects estimate | Mean-stationary start ==
+true persistence 0.702, true income effect 0.000
+Estimator                                            bias       sd  mean se coverage reject 0
+-- Persistence of democracy --
+Pooled OLS                                          0.138    0.020    0.019     0.00     1.00
+Fixed effects                                      -0.252    0.036    0.038     0.00     1.00
+Anderson-Hsiao IV                                  -0.038    0.663    5.339     0.98     0.91
+Arellano-Bond, difference GMM (replication)        -0.090    0.078    0.076     0.76     1.00
+Arellano-Bond, difference GMM (one-step)           -0.018    0.127    0.140     0.97     0.98
+Arellano-Bond, difference GMM (two-step)           -0.016    0.132    0.143     0.97     0.97
+Blundell-Bond, system GMM (one-step)               -0.001    0.072    0.078     0.96     1.00
+Blundell-Bond, system GMM (two-step)                0.000    0.075    0.080     0.96     1.00
+Difference GMM, uncollapsed, all lags (one-step)   -0.135    0.090    0.083     0.63     1.00
+Difference GMM, uncollapsed, all lags (two-step)   -0.147    0.101    0.099     0.70     1.00
+System GMM, uncollapsed, all lags (two-step)        0.000    0.061    0.060     0.95     1.00
+-- Effect of income --
+Pooled OLS                                          0.027    0.006    0.006     0.00     1.00
+Fixed effects                                       0.002    0.046    0.051     0.96     0.04
+Anderson-Hsiao IV                                  -0.175    3.551   28.175     1.00     0.00
+Arellano-Bond, difference GMM (replication)        -0.014    0.192    0.185     0.95     0.05
+Arellano-Bond, difference GMM (one-step)            0.003    0.579    0.596     0.99     0.01
+Arellano-Bond, difference GMM (two-step)            0.005    0.627    0.602     0.99     0.01
+Blundell-Bond, system GMM (one-step)                0.025    0.119    0.138     0.99     0.01
+Blundell-Bond, system GMM (two-step)                0.028    0.125    0.139     0.98     0.02
+Difference GMM, uncollapsed, all lags (one-step)   -0.028    0.186    0.177     0.94     0.06
+Difference GMM, uncollapsed, all lags (two-step)   -0.034    0.203    0.200     0.94     0.06
+System GMM, uncollapsed, all lags (two-step)        0.049    0.046    0.045     0.79     0.21
+
+== Polity | Persistence that reproduces the fixed-effects estimate | Start tied to the country effect ==
+true persistence 0.702, true income effect 0.000
+Estimator                                            bias       sd  mean se coverage reject 0
+-- Persistence of democracy --
+Pooled OLS                                          0.132    0.018    0.018     0.00     1.00
+Fixed effects                                      -0.251    0.036    0.038     0.00     1.00
+Anderson-Hsiao IV                                  -0.004    0.084    0.083     0.93     1.00
+Arellano-Bond, difference GMM (replication)        -0.068    0.064    0.064     0.81     1.00
+Arellano-Bond, difference GMM (one-step)           -0.017    0.092    0.091     0.94     1.00
+Arellano-Bond, difference GMM (two-step)           -0.015    0.094    0.095     0.95     1.00
+Blundell-Bond, system GMM (one-step)               -0.024    0.073    0.075     0.95     1.00
+Blundell-Bond, system GMM (two-step)               -0.021    0.074    0.078     0.96     1.00
+Difference GMM, uncollapsed, all lags (one-step)   -0.122    0.076    0.075     0.63     1.00
+Difference GMM, uncollapsed, all lags (two-step)   -0.127    0.087    0.088     0.71     1.00
+System GMM, uncollapsed, all lags (two-step)       -0.026    0.064    0.061     0.91     1.00
+-- Effect of income --
+Pooled OLS                                          0.016    0.004    0.004     0.01     0.99
+Fixed effects                                       0.019    0.045    0.048     0.93     0.07
+Anderson-Hsiao IV                                   0.005    0.121    0.121     0.95     0.05
+Arellano-Bond, difference GMM (replication)         0.033    0.104    0.098     0.93     0.07
+Arellano-Bond, difference GMM (one-step)            0.008    0.146    0.139     0.95     0.05
+Arellano-Bond, difference GMM (two-step)            0.009    0.151    0.144     0.95     0.05
+Blundell-Bond, system GMM (one-step)                0.047    0.043    0.044     0.81     0.19
+Blundell-Bond, system GMM (two-step)                0.046    0.046    0.047     0.82     0.18
+Difference GMM, uncollapsed, all lags (one-step)    0.018    0.113    0.104     0.94     0.06
+Difference GMM, uncollapsed, all lags (two-step)    0.023    0.129    0.119     0.94     0.06
+System GMM, uncollapsed, all lags (two-step)        0.039    0.024    0.026     0.66     0.34
+

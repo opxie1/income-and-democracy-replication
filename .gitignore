@@ -9,6 +9,9 @@ data/panels_raw.rds
 .RData
 .Rproj.user/
 
+# Monte Carlo state cache (rebuilt by 16_montecarlo.R)
+output/montecarlo_state.rds
+
 # Scratch and reference material (not part of the replication)
 scratch_*.R
 scratch_paper.txt

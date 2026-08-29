@@ -1,6 +1,5 @@
 # dynamic
-prep_dynamic <- function(file, dep, inc = "lrgdpch", lags = 1:2) {
-  d <- read_panel(file)
+derive_dynamic <- function(d, dep, inc = "lrgdpch", lags = 1:2) {
   d <- add_lags(d, c(dep, inc, "year"), lags)
   dl1 <- paste0(dep, "_l1"); dl2 <- paste0(dep, "_l2")
   il1 <- paste0(inc, "_l1"); il2 <- paste0(inc, "_l2")
@@ -13,6 +12,9 @@ prep_dynamic <- function(file, dep, inc = "lrgdpch", lags = 1:2) {
   d$L2inc <- d[[il2]]
   d
 }
+
+prep_dynamic <- function(file, dep, inc = "lrgdpch", lags = 1:2)
+  derive_dynamic(read_panel(file), dep, inc, lags)
 
 # savings
 prep_savings_panel <- function() {

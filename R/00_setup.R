@@ -175,6 +175,42 @@ OVERID_TEST <- c(onestep = "Sargan", twostep = "Hansen")
 GEOM_RHO    <- seq(0.1, 1, by = 0.1)
 SUBSET_DRAWS <- 200L
 SUBSET_SEED  <- 20260811L
+MC_REPS      <- 500L
+MC_SEED      <- 20260813L
+MC_WORKERS   <- 6L
+MC_DESIGNS   <- c(stationary = "Mean-stationary start",
+                 nonstationary = "Start tied to the country effect")
+MC_CALIB     <- c(gmm = "Persistence from difference GMM",
+                  fe = "Persistence that reproduces the fixed-effects estimate")
+
+# estimators
+GMM_LAGS_SHORT <- "2:4"
+GMM_LAGS_ALL   <- "2:99"
+
+GMM_SPECS <- list(
+  list(key = "d_one_coll",  label = "Arellano-Bond, difference GMM (one-step)",
+       transformation = "d",  model = "onestep", collapse = TRUE,  lags = GMM_LAGS_SHORT),
+  list(key = "d_two_coll",  label = "Arellano-Bond, difference GMM (two-step)",
+       transformation = "d",  model = "twostep", collapse = TRUE,  lags = GMM_LAGS_SHORT),
+  list(key = "ld_one_coll", label = "Blundell-Bond, system GMM (one-step)",
+       transformation = "ld", model = "onestep", collapse = TRUE,  lags = GMM_LAGS_SHORT),
+  list(key = "ld_two_coll", label = "Blundell-Bond, system GMM (two-step)",
+       transformation = "ld", model = "twostep", collapse = TRUE,  lags = GMM_LAGS_SHORT),
+  list(key = "d_one_unc",   label = "Difference GMM, uncollapsed, all lags (one-step)",
+       transformation = "d",  model = "onestep", collapse = FALSE, lags = GMM_LAGS_ALL),
+  list(key = "d_two_unc",   label = "Difference GMM, uncollapsed, all lags (two-step)",
+       transformation = "d",  model = "twostep", collapse = FALSE, lags = GMM_LAGS_ALL),
+  list(key = "ld_two_unc",  label = "System GMM, uncollapsed, all lags (two-step)",
+       transformation = "ld", model = "twostep", collapse = FALSE, lags = GMM_LAGS_ALL))
+
+ALT_GMM_KEYS <- c("d_one_coll", "d_two_coll", "ld_one_coll", "ld_two_coll")
+
+gmm_spec <- function(key) Filter(function(s) s$key == key, GMM_SPECS)[[1]]
+
+fit_gmm_spec <- function(pd, dep, inc, spec)
+  pgmm(gmm_formula(dep, inc, spec$lags), data = pd, effect = "twoways",
+       model = spec$model, transformation = spec$transformation,
+       collapse = spec$collapse)
 
 # inference
 CI_LEVEL   <- 0.05

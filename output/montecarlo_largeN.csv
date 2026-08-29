@@ -1,0 +1,12 @@
+key,estimator,bias_big,bias_big_alpha,measure,times
+abr,"Arellano-Bond, difference GMM (replication)",-0.05394259604257279,-0.006198697043946858,Freedom House,6
+ah,Anderson-Hsiao IV,-0.04267392534919709,7.117309480540908e-4,Freedom House,6
+d_one_coll,"Arellano-Bond, difference GMM (one-step)",0.001208054899719238,-0.0010348762685611725,Freedom House,6
+d_one_unc,"Difference GMM, uncollapsed, all lags (one-step)",-0.012151738554092502,-0.015813386292369135,Freedom House,6
+d_two_coll,"Arellano-Bond, difference GMM (two-step)",0.0014748531429352393,-0.0015816839282386161,Freedom House,6
+d_two_unc,"Difference GMM, uncollapsed, all lags (two-step)",-0.02652736396447075,-0.019619381272844683,Freedom House,6
+fe,Fixed effects,-0.03544297228282205,-0.21343229803189256,Freedom House,6
+ld_one_coll,"Blundell-Bond, system GMM (one-step)",-0.016490306982940812,-0.010182715688039561,Freedom House,6
+ld_two_coll,"Blundell-Bond, system GMM (two-step)",-0.016213003339029974,-0.0076864254176382905,Freedom House,6
+ld_two_unc,"System GMM, uncollapsed, all lags (two-step)",0.04241020893772836,7.383487231451105e-4,Freedom House,6
+ols,Pooled OLS,0.039680500328876406,0.2911802100070172,Freedom House,6

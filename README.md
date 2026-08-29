@@ -22,9 +22,9 @@ install.packages(c("tidyverse", "arrow", "readxl", "estimatr", "plm", "here", "M
 Rscript R/run_all.R
 ```
 
-This command reads the data, rebuilds each table, and checks every value against the paper. It then runs the four follow-up studies described below. It prints how many numbers matched.
+This command reads the data, rebuilds each table, and checks every value against the paper. It then runs the five follow-up studies described below. It prints how many numbers matched.
 
-The replication itself takes a few seconds. The whole run takes about ten minutes. Almost all of that time goes to the random-instrument draws described further down.
+The replication itself takes a few seconds. The whole run takes about an hour. Almost all of that time goes to two simulation studies: the random-instrument draws and the Monte Carlo, both described further down.
 
 On Windows, R sometimes shows an error code on the last line. That error is harmless. It comes from the `arrow` package as the package closes. The files are already saved at that point.
 
@@ -69,6 +69,14 @@ Moreira's test in its usual form assumes that the errors are well behaved. So I 
 These instruments are not badly weak, but several are not comfortably strong either. Four of the ten columns fall short of the Stock and Yogo threshold, and five fall short of the Montiel Olea and Pflueger value. The honest confidence sets are wider than the ordinary ones, and all ten include zero. The writeup is in `docs/weak-instruments.md`.
 
 I wrote those tests by hand. For that reason, `R/15_ivcrosscheck.R` re-runs every column through the `ivmodel` package. If the answers disagree, the script stops. It needs that package, so it sits outside the main run.
+
+## A simulation with known answers
+
+The estimates above disagree with each other, and the data cannot say which one is right. So Professor Torgovitsky suggested building simulated data where the truth is known. I simulate a dynamic panel that reproduces the observation pattern of the real one cell by cell, so the estimators get the sample they have in the data: 838 observations on 127 countries for Freedom House. Persistence comes from the estimates here. The true effect of income on democracy is set to zero, so every reported effect is an error that can be measured. The study draws 500 panels for each of eight designs and runs the whole ladder of estimators on each. The writeup is in `docs/monte-carlo.md`.
+
+Four results stand out. Pooled OLS reports a positive income effect in every draw, and its interval never covers the true zero. Fixed effects gets persistence wrong by 0.215, which is the known bias of that method with few periods. Collapsing the instruments repairs the persistence estimate: the error falls from 0.098 to 0.027, and the share of intervals that cover the truth rises from 0.73 to 0.96. System GMM is accurate when countries start at their long-run average and badly wrong when they do not, with coverage falling from 0.96 to 0.45.
+
+The last of those matches what the overidentification test says about the real data. The simulation puts a number on the cost of ignoring it.
 
 ## Sources
 

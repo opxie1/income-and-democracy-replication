@@ -46,6 +46,10 @@ The estimators that this project compares.
   Vector Autoregressions with Panel Data." *Econometrica* 56 (6): 1371-1395.
   This paper is the source of the instrument matrix that collapsing operates
   on.
+- Nickell, Stephen. 1981. "Biases in Dynamic Models with Fixed Effects."
+  *Econometrica* 49 (6): 1417-1426. The source of the downward bias in the
+  fixed-effects estimate of persistence, which the simulation in
+  docs/monte-carlo.md measures directly.
 - Windmeijer, Frank. 2005. "A Finite Sample Correction for the Variance of
   Linear Efficient Two-Step GMM Estimators." *Journal of Econometrics* 126 (1):
   25-51.
