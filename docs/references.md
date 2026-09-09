@@ -36,7 +36,8 @@ The estimators that this project compares.
   Error Components." *Journal of the American Statistical Association* 76 (375):
   598-606.
 - Arellano, Manuel, and Stephen Bond. 1991. "Some Tests of Specification for
-  Panel Data." *Review of Economic Studies* 58 (2): 277-297. The employment
+  Panel Data: Monte Carlo Evidence and an Application to Employment
+  Equations." *Review of Economic Studies* 58 (2): 277-297. The employment
   results in this paper are the benchmark. R/10_alternatives.R reproduces them
   on every run.
 - Blundell, Richard, and Stephen Bond. 1998. "Initial Conditions and Moment

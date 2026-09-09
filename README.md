@@ -44,7 +44,7 @@ After the replication, I re-estimated the effect of income on democracy in a few
 
 Here is what I found. Some of the methods compare changes within a country. These methods all agree with the paper that income has little or no positive effect on democracy. Only one method gives a positive effect, and that method depends on an extra assumption. The data reject that assumption outright for one democracy measure. For the other measure, the positive result still depends entirely on the assumption.
 
-I checked these estimates two ways. The code reproduces a standard textbook result exactly. If the result ever fails to match, the script stops. A second package gives the same answer. This second check is in `R/11_crosscheck.R`, which needs the `pdynmc` package. The command `Rscript R/11_crosscheck.R` runs it.
+I checked these estimates two ways. The code reproduces a standard textbook result exactly. If the result ever fails to match, the script stops. A second package reproduces the same pattern, with income negative under difference GMM and positive under system GMM. This second check is in `R/11_crosscheck.R`, which needs the `pdynmc` package. The command `Rscript R/11_crosscheck.R` runs it.
 
 ## Too many instruments
 
@@ -72,7 +72,7 @@ I wrote those tests by hand. For that reason, `R/15_ivcrosscheck.R` re-runs ever
 
 ## A simulation with known answers
 
-The estimates above disagree with each other, and the data cannot say which one is right. So Professor Torgovitsky suggested building simulated data where the truth is known. I simulate a dynamic panel that reproduces the observation pattern of the real one cell by cell, so the estimators get the sample they have in the data: 838 observations on 127 countries for Freedom House. Persistence comes from the estimates here. The true effect of income on democracy is set to zero, so every reported effect is an error that can be measured. The study draws 500 panels for each of eight designs and runs the whole ladder of estimators on each. The writeup is in `docs/monte-carlo.md`.
+The estimates above disagree with each other, and the data cannot say which one is right. So Professor Torgovitsky suggested building simulated data where the truth is known. I simulate a dynamic panel that reproduces the observation pattern of the real one cell by cell. The estimators therefore get the sample they have in the data, which is 838 observations on 127 countries for Freedom House. Persistence comes from the estimates here. The true effect of income on democracy is set to zero, so every reported effect is an error that can be measured. The study draws 500 panels for each of eight designs and runs the whole ladder of estimators on each. The writeup is in `docs/monte-carlo.md`.
 
 Four results stand out. Pooled OLS reports a positive income effect in every draw, and its interval never covers the true zero. Fixed effects gets persistence wrong by 0.215, which is the known bias of that method with few periods. Collapsing the instruments repairs the persistence estimate: the error falls from 0.098 to 0.027, and the share of intervals that cover the truth rises from 0.73 to 0.96. System GMM is accurate when countries start at their long-run average and badly wrong when they do not, with coverage falling from 0.96 to 0.45.
 

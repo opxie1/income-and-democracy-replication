@@ -25,11 +25,11 @@ rich countries democratic for fixed reasons. It is also what pooled OLS
 mistakes for an effect of income.
 
 The simulated panel keeps the shape of the real one. It reproduces the
-observation pattern cell by cell, for each variable separately, so the
-estimators end up with the sample they have in the real data. For Freedom
-House the estimation sample is 838 observations on 127 countries across 9
-periods. For Polity it is 747 observations on 114 countries. The script
-checks these against the real counts and stops if they differ.
+observation pattern cell by cell, for each variable separately. The
+estimators therefore end up with the sample they have in the real data. For
+Freedom House the estimation sample is 838 observations on 127 countries
+across 9 periods. For Polity it is 747 observations on 114 countries. The
+script checks these against the real counts and stops if they differ.
 
 The income equation is close to a random walk. Its persistence is 0.915 for
 Freedom House and 0.958 for Polity, both from difference GMM. That number
@@ -166,9 +166,8 @@ squared error, and coverage is what separates them.
 The practical reading matches the weak-instrument work in
 docs/weak-instruments.md. The instrumental-variables columns of this paper
 are not informative about the sign of the income effect. The simulation adds
-a reason. On data with this many countries, this many periods and income this
-persistent, no estimator here separates a true zero from the effect the paper
-reports.
+a reason. No estimator here separates a true zero from the effect the paper
+reports, on a panel of this size with income this persistent.
 
 ## Checks
 
@@ -184,7 +183,7 @@ stops.
 That last check separates two kinds of error. The GMM errors fall by between
 45 and 98 per cent as the panel grows, so they are finite-sample problems.
 Pooled OLS and fixed effects fall by about 1 per cent, which is to say not at
-all, because neither is consistent here at any sample size. That is the
+all. Neither of them is consistent here at any sample size. That is the
 difference between an estimator that needs a bigger panel and one that a
 bigger panel cannot save.
 

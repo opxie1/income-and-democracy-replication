@@ -106,8 +106,8 @@ write_mc_report <- function(sm, big, shrink, cals) {
     cfh$cor_fe, fh),
   sprintf(paste(
     "The simulated panel keeps the shape of the real one. It reproduces the observation",
-    "pattern cell by cell, for each variable separately, so the estimators end up with",
-    "the sample they have in the real data. For %s the estimation sample is %d",
+    "pattern cell by cell, for each variable separately. The estimators therefore end up",
+    "with the sample they have in the real data. For %s the estimation sample is %d",
     "observations on %d countries across %d periods. For %s it is %d observations on %d",
     "countries. The script checks these against the real counts and stops if they",
     "differ."),
@@ -281,9 +281,9 @@ write_mc_report <- function(sm, big, shrink, cals) {
   paste(
     "The practical reading matches the weak-instrument work in docs/weak-instruments.md.",
     "The instrumental-variables columns of this paper are not informative about the sign",
-    "of the income effect. The simulation adds a reason. On data with this many countries,",
-    "this many periods and income this persistent, no estimator here separates a true zero",
-    "from the effect the paper reports."),
+    "of the income effect. The simulation adds a reason. No estimator here separates a",
+    "true zero from the effect the paper reports, on a panel of this size with income",
+    "this persistent."),
   
   "## Checks",
   sprintf(paste(
@@ -298,8 +298,8 @@ write_mc_report <- function(sm, big, shrink, cals) {
   sprintf(paste(
     "That last check separates two kinds of error. The GMM errors fall by between %.0f",
     "and %.0f per cent as the panel grows, so they are finite-sample problems. Pooled",
-    "OLS and fixed effects fall by about %.0f per cent, which is to say not at all,",
-    "because neither is consistent here at any sample size. That is the difference",
+    "OLS and fixed effects fall by about %.0f per cent, which is to say not at all.",
+    "Neither of them is consistent here at any sample size. That is the difference",
     "between an estimator that needs a bigger panel and one that a bigger panel cannot",
     "save."),
     min(gmm_pct), max(gmm_pct), mean(c(shr_pct("ols"), shr_pct("fe")))),
