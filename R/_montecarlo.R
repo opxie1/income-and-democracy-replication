@@ -86,7 +86,7 @@ calibrate_dgp <- function(dep, inc, alpha = NULL, beta = 0, strict = TRUE) {
   fit <- match_fe_scale(A, Sig, c_fe, ip$target_var)
   if (is.null(fit) || fit[["obj"]] > 1e-8) {
     if (strict) stop(sprintf(
-      "no feasible country-effect variance at alpha = %.3f, beta = %.3f for %s",
+      "no feasible country effect variance at alpha = %.3f, beta = %.3f for %s",
       alpha, beta, dep))
     return(NULL)
   }
@@ -161,8 +161,8 @@ sim_panel <- function(cal, alpha = cal$alpha, beta = cal$beta, design = "station
 LADDER_BASE <- list(
   list(key = "ols", label = "Pooled OLS"),
   list(key = "fe",  label = "Fixed effects"),
-  list(key = "ah",  label = "Anderson-Hsiao IV"),
-  list(key = "abr", label = "Arellano-Bond, difference GMM (replication)"))
+  list(key = "ah",  label = "Anderson and Hsiao IV"),
+  list(key = "abr", label = "Arellano and Bond, difference GMM (replication)"))
 
 run_ladder <- function(d, dep, inc) {
   s <- filter(d, sample == 1)
@@ -179,11 +179,11 @@ run_ladder <- function(d, dep, inc) {
 
   grab("ols", "Pooled OLS", fit_ols(s, dep, c("Ldep", "Linc"), FALSE), "Ldep", "Linc")
   grab("fe",  "Fixed effects", fit_ols(s, dep, c("Ldep", "Linc"), TRUE), "Ldep", "Linc")
-  grab("ah",  "Anderson-Hsiao IV",
+  grab("ah",  "Anderson and Hsiao IV",
        fit_iv(s, "y", endog = c("dLdep", "dLinc"), inst = c("L2dep", "L2inc"),
               country_fe = FALSE), "dLdep", "dLinc")
   est <- complete_on(s, c("y", "dLdep", "dLinc", "L2inc"))
-  grab("abr", "Arellano-Bond, difference GMM (replication)",
+  grab("abr", "Arellano and Bond, difference GMM (replication)",
        fit_abgmm(d, est, dep_level = dep, endog = c("dLdep", "dLinc"),
                  inst_extra = "L2inc"), "dLdep", "dLinc")
 

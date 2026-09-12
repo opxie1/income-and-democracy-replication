@@ -24,7 +24,7 @@ over2 <- chk_fit("twostep", "lag")
 stopifnot(just1$n_inst == just1$n_par, just2$hansen_df == 0L,
           max(abs(just1$coef - just2$coef)) < 1e-8, just2$hansen < 1e-8,
           over2$hansen_df > 0L, over2$hansen > 0)
-cat("Two-step reproduces one-step when the model is exactly identified,",
+cat("Two step reproduces one step when the model is exactly identified,",
     "and its Hansen statistic is then zero.\n")
 
 # published
@@ -120,8 +120,8 @@ write_doc("aggregation.md",
 paste(
   "Professor Torgovitsky asked whether Roodman describes other ways to collapse the",
   "instruments. He asked because a collapse rule is a choice, and other choices exist.",
-  "This file reports what the paper says. It also reports what the alternatives give on",
-  "this data. The numbers are in output/aggregation.txt and output/aggregation.csv. The",
+  "This file reports what the paper says, and what the alternatives give on this data.",
+  "The numbers are in output/aggregation.txt and output/aggregation.csv. The",
   "figure is output/aggregation.png."),
 
 "## What Roodman describes",
@@ -133,8 +133,8 @@ paste(
   "Section V is titled \"Techniques for reducing the instrument count\", and it opens",
   "with two techniques rather than one. The first technique uses only certain lags",
   "instead of all available ones. It still makes separate instruments for each period,",
-  "but it caps the number per period. The count then grows in proportion to the length",
-  "of the panel, and not with its square."),
+  "while capping the number per period, so that the count grows in proportion to the",
+  "length of the panel instead of with its square."),
 paste(
   "Roodman describes this technique as a projection of the regressors onto the full",
   "instrument set, with the coefficients on certain lags held at zero. He attributes",
@@ -164,20 +164,20 @@ paste(
   "deserves a quotation, because it sets the standard for this file. They \"provide the",
   "basis for some minimally arbitrary robustness and specification tests for Difference",
   "and System GMM: cut the instrument count in one of these ways and examine the",
-  "behavior of the coefficient estimates and Hansen and Difference-in-Hansen tests\". So",
+  "behavior of the coefficient estimates and Hansen and Difference in Hansen tests\". So",
   "the coefficient on its own is only half of what he asks for. The table in",
-  "output/aggregation.txt now carries an overidentification p-value in every cell,",
+  "output/aggregation.txt now carries an overidentification p value in every cell,",
   "beside the estimate."),
 paste(
-  "I do not report the Difference-in-Hansen half here. That test compares one nested",
+  "I do not report the Difference in Hansen half here. That test compares one nested",
   "subset of instruments against the rest, and the rules compared here are not nested",
-  "inside one another. It belongs in the difference-versus-system comparison, where the",
+  "inside one another. It belongs in the difference against system comparison, where the",
   "extra level conditions form a subset that I can add and remove. Both",
   "docs/alternatives.md and docs/instruments.md make that comparison."),
 paste(
   "He also notes that the two techniques work together. The pair leaves a count that",
   "does not grow with the length of the panel at all. His Table 1 crosses them. It shows",
-  "four variants of system GMM: the full instrument set, one-period lags only, the",
+  "four variants of system GMM: the full instrument set, one period lags only, the",
   "collapsed set, and both restrictions at once."),
 paste(
   "Two further ideas appear in footnotes rather than the main text.",
@@ -202,12 +202,11 @@ paste(
   "one instrument."),
 paste(
   "The average is also the one rule here that steps outside the sentence quoted above.",
-  "Its divisor is the count of lags that the country has in that period. So the divisor",
-  "varies from country to country inside a single column. The result is not the original",
-  "columns with some coefficients tied together, but a new instrument. The new instrument",
-  "is still legitimate, because the divisor depends only on which lags exist and not on",
-  "the outcome. The equal-coefficient reading does not reach it, and the same caveat",
-  "applies to the fading family further down."),
+  "Its divisor is the count of lags that the country has in that period, so the divisor",
+  "varies from country to country inside a single column. What comes out is a new",
+  "instrument altogether. It remains legitimate, because the divisor depends only on",
+  "which lags exist and never on the outcome. The equal coefficient reading does not",
+  "reach it, and the same caveat applies to the fading family further down."),
 sprintf(paste(
   "I ran all %s collapse rules against the uncollapsed set. I then ran %s further",
   "families with a knob on them. The section after next covers those families."),
@@ -221,9 +220,9 @@ paste(
 paste(
   "One reading note comes before the numbers. The collapse of every column into one",
   "leaves the model exactly identified here. That row therefore has no overidentifying",
-  "restrictions left, and output/aggregation.txt prints `exact id` instead of a p-value.",
-  "The estimate is still real, and it is the least stable one on the figure. It is not",
-  "comparable to the others on anything that counts restrictions."),
+  "restrictions left, and output/aggregation.txt prints `exact id` instead of a p value.",
+  "The estimate is still real, and it is the least stable one on the figure. It should",
+  "not be compared to the others on anything that counts restrictions."),
 
 "## What came out",
 sprintf(paste(
@@ -237,19 +236,19 @@ sprintf(paste(
   filter(rng, panel == po, design_short == "paper")$hi),
 sprintf(paste(
   "The top row of the figure shows the paper's own instrument design. There the",
-  "uncollapsed set is the exception. It travels much further than any of the collapse",
+  "uncollapsed set is the exception, and it travels much further than any of the collapse",
   "rules. Its range is %.3f for %s and %.3f for %s, against at most %.3f for the %s",
-  "collapse rules. It also finishes closer to the fixed-effects value than it started,",
+  "collapse rules. It also finishes closer to the fixed effects value than it started,",
   "by %.3f and %.3f. That is the overfitting story again."),
   pr(fh, "none"), fh, pr(po, "none"), po,
   max(filter(mv, design_short == "paper", scheme != "none")$rng),
   spell(length(AGG_SCHEMES) - 1L), un(fh, "net"), un(po, "net")),
 sprintf(paste(
   "The path is not a straight climb, and I do not want to say that it is. Both",
-  "uncollapsed lines first move further from the fixed-effects value, out to a window of",
+  "uncollapsed lines first move further from the fixed effects value, out to a window of",
   "%d for %s and %d for %s. They reverse direction only after that point. The",
   "uncollapsed line is monotone in %s of the %s panels on the figure. %sSo the drift is",
-  "a net direction over the whole window, and not a steady march."),
+  "a net direction over the whole window, and it arrives there unevenly."),
   un(fh, "turn"), fh, un(po, "turn"), po,
   {
     n_mono <- nrow(filter(shape, scheme == "none", mono))
@@ -273,16 +272,16 @@ sprintf(paste(
   if (nrow(lag_lost) == 0) "" else sprintf(
     paste("It loses only in the %s panel under the %s, where the exactly identified",
           "fully collapsed column happens to sit still (%.3f against %.3f). That column",
-          "is not much of a rival, because it has nothing left to test."),
+          "is a weak rival, since it has nothing left to test."),
     lag_lost$panel[1],
     ifelse(lag_lost$design_short[1] == "paper", "paper's design", "symmetric design"),
     lag_lost$win_rng[1], lag_lost$rng[1])),
 sprintf(paste(
   "Collapsing by period swings more than the uncollapsed set does (%.3f against %.3f",
   "for %s). Collapsing everything into one column is the least stable line on the whole",
-  "figure. So the useful statement is not that a collapse always steadies the estimate.",
-  "Collapsing by lag distance, the rule Roodman proposes, is the one that stays steady",
-  "under both designs."),
+  "figure. A collapse therefore does not steady the estimate on its own. Collapsing by",
+  "lag distance, the rule Roodman proposes, is the one that stays steady under both",
+  "designs."),
   sy(po, "period"), sy(po, "none"), po),
 sprintf(paste(
   "Too much collapsing has its own failure mode. With the symmetric design, collapsing",
@@ -302,9 +301,9 @@ paste(
   "sharper tool of the two, and it points the same way."),
 sprintf(paste(
   "Among the three collapse rules that leave anything to test, Roodman's rule has the",
-  "highest p-value in %d of the %d overidentified cells. The one exception is %s under",
+  "highest p value in %d of the %d overidentified cells. The one exception is %s under",
   "the %s at the widest window. There the three rules cluster close to the threshold on",
-  "both sides. The gap is not close anywhere else. His p-values run from %s to %s, and",
+  "both sides. The gap is wide everywhere else. His p values run from %s to %s, and",
   "the test rejects his rule at the %d%% level in %d of %d cells. The test rejects the",
   "collapse by period in %d of %d cells, and the collapse by period after averaging in",
   "%d of %d."),
@@ -317,11 +316,11 @@ sprintf(paste(
   rj("period_mean", "n_rej"), rj("period_mean", "n")),
 paste(
   "The other two rules are my own, and they turn Roodman's construction on its side.",
-  "Those two rules are not merely less steady than his. The data reject them, and the",
-  "data do not reject his rule."),
+  "They are less steady than his rule, and the data reject them as well. His own rule",
+  "survives the same test."),
 sprintf(paste(
-  "The uncollapsed set needs the most careful comparison. Its p-values run from %s to",
-  "%s, and the test rejects it in %d of %d cells. For %s the p-value climbs steadily",
+  "The uncollapsed set needs the most careful comparison. Its p values run from %s to",
+  "%s, and the test rejects it in %d of %d cells. For %s the p value climbs steadily",
   "with the count, from %s at the narrowest window to %s at the widest under the",
   "paper's design. For %s under the same design it stays low throughout, and it never",
   "rises above %s. Where the test does look comfortable, that comfort is not proof of a",
@@ -334,22 +333,22 @@ sprintf(paste(
   num(max(filter(unc_p, panel == po, design_short == "paper")$hansen_p), 2),
   max(unc_p$n_inst), filter(tab, panel == fh)$countries[1]),
 sprintf(paste(
-  "Roodman's rule reaches %s on as few as %d instruments. Against that mark, a p-value",
+  "Roodman's rule reaches %s on as few as %d instruments. Against that mark, a p value",
   "of %s on a set of %d means much less."),
   num(rj("lag", "hi"), 3), min(filter(tab, scheme == "lag", hansen_df > 0L)$n_inst),
   num(max(unc_p$hansen_p), 2), max(unc_p$n_inst)),
 
 "## Turning the dial by degrees",
 sprintf(paste(
-  "The %s rules above are all-or-nothing. %s more ways are not single rules but",
-  "families with a knob on them. With the knob I can ask what happens part of the way.",
+  "The %s rules above are all or nothing. %s more ways are families with a knob on",
+  "them, so that I can ask what happens part of the way.",
   "The results are in output/aggregation_families.txt and",
   "output/aggregation_families.png."),
   spell(length(AGG_SCHEMES)), sentence_case(spell(length(AGG_FAMILIES)))),
 paste(
   "The first family groups the years into blocks and collapses the columns inside each",
   "block. A block size of one is then the uncollapsed set, and a block as wide as the",
-  "panel is Roodman's rule. The second family keeps one instrument per year, but it",
+  "panel is Roodman's rule. The second family keeps one instrument per year, and",
   "multiplies each older lag by a fading factor before the addition. A factor of one is",
   "then the plain sum. Both families must match the fixed rules exactly at their",
   "endpoints. If they do not, the script stops."),
@@ -366,16 +365,15 @@ sprintf(paste(
          setting == max(setting))$income),
 paste(
   "Even the instrument count refuses to fall for wider blocks. Block sizes of four and",
-  "five both give three blocks. But the wider blocks reach back to years that have",
-  "deeper lags on offer, so the count goes up rather than down. Block size is therefore",
+  "five both give three blocks. The wider blocks, however, reach back to years that have",
+  "deeper lags on offer, so the count goes up. Block size is therefore",
   "not a measure of the amount of collapsing, and that is why the line looks like",
   "noise."),
 sprintf(paste(
   "The fading family does almost nothing. Across the whole range of factors the estimate",
-  "moves by %.3f for %s and %.3f for %s. That result is useful rather than",
-  "disappointing. It says that the answer from the collapse by period is not an artifact",
-  "of equal weight on every lag. A tenth of the weight on the older lags barely moves",
-  "the estimate."),
+  "moves by %.3f for %s and %.3f for %s. That result is a useful one. It says that the",
+  "answer from the collapse by period is no artifact of equal weight on every lag, since",
+  "a tenth of the weight on the older lags barely moves the estimate."),
   diff(range(filter(fam, panel == fh, family == "Fading out older lags")$income)), fh,
   diff(range(filter(fam, panel == po, family == "Fading out older lags")$income)), po),
 
@@ -383,19 +381,19 @@ sprintf(paste(
 sprintf(paste(
   "The rules above all pick the instrument subsets deliberately. Roodman's footnote 7",
   "suggests a random pick instead. He asks how the coefficient and the overidentification",
-  "p-value move as the count grows. I drew %d random subsets of the uncollapsed",
-  "lagged-level columns at each of several sizes, under the paper's instrument design. I",
+  "p value move as the count grows. I drew %d random subsets of the uncollapsed",
+  "lagged level columns at each of several sizes, under the paper's instrument design. I",
   "then refit the model."), SUBSET_DRAWS),
 paste(
-  "The coefficient comes from the one-step estimator, so it is comparable with the rest",
-  "of this file. The Hansen test needs the two-step weight matrix, so that column is",
-  "two-step. The results are in output/aggregation_subsets.txt,",
+  "The coefficient comes from the one step estimator, so it is comparable with the rest",
+  "of this file. The Hansen test needs the two step weight matrix, so that column is",
+  "two step. The results are in output/aggregation_subsets.txt,",
   "output/aggregation_subsets.csv and output/aggregation_subsets.png."),
 sprintf(paste(
   "The first result shows how much of the answer comes from the analyst's choice rather",
   "than from the data. With only %d of the %d available lagged levels in play, the %s",
   "draws run from %.3f to %.3f. So on this data and this specification, the sign of the",
-  "effect is not fixed at all. The sign depends on which instruments the draw contains.",
+  "effect is not fixed at all, and it depends on which instruments the draw contains.",
   "The spread then narrows as the count grows. The standard deviation falls from %.3f",
   "at %d instruments to %.3f at %d for %s, and from %.3f to %.3f for %s."),
   sw(fh, "s_small"), st(fh, "n_gmm"), fh, sw(fh, "lo_small"), sw(fh, "hi_small"),
@@ -414,15 +412,15 @@ sprintf(paste(
   "The J statistic is the messier half, and I do not want to read more into it than it",
   "supports. The Hansen test rejects a share of the draws at the %d%% level. That share",
   "runs %s for %s across the %s sizes, and %s for %s. Neither series is monotone, and",
-  "the two do not agree with each other. So this is not a clean demonstration of a loss",
-  "of power in the test."),
+  "the two disagree with each other. So this falls short of a clean demonstration that",
+  "the test loses power."),
   as.integer(CI_LEVEL * 100), rej_series(fh), fh,
   spell(n_distinct(sub$size)), rej_series(po), po),
 sprintf(paste(
-  "Part of the reason is itself the point of the paper. The two-step weight matrix",
+  "Part of the reason is itself the point of the paper. The two step weight matrix",
   "behind the test has one row and column per instrument. About %d countries supply the",
   "estimate of that matrix. So by the widest draws the test leans on a matrix that the",
-  "data cannot support. The safe reading is the one Roodman gives. A high Hansen p-value",
+  "data cannot support. The safe reading is the one Roodman gives. A high Hansen p value",
   "on a large instrument set is not evidence of anything."),
   filter(tab, panel == fh)$countries[1]),
 sprintf(paste(
@@ -436,19 +434,19 @@ sprintf(paste(
   ifelse(near(fh)$inside, "inside", "outside"),
   po, near(po)$est, near(po)$lo, near(po)$hi),
 paste(
-  "The deliberate rule does not give a different answer at a given count. It gives",
-  "stability as the lag window widens. The figure earlier in this file shows that",
-  "stability, and the random draws cannot."),
+  "What the deliberate rule offers at a given count is stability as the lag window",
+  "widens. The figure earlier in this file shows that stability, which is something the",
+  "random draws are silent about."),
 paste(
   sprintf(paste("I did not implement the other suggestion in footnote 6, the",
-                "vector-autoregression restriction of %s."), CITE_ARELLANO_OPT),
-  "It needs a first-stage model of the instruments themselves rather than a rule for",
-  "the collapse of the columns. So it does not fit into the same comparison. Roodman",
+                "vector autoregression restriction of %s."), CITE_ARELLANO_OPT),
+  "It needs a first stage model of the instruments themselves rather than a rule for",
+  "the collapse of the columns, so it does not fit into the same comparison. Roodman",
   "himself notes that it did not enter common practice."),
 
 "## A note on reading the table",
 paste(
-  "The second column of the table uses every available lag, which is past the right-hand",
+  "The second column of the table uses every available lag, which is past the right hand",
   sprintf("edge of the figure. The figure stops at a window of %d.", max(LAG_WINDOW)),
   "The instrument counts in the table include only the lagged levels. They do not",
   "include the year dummies that also sit in the instrument set."))

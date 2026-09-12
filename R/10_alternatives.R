@@ -8,7 +8,7 @@ data("EmplUK", package = "plm")
                data = EmplUK, effect = "twoways", model = "twostep")
 stopifnot(abs(coef(.bench)["lag(log(emp), 1:2)1"] - 0.4742) < 0.001,
           abs(coef(.bench)["lag(log(emp), 1:2)2"] + 0.0530) < 0.001)
-cat("pgmm reproduces the Arellano-Bond (1991) benchmark.\n")
+cat("pgmm reproduces the Arellano and Bond (1991) benchmark.\n")
 
 # ladder
 ladder <- function(dep, inc, panel_label) {
@@ -30,12 +30,12 @@ ladder <- function(dep, inc, panel_label) {
 
   reg_row("Pooled OLS",        fit_ols(s, dep, c("Ldep", "Linc"), FALSE), "Ldep", "Linc")
   reg_row("Fixed effects",     fit_ols(s, dep, c("Ldep", "Linc"), TRUE),  "Ldep", "Linc")
-  reg_row("Anderson-Hsiao IV", fit_iv(s, "y", endog = c("dLdep", "dLinc"),
+  reg_row("Anderson and Hsiao IV", fit_iv(s, "y", endog = c("dLdep", "dLinc"),
           inst = c("L2dep", "L2inc"), country_fe = FALSE), "dLdep", "dLinc")
 
   est <- complete_on(s, c("y", "dLdep", "dLinc", "L2inc"))
   abr <- fit_abgmm(d, est, dep_level = dep, endog = c("dLdep", "dLinc"), inst_extra = "L2inc")
-  add("Arellano-Bond, difference GMM (replication)", ce(abr, "dLinc")["est"], ce(abr, "dLinc")["se"],
+  add("Arellano and Bond, difference GMM (replication)", ce(abr, "dLinc")["est"], ce(abr, "dLinc")["se"],
       ce(abr, "dLdep")["est"], ce(abr, "dLdep")["se"], abr$n_country, abr$n_inst)
 
   pd <- gmm_panel(s, dep, inc)
@@ -58,21 +58,21 @@ ladder <- function(dep, inc, panel_label) {
 alt <- bind_rows(lapply(MEASURES, function(ms) ladder(ms$dep, ms$inc, ms$label)))
 write_csv(alt, file.path(PATH_OUTPUT, "alternatives.csv"))
 
-ab <- filter(alt, grepl("^Arellano-Bond", estimator))
+ab <- filter(alt, grepl("^Arellano and Bond", estimator))
 for (pl in unique(ab$panel)) {
   r <- filter(ab, panel == pl)
   ref <- filter(r, grepl("replication", estimator))
   stopifnot(nrow(ref) == 1L,
             all(abs(r$income - ref$income) <= r$income_se + 1e-12))
 }
-cat("The Arellano-Bond rows agree to within one standard error.\n")
+cat("The Arellano and Bond rows agree to within one standard error.\n")
 
 # checks
 sysp <- function(pl, wt)
-  filter(alt, panel == pl, estimator == sprintf("Blundell-Bond, system GMM (%s)", wt))$overid_p
-stopifnot(sysp(MEASURES[[2]]$label, "two-step") < CI_LEVEL,
-          sysp(MEASURES[[1]]$label, "two-step") >= CI_LEVEL,
-          all(filter(alt, grepl("one-step", estimator))$overid_p < CI_LEVEL))
+  filter(alt, panel == pl, estimator == sprintf("Blundell and Bond, system GMM (%s)", wt))$overid_p
+stopifnot(sysp(MEASURES[[2]]$label, "two step") < CI_LEVEL,
+          sysp(MEASURES[[1]]$label, "two step") >= CI_LEVEL,
+          all(filter(alt, grepl("one step", estimator))$overid_p < CI_LEVEL))
 cat("The Hansen test separates the two measures, and the Sargan test rejects every row.\n")
 
 # layout
@@ -117,32 +117,31 @@ md <- c(
 "# Alternative estimators for the income effect",
 "",
 "The paper asks whether a country becomes more democratic when it becomes richer.",
-"A plain correlation can give the wrong answer. The authors therefore use methods",
-"that remove the steady differences between countries and account for the slow",
+"A plain correlation can give the wrong answer, so the authors use methods that",
+"remove the steady differences between countries and account for the slow",
 "movement of democracy. Here I estimate the income effect in several ways and put",
 "the results side by side. Professor Torgovitsky asked for this comparison. All of",
-"the estimates use the five-year sample, the same sample behind Tables 2 and 3.",
+"the estimates use the five year sample, the same sample behind Tables 2 and 3.",
 "",
 "## The methods, in plain terms",
 "",
-"- Pooled OLS pools the observations across countries. This method pools",
-"  observations, not instruments. Pooled OLS ignores the steady differences",
-"  between countries, and the estimate is therefore too high.",
+"- Pooled OLS pools the observations across countries. It ignores the steady",
+"  differences between countries, which pushes the estimate too high.",
 "- Fixed effects removes anything about a country that stays the same over time.",
 "  With few time periods and a lagged outcome, this method still has a known",
 "  bias.",
-"- Anderson-Hsiao uses changes instead of levels to cancel the steady",
+"- Anderson and Hsiao uses changes instead of levels to cancel the steady",
 "  differences. It then uses values from two periods earlier as instruments.",
-"- Arellano-Bond (difference GMM) also works with changes, and it uses a set of",
+"- Arellano and Bond (difference GMM) also works with changes, and it uses a set of",
 "  earlier values as instruments. The paper uses this method in its GMM columns.",
-"- Blundell-Bond (system GMM) keeps the Arellano-Bond conditions and adds a",
+"- Blundell and Bond (system GMM) keeps the Arellano and Bond conditions and adds a",
 "  second set of conditions in levels. When these level conditions hold, system",
-"  GMM is more precise. However, the level conditions are an extra assumption.",
+"  GMM is more precise. The level conditions are an extra assumption, however.",
 "",
-"\"One-step\" and \"two-step\" are two weighting schemes for these GMM estimators.",
-"The two-step standard errors use the Windmeijer correction. The GMM rows use a",
-"small instrument set: collapsed, and limited to lags two through four. A small",
-"instrument set keeps the diagnostic tests informative.",
+"\"One step\" and \"two step\" are two weighting schemes for these GMM estimators.",
+"The two step standard errors use the Windmeijer correction. The GMM rows use a",
+"small instrument set, collapsed and limited to lags two through four, since a",
+"small instrument set keeps the diagnostic tests informative.",
 "",
 "## How to read the diagnostics",
 "",
@@ -154,34 +153,34 @@ md <- c(
 "  a reported test shows this pattern.",
 "- A valid specification gives an overidentification p that is not small. A small",
 "  value warns that some of the instruments can be invalid. Each of those four rows",
-"  reports the test of its own estimator. The one-step rows report the Sargan test,",
-"  which assumes well-behaved errors. The two-step rows report the Hansen test,",
+"  reports the test of its own estimator. The one step rows report the Sargan test,",
+"  which assumes well behaved errors. The two step rows report the Hansen test,",
 "  which does not make this assumption.",
-"- The Sargan test rejects both one-step rows here, so it separates nothing. The",
+"- The Sargan test rejects both one step rows here, so it separates nothing. The",
 "  paper clusters all of its own inference by country, and that is the situation in",
-"  which a homoskedastic test over-rejects. The Hansen column is the one to read.",
+"  which a homoskedastic test rejects too often. The Hansen column is the one to read.",
 "",
 "## Results", "")
 for (pl in unique(alt$panel)) md <- c(md, paste0("### ", pl), "", md_tab(filter(alt, panel == pl)), "")
 md <- c(md,
 "## What the comparison shows",
 "",
-"The change-based methods agree with each other. These methods remove the steady",
+"The change based methods agree with each other. These methods remove the steady",
 "differences between countries and account for the slow movement of democracy.",
 "After these corrections, the effect of income on democracy is small. In the",
-"instrumental-variables estimates the effect is negative, not positive. This",
-"result is the main finding of the paper, and fixed effects, Anderson-Hsiao and",
-"Arellano-Bond all show it.",
+"instrumental variables estimates the effect carries a negative sign. This",
+"result is the main finding of the paper, and fixed effects, Anderson and Hsiao and",
+"Arellano and Bond all show it.",
 "",
-"The Arellano-Bond rows differ among themselves by less than one standard error.",
+"The Arellano and Bond rows differ among themselves by less than one standard error.",
 "I do not expect closer agreement than this. The replication row uses the",
 "instrument set of the paper, which is uncollapsed and uses every lag. The plm",
 "rows use a collapsed set limited to lags two through four.",
 "",
-"The gap between the one-step and two-step rows carries little information here.",
-"The gap is small because the instrument set is small. The gap is not small in",
-"general. With a wide lag window, the weighting step decides whether collapsing",
-"works at all. The file docs/instruments.md covers this question.",
+"The gap between the one step and two step rows carries little information here,",
+"since the instrument set is small. With a wide lag window the gap grows, and the",
+"weighting step then decides whether collapsing works at all. The file",
+"docs/instruments.md covers that question.",
 "",
 "System GMM is the exception. The level conditions push the income coefficient to",
 "a small positive value for both democracy measures, and that value is",
@@ -192,18 +191,18 @@ md <- c(md,
 "",
 "For Freedom House the positive estimate therefore depends on one assumption. The",
 "paper argues that democracies in transition are unlikely to satisfy this",
-"assumption. Either way, every change-based estimate is small or negative. The",
+"assumption. Either way, every change based estimate is small or negative, and the",
 "positive and significant number appears only in the rows that add the level",
 "conditions.",
 "",
-"The conclusion of the paper therefore holds under the change-based methods. A",
+"The conclusion of the paper therefore holds under the change based methods. A",
 "positive income effect returns only under the assumption that the level",
 "conditions hold.",
 "",
 "## Checks",
 "",
 "I checked these numbers two ways. The GMM engine is the pgmm function in plm. It",
-"reproduces the textbook Arellano-Bond (1991) employment results exactly. If it",
+"reproduces the textbook Arellano and Bond (1991) employment results exactly. If it",
 "does not reproduce them, the script stops.",
 "",
 "The script R/11_crosscheck.R runs difference and system GMM through an",
@@ -212,7 +211,7 @@ md <- c(md,
 "difference GMM and positive under system GMM. If it finds anything else, the",
 "script stops. R/11_crosscheck.R needs the pdynmc package.",
 "",
-"To run the cross-check, use `Rscript R/11_crosscheck.R`.")
+"To run the cross check, use `Rscript R/11_crosscheck.R`.")
 writeLines(md, file.path(PATH_DOCS, "alternatives.md"))
 
 cat("Alternatives written. Income coefficient by estimator:\n")

@@ -89,7 +89,7 @@ write_aggregation_outputs <- function(tab, bench, fam, sub) {
   txt <- c()
   for (pl in unique(tab$panel)) {
     txt <- c(txt, sprintf("== %s (fixed effects %.3f) ==", pl, filter(bench, panel == pl)$fe),
-             "Each cell: estimate (SE) [lagged-level instruments, overid p]",
+             "Each cell: estimate (SE) [lagged level instruments, overid p]",
              "'exact id' means there is nothing left over to test")
     for (dg in unique(tab$design)) {
       txt <- c(txt, sprintf("-- %s --", dg),
@@ -119,7 +119,7 @@ write_aggregation_outputs <- function(tab, bench, fam, sub) {
     labs(x = "Longest lag used to build the instruments",
          y = "Estimated effect of income", color = "Instruments built as",
          title = "How the lagged levels collapse into instruments changes the answer",
-         subtitle = "Difference GMM, one-step; dotted line is the fixed-effects estimate") +
+         subtitle = "Difference GMM, one step; dotted line is the fixed effects estimate") +
     theme_minimal(base_size = 11) +
     theme(legend.position = "right")
   ggsave(file.path(PATH_OUTPUT, "aggregation.png"), fig, width = 11, height = 6, dpi = 150)
@@ -151,9 +151,9 @@ write_aggregation_outputs <- function(tab, bench, fam, sub) {
     labs(x = "Instruments in the draw (lagged levels plus year dummies)",
          y = "Estimated effect of income", color = "Deliberate rule",
          title = "Roodman's footnote 7: random subsets of the instrument set",
-         subtitle = paste(SUBSET_DRAWS, "draws at each size, one-step difference GMM.",
+         subtitle = paste(SUBSET_DRAWS, "draws at each size, one step difference GMM.",
                           "Diamonds are the deliberate rules at their own",
-                          "\ninstrument counts; dotted line is the fixed-effects estimate.")) +
+                          "\ninstrument counts; dotted line is the fixed effects estimate.")) +
     theme_minimal(base_size = 11)
   ggsave(file.path(PATH_OUTPUT, "aggregation_subsets.png"), subfig,
          width = 11, height = 5, dpi = 150)
@@ -164,9 +164,9 @@ write_aggregation_outputs <- function(tab, bench, fam, sub) {
               rej = mean(hansen_p < CI_LEVEL, na.rm = TRUE), .groups = "drop")
   write_csv(subsum, file.path(PATH_OUTPUT, "aggregation_subsets_summary.csv"))
   subtxt <- c("Random subsets of the uncollapsed instrument set (Roodman footnote 7).",
-              sprintf("%d draws at each size; one-step difference GMM for the coefficient,",
+              sprintf("%d draws at each size; one step difference GMM for the coefficient,",
                       SUBSET_DRAWS),
-              "two-step for the Hansen test. Paper's instrument design, all lags.",
+              "two step for the Hansen test. Paper's instrument design, all lags.",
               sprintf("%-16s %6s %8s %8s %8s %8s %8s", "Panel", "Insts", "median",
                       "min", "max", "sd", "rej 5%"))
   for (i in seq_len(nrow(subsum))) {

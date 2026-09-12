@@ -22,7 +22,7 @@ for (ms in MEASURES) {
     alpha = c(gmm = base$alpha_hat, fe = a_fe),
     cal = list(gmm = base,
                fe = calibrate_dgp(ms$dep, ms$inc, alpha = a_fe, beta = 0)))
-  cat(sprintf("%-14s real FE %.3f  alpha(GMM) %.3f  alpha(FE-matched) %.3f\n",
+  cat(sprintf("%-14s real FE %.3f  alpha(GMM) %.3f  alpha(FE matched) %.3f\n",
               ms$label, tg$fe, base$alpha_hat, a_fe))
 }
 

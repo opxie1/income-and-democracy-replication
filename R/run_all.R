@@ -21,7 +21,7 @@ sink()
 
 cat("Done. Tables are in output/, the parquet panels in data/, the checks in docs/.\n")
 if (.Platform$OS.type == "windows") {
-  cat("On Windows, R sometimes prints a non-zero exit code after this line.\n",
+  cat("On Windows, R sometimes prints a nonzero exit code after this line.\n",
       "It comes from the arrow package as the package closes.\n",
       "Every file is already written at this point.\n", sep = "")
 }

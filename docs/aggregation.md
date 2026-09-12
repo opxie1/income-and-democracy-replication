@@ -2,9 +2,9 @@
 
 Professor Torgovitsky asked whether Roodman describes other ways to collapse
 the instruments. He asked because a collapse rule is a choice, and other
-choices exist. This file reports what the paper says. It also reports what
-the alternatives give on this data. The numbers are in output/aggregation.txt
-and output/aggregation.csv. The figure is output/aggregation.png.
+choices exist. This file reports what the paper says, and what the
+alternatives give on this data. The numbers are in output/aggregation.txt and
+output/aggregation.csv. The figure is output/aggregation.png.
 
 ## What Roodman describes
 
@@ -15,8 +15,9 @@ everything cited here are in docs/references.md.
 Section V is titled "Techniques for reducing the instrument count", and it
 opens with two techniques rather than one. The first technique uses only
 certain lags instead of all available ones. It still makes separate
-instruments for each period, but it caps the number per period. The count
-then grows in proportion to the length of the panel, and not with its square.
+instruments for each period, while capping the number per period, so that the
+count grows in proportion to the length of the panel instead of with its
+square.
 
 Roodman describes this technique as a projection of the regressors onto the
 full instrument set, with the coefficients on certain lags held at zero. He
@@ -48,21 +49,21 @@ statement deserves a quotation, because it sets the standard for this file.
 They "provide the basis for some minimally arbitrary robustness and
 specification tests for Difference and System GMM: cut the instrument count
 in one of these ways and examine the behavior of the coefficient estimates
-and Hansen and Difference-in-Hansen tests". So the coefficient on its own is
+and Hansen and Difference in Hansen tests". So the coefficient on its own is
 only half of what he asks for. The table in output/aggregation.txt now
-carries an overidentification p-value in every cell, beside the estimate.
+carries an overidentification p value in every cell, beside the estimate.
 
-I do not report the Difference-in-Hansen half here. That test compares one
+I do not report the Difference in Hansen half here. That test compares one
 nested subset of instruments against the rest, and the rules compared here
-are not nested inside one another. It belongs in the difference-versus-system
-comparison, where the extra level conditions form a subset that I can add and
-remove. Both docs/alternatives.md and docs/instruments.md make that
+are not nested inside one another. It belongs in the difference against
+system comparison, where the extra level conditions form a subset that I can
+add and remove. Both docs/alternatives.md and docs/instruments.md make that
 comparison.
 
 He also notes that the two techniques work together. The pair leaves a count
 that does not grow with the length of the panel at all. His Table 1 crosses
-them. It shows four variants of system GMM: the full instrument set,
-one-period lags only, the collapsed set, and both restrictions at once.
+them. It shows four variants of system GMM: the full instrument set, one
+period lags only, the collapsed set, and both restrictions at once.
 
 Two further ideas appear in footnotes rather than the main text. Footnote 6
 describes an approach from Arellano (2003b). That approach first models the
@@ -87,13 +88,12 @@ across lag distances is a third option. A fourth option pushes the rule to
 the end, where every column collapses into one instrument.
 
 The average is also the one rule here that steps outside the sentence quoted
-above. Its divisor is the count of lags that the country has in that period.
-So the divisor varies from country to country inside a single column. The
-result is not the original columns with some coefficients tied together, but
-a new instrument. The new instrument is still legitimate, because the divisor
-depends only on which lags exist and not on the outcome. The
-equal-coefficient reading does not reach it, and the same caveat applies to
-the fading family further down.
+above. Its divisor is the count of lags that the country has in that period,
+so the divisor varies from country to country inside a single column. What
+comes out is a new instrument altogether. It remains legitimate, because the
+divisor depends only on which lags exist and never on the outcome. The equal
+coefficient reading does not reach it, and the same caveat applies to the
+fading family further down.
 
 I ran all four collapse rules against the uncollapsed set. I then ran two
 further families with a knob on them. The section after next covers those
@@ -109,9 +109,9 @@ exactly. If it ever fails, the script stops.
 One reading note comes before the numbers. The collapse of every column into
 one leaves the model exactly identified here. That row therefore has no
 overidentifying restrictions left, and output/aggregation.txt prints `exact
-id` instead of a p-value. The estimate is still real, and it is the least
-stable one on the figure. It is not comparable to the others on anything that
-counts restrictions.
+id` instead of a p value. The estimate is still real, and it is the least
+stable one on the figure. It should not be compared to the others on anything
+that counts restrictions.
 
 ## What came out
 
@@ -122,32 +122,32 @@ collapse rule changes across those numbers. The data, the lags and the
 estimator stay the same.
 
 The top row of the figure shows the paper's own instrument design. There the
-uncollapsed set is the exception. It travels much further than any of the
+uncollapsed set is the exception, and it travels much further than any of the
 collapse rules. Its range is 0.084 for Freedom House and 0.245 for Polity,
 against at most 0.044 for the four collapse rules. It also finishes closer to
-the fixed-effects value than it started, by 0.039 and 0.190. That is the
+the fixed effects value than it started, by 0.039 and 0.190. That is the
 overfitting story again.
 
 The path is not a straight climb, and I do not want to say that it is. Both
-uncollapsed lines first move further from the fixed-effects value, out to a
+uncollapsed lines first move further from the fixed effects value, out to a
 window of 4 for Freedom House and 5 for Polity. They reverse direction only
 after that point. The uncollapsed line is monotone in one of the four panels
 on the figure. That panel is Polity under the symmetric design. So the drift
-is a net direction over the whole window, and not a steady march.
+is a net direction over the whole window, and it arrives there unevenly.
 
 The bottom row gives income its own block of lags, and the result is messier.
 That mess deserves a plain statement. There the collapse rules are not
 uniformly steadier. Roodman's rule is the flattest line in three of the four
 panels, with a range of at most 0.054. It loses only in the Polity panel
 under the paper's design, where the exactly identified fully collapsed column
-happens to sit still (0.010 against 0.021). That column is not much of a
-rival, because it has nothing left to test.
+happens to sit still (0.010 against 0.021). That column is a weak rival,
+since it has nothing left to test.
 
 Collapsing by period swings more than the uncollapsed set does (0.477 against
 0.332 for Polity). Collapsing everything into one column is the least stable
-line on the whole figure. So the useful statement is not that a collapse
-always steadies the estimate. Collapsing by lag distance, the rule Roodman
-proposes, is the one that stays steady under both designs.
+line on the whole figure. A collapse therefore does not steady the estimate
+on its own. Collapsing by lag distance, the rule Roodman proposes, is the one
+that stays steady under both designs.
 
 Too much collapsing has its own failure mode. With the symmetric design,
 collapsing everything into one column produces a standard error of 1.61 for
@@ -167,21 +167,21 @@ one test in every cell. The test is the sharper tool of the two, and it
 points the same way.
 
 Among the three collapse rules that leave anything to test, Roodman's rule
-has the highest p-value in 27 of the 28 overidentified cells. The one
+has the highest p value in 27 of the 28 overidentified cells. The one
 exception is Polity under the symmetric design at the widest window. There
-the three rules cluster close to the threshold on both sides. The gap is not
-close anywhere else. His p-values run from 0.031 to 0.998, and the test
-rejects his rule at the 5% level in 1 of 28 cells. The test rejects the
-collapse by period in 27 of 32 cells, and the collapse by period after
-averaging in 32 of 32.
+the three rules cluster close to the threshold on both sides. The gap is wide
+everywhere else. His p values run from 0.031 to 0.998, and the test rejects
+his rule at the 5% level in 1 of 28 cells. The test rejects the collapse by
+period in 27 of 32 cells, and the collapse by period after averaging in 32 of
+32.
 
 The other two rules are my own, and they turn Roodman's construction on its
-side. Those two rules are not merely less steady than his. The data reject
-them, and the data do not reject his rule.
+side. They are less steady than his rule, and the data reject them as well.
+His own rule survives the same test.
 
-The uncollapsed set needs the most careful comparison. Its p-values run from
+The uncollapsed set needs the most careful comparison. Its p values run from
 0.00 to 0.39, and the test rejects it in 12 of 32 cells. For Freedom House
-the p-value climbs steadily with the count, from 0.00 at the narrowest window
+the p value climbs steadily with the count, from 0.00 at the narrowest window
 to 0.26 at the widest under the paper's design. For Polity under the same
 design it stays low throughout, and it never rises above 0.13. Where the test
 does look comfortable, that comfort is not proof of a valid instrument set.
@@ -189,22 +189,20 @@ Those cells have up to 99 instruments against about 127 countries, and that
 is exactly where the test loses its power.
 
 Roodman's rule reaches 0.998 on as few as 12 instruments. Against that mark,
-a p-value of 0.39 on a set of 99 means much less.
+a p value of 0.39 on a set of 99 means much less.
 
 ## Turning the dial by degrees
 
-The five rules above are all-or-nothing. Two more ways are not single rules
-but families with a knob on them. With the knob I can ask what happens part
-of the way. The results are in output/aggregation_families.txt and
-output/aggregation_families.png.
+The five rules above are all or nothing. Two more ways are families with a
+knob on them, so that I can ask what happens part of the way. The results are
+in output/aggregation_families.txt and output/aggregation_families.png.
 
 The first family groups the years into blocks and collapses the columns
 inside each block. A block size of one is then the uncollapsed set, and a
 block as wide as the panel is Roodman's rule. The second family keeps one
-instrument per year, but it multiplies each older lag by a fading factor
-before the addition. A factor of one is then the plain sum. Both families
-must match the fixed rules exactly at their endpoints. If they do not, the
-script stops.
+instrument per year, and multiplies each older lag by a fading factor before
+the addition. A factor of one is then the plain sum. Both families must match
+the fixed rules exactly at their endpoints. If they do not, the script stops.
 
 Neither family did what I expected, and they surprised me in opposite
 directions.
@@ -214,34 +212,34 @@ outside the two endpoints they connect. For Freedom House they run from
 -0.274 to -0.105, while the endpoints themselves are only -0.129 and -0.154.
 
 Even the instrument count refuses to fall for wider blocks. Block sizes of
-four and five both give three blocks. But the wider blocks reach back to
-years that have deeper lags on offer, so the count goes up rather than down.
-Block size is therefore not a measure of the amount of collapsing, and that
-is why the line looks like noise.
+four and five both give three blocks. The wider blocks, however, reach back
+to years that have deeper lags on offer, so the count goes up. Block size is
+therefore not a measure of the amount of collapsing, and that is why the line
+looks like noise.
 
 The fading family does almost nothing. Across the whole range of factors the
 estimate moves by 0.032 for Freedom House and 0.015 for Polity. That result
-is useful rather than disappointing. It says that the answer from the
-collapse by period is not an artifact of equal weight on every lag. A tenth
-of the weight on the older lags barely moves the estimate.
+is a useful one. It says that the answer from the collapse by period is no
+artifact of equal weight on every lag, since a tenth of the weight on the
+older lags barely moves the estimate.
 
 ## Roodman's footnote 7: random subsets
 
 The rules above all pick the instrument subsets deliberately. Roodman's
 footnote 7 suggests a random pick instead. He asks how the coefficient and
-the overidentification p-value move as the count grows. I drew 200 random
-subsets of the uncollapsed lagged-level columns at each of several sizes,
+the overidentification p value move as the count grows. I drew 200 random
+subsets of the uncollapsed lagged level columns at each of several sizes,
 under the paper's instrument design. I then refit the model.
 
-The coefficient comes from the one-step estimator, so it is comparable with
-the rest of this file. The Hansen test needs the two-step weight matrix, so
-that column is two-step. The results are in output/aggregation_subsets.txt,
+The coefficient comes from the one step estimator, so it is comparable with
+the rest of this file. The Hansen test needs the two step weight matrix, so
+that column is two step. The results are in output/aggregation_subsets.txt,
 output/aggregation_subsets.csv and output/aggregation_subsets.png.
 
 The first result shows how much of the answer comes from the analyst's choice
 rather than from the data. With only 4 of the 45 available lagged levels in
 play, the Freedom House draws run from -0.366 to 0.879. So on this data and
-this specification, the sign of the effect is not fixed at all. The sign
+this specification, the sign of the effect is not fixed at all, and it
 depends on which instruments the draw contains. The spread then narrows as
 the count grows. The standard deviation falls from 0.152 at 4 instruments to
 0.017 at 44 for Freedom House, and from 0.076 to 0.029 for Polity.
@@ -258,14 +256,14 @@ The J statistic is the messier half, and I do not want to read more into it
 than it supports. The Hansen test rejects a share of the draws at the 5%
 level. That share runs 0.41, 0.76, 0.69, 0.32, 0.00, 0.00 for Freedom House
 across the six sizes, and 0.32, 0.36, 0.33, 0.28, 0.48, 0.94 for Polity.
-Neither series is monotone, and the two do not agree with each other. So this
-is not a clean demonstration of a loss of power in the test.
+Neither series is monotone, and the two disagree with each other. So this
+falls short of a clean demonstration that the test loses power.
 
-Part of the reason is itself the point of the paper. The two-step weight
+Part of the reason is itself the point of the paper. The two step weight
 matrix behind the test has one row and column per instrument. About 127
 countries supply the estimate of that matrix. So by the widest draws the test
 leans on a matrix that the data cannot support. The safe reading is the one
-Roodman gives. A high Hansen p-value on a large instrument set is not
+Roodman gives. A high Hansen p value on a large instrument set is not
 evidence of anything.
 
 The diamonds on the figure put the deliberate rules on the same axes, which
@@ -276,19 +274,19 @@ range is wide enough that a position inside it is not much of a
 recommendation on its own. For Polity the same comparison is -0.512 against a
 range of -0.649 to -0.362.
 
-The deliberate rule does not give a different answer at a given count. It
-gives stability as the lag window widens. The figure earlier in this file
-shows that stability, and the random draws cannot.
+What the deliberate rule offers at a given count is stability as the lag
+window widens. The figure earlier in this file shows that stability, which is
+something the random draws are silent about.
 
-I did not implement the other suggestion in footnote 6, the
-vector-autoregression restriction of Arellano (2003b). It needs a first-stage
-model of the instruments themselves rather than a rule for the collapse of
-the columns. So it does not fit into the same comparison. Roodman himself
-notes that it did not enter common practice.
+I did not implement the other suggestion in footnote 6, the vector
+autoregression restriction of Arellano (2003b). It needs a first stage model
+of the instruments themselves rather than a rule for the collapse of the
+columns, so it does not fit into the same comparison. Roodman himself notes
+that it did not enter common practice.
 
 ## A note on reading the table
 
 The second column of the table uses every available lag, which is past the
-right-hand edge of the figure. The figure stops at a window of 8. The
+right hand edge of the figure. The figure stops at a window of 8. The
 instrument counts in the table include only the lagged levels. They do not
 include the year dummies that also sit in the instrument set.

@@ -1,6 +1,6 @@
 Random subsets of the uncollapsed instrument set (Roodman footnote 7).
-200 draws at each size; one-step difference GMM for the coefficient,
-two-step for the Hansen test. Paper's instrument design, all lags.
+200 draws at each size; one step difference GMM for the coefficient,
+two step for the Hansen test. Paper's instrument design, all lags.
 Panel             Insts   median      min      max       sd   rej 5%
 Freedom House        14   -0.024   -0.366    0.879    0.152     0.41
 Freedom House        22   -0.145   -0.293    0.057    0.084     0.76

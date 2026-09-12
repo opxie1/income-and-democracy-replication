@@ -15,4 +15,4 @@ First stage: Savings rate_t-3                                                   
                                                                                                          (0.182)
 Observations                         900      900      891      900      891      764      471      733      796
 Countries                            134      134      134      134      134      124       98      124      125
-First-stage R-squared                                          0.96     0.96              0.98     0.97     0.97
+First stage R squared                                          0.96     0.96              0.98     0.97     0.97

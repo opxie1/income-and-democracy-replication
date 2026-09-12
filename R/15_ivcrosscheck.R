@@ -8,7 +8,7 @@ TOL_SET <- 0.005
 # ivmodel
 mine <- read_csv(file.path(PATH_OUTPUT, "weakiv.csv"), show_col_types = FALSE)
 
-cat("Cross-checking the hand-coded weak-instrument code against the ivmodel package.\n")
+cat("Cross checking the hand coded weak instrument code against the ivmodel package.\n")
 cat(sprintf("%-16s %-22s %-22s %s\n", "Spec", "my CLR set", "ivmodel CLR set", "2SLS agree"))
 for (sp in TSLS_SPECS) {
   lab <- spec_label(sp$tab, sp$col)
@@ -37,7 +37,7 @@ for (sp in TSLS_SPECS) {
   cat(sprintf("%-16s %-22s %-22s %s\n", lab, row$clr_set,
               sprintf("[%.2f, %.2f]", ref_clr[1], ref_clr[2]), "yes"))
 }
-cat(sprintf(paste0("\nAll %s columns agree: the hand-coded conditional likelihood ratio ",
-                   "sets match\nthe ivmodel package to within %g, and the two-stage least ",
+cat(sprintf(paste0("\nAll %s columns agree: the hand coded conditional likelihood ratio ",
+                   "sets match\nthe ivmodel package to within %g, and the two stage least ",
                    "squares estimates are identical.\n"),
             spell(length(TSLS_SPECS)), TOL_SET))

@@ -50,18 +50,18 @@ VAR_LABELS <- c(
   year             = "Year of observation",
   year_numeric     = "Panel time index (consecutive within panel)",
   sample           = "In base estimation sample (1 = yes)",
-  samplebalancefe  = "In balanced fixed-effects sample, 1970-2000 (1 = yes)",
+  samplebalancefe  = "In balanced fixed effects sample, 1970-2000 (1 = yes)",
   samplebalancegmm = "In balanced GMM sample (1 = yes)",
   socialist        = "Former Soviet bloc country (1 = yes)",
   noextrapolation  = "Income not extrapolated in Maddison data (1 = yes)",
-  madid            = "Maddison aggregation id (clustering unit for long-run panels)",
+  madid            = "Maddison aggregation id (clustering unit for long run panels)",
   fhpolrigaug      = "Augmented Freedom House political rights index (0-1)",
   polity4          = "Polity IV democracy index (rescaled 0-1)",
   lrgdpch          = "Log real GDP per capita (Penn World Tables)",
   lrgdpmad         = "Log real GDP per capita (Maddison)",
   nsave            = "Nominal savings rate, (Y-C-G)/Y",
-  worldincome      = "Trade-weighted world income (instrument)",
-  worlddemocracy   = "Trade-weighted world democracy",
+  worldincome      = "Trade weighted world income (instrument)",
+  worlddemocracy   = "Trade weighted world democracy",
   laborshare       = "Labor share of gross value added (%)",
   lpop             = "Log total population (in thousands)",
   medage           = "Median age of the population",
@@ -170,7 +170,7 @@ SCHEME_LABEL <- c(
 # sweeps
 LAG_WINDOW  <- 2:8
 KEEP_LABEL  <- c(none = "uncollapsed", lag = "collapsed")
-GMM_MODELS  <- c(onestep = "One-step", twostep = "Two-step")
+GMM_MODELS  <- c(onestep = "One step", twostep = "Two step")
 OVERID_TEST <- c(onestep = "Sargan", twostep = "Hansen")
 GEOM_RHO    <- seq(0.1, 1, by = 0.1)
 SUBSET_DRAWS <- 200L
@@ -178,29 +178,29 @@ SUBSET_SEED  <- 20260811L
 MC_REPS      <- 500L
 MC_SEED      <- 20260813L
 MC_WORKERS   <- 6L
-MC_DESIGNS   <- c(stationary = "Mean-stationary start",
+MC_DESIGNS   <- c(stationary = "Mean stationary start",
                  nonstationary = "Start tied to the country effect")
 MC_CALIB     <- c(gmm = "Persistence from difference GMM",
-                  fe = "Persistence that reproduces the fixed-effects estimate")
+                  fe = "Persistence that reproduces the fixed effects estimate")
 
 # estimators
 GMM_LAGS_SHORT <- "2:4"
 GMM_LAGS_ALL   <- "2:99"
 
 GMM_SPECS <- list(
-  list(key = "d_one_coll",  label = "Arellano-Bond, difference GMM (one-step)",
+  list(key = "d_one_coll",  label = "Arellano and Bond, difference GMM (one step)",
        transformation = "d",  model = "onestep", collapse = TRUE,  lags = GMM_LAGS_SHORT),
-  list(key = "d_two_coll",  label = "Arellano-Bond, difference GMM (two-step)",
+  list(key = "d_two_coll",  label = "Arellano and Bond, difference GMM (two step)",
        transformation = "d",  model = "twostep", collapse = TRUE,  lags = GMM_LAGS_SHORT),
-  list(key = "ld_one_coll", label = "Blundell-Bond, system GMM (one-step)",
+  list(key = "ld_one_coll", label = "Blundell and Bond, system GMM (one step)",
        transformation = "ld", model = "onestep", collapse = TRUE,  lags = GMM_LAGS_SHORT),
-  list(key = "ld_two_coll", label = "Blundell-Bond, system GMM (two-step)",
+  list(key = "ld_two_coll", label = "Blundell and Bond, system GMM (two step)",
        transformation = "ld", model = "twostep", collapse = TRUE,  lags = GMM_LAGS_SHORT),
-  list(key = "d_one_unc",   label = "Difference GMM, uncollapsed, all lags (one-step)",
+  list(key = "d_one_unc",   label = "Difference GMM, uncollapsed, all lags (one step)",
        transformation = "d",  model = "onestep", collapse = FALSE, lags = GMM_LAGS_ALL),
-  list(key = "d_two_unc",   label = "Difference GMM, uncollapsed, all lags (two-step)",
+  list(key = "d_two_unc",   label = "Difference GMM, uncollapsed, all lags (two step)",
        transformation = "d",  model = "twostep", collapse = FALSE, lags = GMM_LAGS_ALL),
-  list(key = "ld_two_unc",  label = "System GMM, uncollapsed, all lags (two-step)",
+  list(key = "ld_two_unc",  label = "System GMM, uncollapsed, all lags (two step)",
        transformation = "ld", model = "twostep", collapse = FALSE, lags = GMM_LAGS_ALL))
 
 ALT_GMM_KEYS <- c("d_one_coll", "d_two_coll", "ld_one_coll", "ld_two_coll")
@@ -230,8 +230,8 @@ MOP_CV_10 <- 23.109
 CITE_ARELLANO_OPT <- "Arellano (2003b)"
 
 TEST_LABEL <- c(
-  ar = "Anderson-Rubin (clustered)",
-  clr_robust = "Moreira CLR, cluster-robust (Kleibergen)",
+  ar = "Anderson and Rubin (clustered)",
+  clr_robust = "Moreira CLR, cluster robust (Kleibergen)",
   clr_hom = "Moreira CLR (homoskedastic)")
 
 # instruments
@@ -338,12 +338,12 @@ fit_abgmm <- function(df_full, est, dep_level, endog, exog = character(),
 # rows
 LBL <- list(
   dem = "Democracy_t-1", inc = "Log GDP per capita_t-1",
-  obs = "Observations", ctry = "Countries", r2 = "R-squared",
-  fsr2 = "First-stage R-squared", logpop = "Log population_t-1",
+  obs = "Observations", ctry = "Countries", r2 = "R squared",
+  fsr2 = "First stage R squared", logpop = "Log population_t-1",
   educ = "Education_t-1", labor = "Labor share_t-1",
-  twdem_t = "Trade-weighted democracy_t", twdem = "Trade-weighted democracy",
+  twdem_t = "Trade weighted democracy_t", twdem = "Trade weighted democracy",
   sav2 = "Savings rate_t-2", sav3 = "Savings rate_t-3",
-  twgdp1 = "Trade-weighted log GDP_t-1", twgdp2 = "Trade-weighted log GDP_t-2")
+  twgdp1 = "Trade weighted log GDP_t-1", twgdp2 = "Trade weighted log GDP_t-2")
 fstg <- function(x) paste("First stage:", x)
 
 # measures

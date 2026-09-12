@@ -23,7 +23,7 @@ first paper in this group.
   Financieros, Madrid. This is Roodman's "Arellano (2003b)". He cites it twice.
   In Section V he cites it for the reading of lag limiting as a zero
   restriction on the projection coefficients. In footnote 6 he cites it as the
-  source of the vector-autoregression approach that constrains the instrument
+  source of the vector autoregression approach that constrains the instrument
   set.
 - Arellano, Manuel. 2003. *Panel Data Econometrics*. Oxford University Press.
   This is Roodman's "Arellano (2003a)". He cites it once, at page 171. He cites
@@ -49,7 +49,7 @@ The estimators that this project compares.
   on.
 - Nickell, Stephen. 1981. "Biases in Dynamic Models with Fixed Effects."
   *Econometrica* 49 (6): 1417-1426. The source of the downward bias in the
-  fixed-effects estimate of persistence, which the simulation in
+  fixed effects estimate of persistence, which the simulation in
   docs/monte-carlo.md measures directly.
 - Windmeijer, Frank. 2005. "A Finite Sample Correction for the Variance of
   Linear Efficient Two-Step GMM Estimators." *Journal of Econometrics* 126 (1):
@@ -64,12 +64,12 @@ Weak instruments.
   Models." *Econometrica* 71 (4): 1027-1048.
 - Kleibergen, Frank. 2005. "Testing Parameters in GMM Without Assuming That
   They Are Identified." *Econometrica* 73 (4): 1103-1123. This is the source of
-  the cluster-robust version of the conditional likelihood ratio test in
+  the cluster robust version of the conditional likelihood ratio test in
   R/_weakiv.R. I built that version from his K and J statistics. It uses a rank
   statistic in place of Moreira's conditioning statistic.
 - Cragg, John G., and Stephen G. Donald. 1993. "Testing Identifiability and
   Specification in Instrumental Variable Models." *Econometric Theory* 9 (2):
-  222-240. This is the source of the minimum-eigenvalue statistic. I report
+  222-240. This is the source of the minimum eigenvalue statistic. I report
   that statistic for the two columns with two endogenous regressors.
 - Andrews, Donald W. K., Marcelo J. Moreira, and James H. Stock. 2006.
   "Optimal Two-Sided Invariant Similar Tests for Instrumental Variables
@@ -82,10 +82,10 @@ Weak instruments.
   for one through four instruments.
 - Montiel Olea, José Luis, and Carolin Pflueger. 2013. "A Robust Test for Weak
   Instruments." *Journal of Business and Economic Statistics* 31 (3): 358-369.
-  The effective F statistic is the properly justified first-stage measure for
+  The effective F statistic is the properly justified first stage measure for
   clustered errors. I report it next to the ordinary one. The conservative
   critical value used here is 23.109. It is their worst case over covariance
-  structures for two-stage least squares, at a 10 percent Nagar-bias threshold
+  structures for two stage least squares, at a 10 percent Nagar bias threshold
   and a 5 percent test.
 
 The R packages that do the main work.

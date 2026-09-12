@@ -1,7 +1,7 @@
 == Freedom House (pooled OLS 0.072, fixed effects 0.010) ==
 Each cell: estimate (SE) [instruments, overid p]
 'exact id' means there is nothing left over to test
--- One-step, Difference GMM (overid p is Sargan's) --
+-- One step, Difference GMM (overid p is Sargan's) --
 Max lag  uncollapsed                    collapsed                     
 2        -0.316 (0.173) [21, 0.00]      -0.234 (0.147) [9, exact id]  
 3        -0.243 (0.143) [33, 0.00]      -0.200 (0.136) [11, 0.01]     
@@ -11,7 +11,7 @@ Max lag  uncollapsed                    collapsed
 7        -0.148 (0.103) [61, 0.00]      -0.211 (0.133) [19, 0.00]     
 8        -0.114 (0.101) [63, 0.00]      -0.201 (0.127) [21, 0.00]     
 
--- One-step, System GMM (overid p is Sargan's) --
+-- One step, System GMM (overid p is Sargan's) --
 Max lag  uncollapsed                    collapsed                     
 2        0.100 (0.023) [36, 0.00]       0.110 (0.026) [12, 0.00]      
 3        0.097 (0.022) [48, 0.00]       0.099 (0.024) [14, 0.00]      
@@ -21,7 +21,7 @@ Max lag  uncollapsed                    collapsed
 7        0.097 (0.021) [76, 0.00]       0.104 (0.024) [22, 0.00]      
 8        0.098 (0.021) [78, 0.00]       0.095 (0.024) [24, 0.00]      
 
--- Two-step, Difference GMM (overid p is Hansen's) --
+-- Two step, Difference GMM (overid p is Hansen's) --
 Max lag  uncollapsed                    collapsed                     
 2        -0.253 (0.186) [21, 0.01]      -0.234 (0.147) [9, exact id]  
 3        -0.168 (0.134) [33, 0.11]      -0.178 (0.134) [11, 0.25]     
@@ -31,7 +31,7 @@ Max lag  uncollapsed                    collapsed
 7        -0.097 (0.080) [61, 0.19]      -0.090 (0.113) [19, 0.71]     
 8        -0.085 (0.059) [63, 0.17]      -0.055 (0.102) [21, 0.04]     
 
--- Two-step, System GMM (overid p is Hansen's) --
+-- Two step, System GMM (overid p is Hansen's) --
 Max lag  uncollapsed                    collapsed                     
 2        0.109 (0.028) [36, 0.02]       0.108 (0.025) [12, 0.31]      
 3        0.087 (0.025) [48, 0.03]       0.101 (0.024) [14, 0.28]      
@@ -44,7 +44,7 @@ Max lag  uncollapsed                    collapsed
 == Polity (pooled OLS 0.053, fixed effects -0.006) ==
 Each cell: estimate (SE) [instruments, overid p]
 'exact id' means there is nothing left over to test
--- One-step, Difference GMM (overid p is Sargan's) --
+-- One step, Difference GMM (overid p is Sargan's) --
 Max lag  uncollapsed                    collapsed                     
 2        -0.700 (0.249) [21, 0.00]      -0.429 (0.202) [9, exact id]  
 3        -0.647 (0.206) [33, 0.00]      -0.474 (0.212) [11, 0.01]     
@@ -54,7 +54,7 @@ Max lag  uncollapsed                    collapsed
 7        -0.321 (0.104) [61, 0.00]      -0.496 (0.217) [19, 0.00]     
 8        -0.273 (0.092) [63, 0.00]      -0.520 (0.210) [21, 0.00]     
 
--- One-step, System GMM (overid p is Sargan's) --
+-- One step, System GMM (overid p is Sargan's) --
 Max lag  uncollapsed                    collapsed                     
 2        0.079 (0.024) [36, 0.00]       0.089 (0.028) [12, 0.00]      
 3        0.070 (0.021) [48, 0.00]       0.072 (0.023) [14, 0.00]      
@@ -64,7 +64,7 @@ Max lag  uncollapsed                    collapsed
 7        0.072 (0.020) [76, 0.00]       0.076 (0.022) [22, 0.00]      
 8        0.072 (0.020) [78, 0.00]       0.067 (0.022) [24, 0.00]      
 
--- Two-step, Difference GMM (overid p is Hansen's) --
+-- Two step, Difference GMM (overid p is Hansen's) --
 Max lag  uncollapsed                    collapsed                     
 2        -0.343 (0.238) [21, 0.01]      -0.429 (0.202) [9, exact id]  
 3        -0.357 (0.204) [33, 0.05]      -0.449 (0.235) [11, 0.42]     
@@ -74,7 +74,7 @@ Max lag  uncollapsed                    collapsed
 7        -0.273 (0.096) [61, 0.18]      -0.479 (0.204) [19, 0.15]     
 8        -0.249 (0.098) [63, 0.13]      -0.457 (0.192) [21, 0.11]     
 
--- Two-step, System GMM (overid p is Hansen's) --
+-- Two step, System GMM (overid p is Hansen's) --
 Max lag  uncollapsed                    collapsed                     
 2        0.060 (0.028) [36, 0.00]       0.058 (0.031) [12, 0.00]      
 3        0.053 (0.023) [48, 0.01]       0.049 (0.022) [14, 0.00]      

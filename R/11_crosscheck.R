@@ -25,5 +25,5 @@ xcheck <- function(dep, inc, label) {
               label, dd["income"], dd["dem"], ss["income"], ss["dem"]))
 }
 
-cat("pdynmc cross-check (compare signs and magnitudes with output/alternatives.txt):\n")
+cat("pdynmc cross check (compare signs and magnitudes with output/alternatives.txt):\n")
 for (ms in MEASURES) xcheck(ms$dep, ms$inc, ms$label)

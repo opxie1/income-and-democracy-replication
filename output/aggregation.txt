@@ -1,5 +1,5 @@
 == Freedom House (fixed effects 0.010) ==
-Each cell: estimate (SE) [lagged-level instruments, overid p]
+Each cell: estimate (SE) [lagged level instruments, overid p]
 'exact id' means there is nothing left over to test
 -- Paper's design (lags of democracy only) --
 Collapse of the lagged levels          Lags 2-4                       All lags                      
@@ -18,7 +18,7 @@ One per period, averaged               -0.303 (0.133) [18, 0.00]      -0.319 (0.
 One per variable, all lags collapsed   -0.204 (0.269) [2, exact id]   -0.761 (1.612) [2, exact id]  
 
 == Polity (fixed effects -0.006) ==
-Each cell: estimate (SE) [lagged-level instruments, overid p]
+Each cell: estimate (SE) [lagged level instruments, overid p]
 'exact id' means there is nothing left over to test
 -- Paper's design (lags of democracy only) --
 Collapse of the lagged levels          Lags 2-4                       All lags                      

@@ -72,11 +72,11 @@ for (nm in names(panel_files)) {
 # report
 md <- c("# Replication check",
         "",
-        "I checked every number in Tables 2 through 7 of Acemoglu, Johnson,",
+        "I check every number in Tables 2 through 7 of Acemoglu, Johnson,",
         "Robinson, and Yared (2008) against the output of this code. The",
-        "coefficients and the standard errors must agree to three decimals. The",
-        "R-squared values and the F-test p-values must agree to two decimals. The",
-        "observation counts and the country counts must agree exactly.",
+        "coefficients and the standard errors must agree to three decimals, the",
+        "R squared values and the F test p values must agree to two decimals, and",
+        "the observation counts and the country counts must agree exactly.",
         "",
         "## How the tables compare",
         "",
@@ -98,7 +98,7 @@ noted <- filter(cmp, !matched & has_note)
 if (nrow(noted)) {
   md <- c(md,
           if (nrow(noted) == 1) c("## The one documented mismatch", "",
-            "One number does not match. The cause is a typo in the paper, not an error in this code:", "")
+            "One number does not match. The cause appears to be a typo in the paper:", "")
           else c("## Documented mismatches", "",
             "These numbers do not match. Each entry below gives the reason:", ""))
   for (i in seq_len(nrow(noted))) {
@@ -110,16 +110,16 @@ if (nrow(noted)) {
 }
 
 md <- c(md, "## How I estimated each type of column", "",
-        "The OLS and fixed-effects columns use lm_robust with country dummies and",
-        "Stata-style clustered standard errors. The Anderson-Hsiao columns use",
-        "iv_robust on the first-differenced equation, with the twice-lagged levels",
-        "as instruments. The two-stage least squares columns in Tables 5 and 6 also",
-        "use iv_robust. I ran the first stage of these columns as a separate",
+        "The OLS and fixed effects columns use lm_robust with country dummies and",
+        "Stata style clustered standard errors. The Anderson and Hsiao columns use",
+        "iv_robust on the first differenced equation, with the twice lagged levels",
+        "as instruments. The two stage least squares columns in Tables 5 and 6 also",
+        "use iv_robust. I run the first stage of those columns as a separate",
         "clustered regression.",
         "",
-        "The Arellano-Bond columns use a difference-GMM estimator that I wrote by",
-        "hand. This estimator matches the xtabond2 command in Stata. The code is",
-        "the fit_abgmm() function in R/00_setup.R.",
+        "The Arellano and Bond columns use a difference GMM estimator that I wrote by",
+        "hand, which matches the xtabond2 command in Stata. The code is the",
+        "fit_abgmm() function in R/00_setup.R.",
         "",
         "## The data files", "",
         "| Panel | Rows | Columns | Size (KB) |",
